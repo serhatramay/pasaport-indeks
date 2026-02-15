@@ -174,3 +174,45 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
     .world-map { height: 280px; }
     .header-actions { display: none; }
 }
+
+/* ===== MAP TOOLTIP ===== */
+.map-tooltip {
+    background: rgba(10,14,26,0.95) !important;
+    color: #e0e0e0 !important;
+    border: 1px solid rgba(245,197,24,0.3) !important;
+    border-radius: 8px !important;
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4) !important;
+}
+.map-tooltip strong { color: #f5c518; }
+.leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before,
+.leaflet-tooltip-left:before, .leaflet-tooltip-right:before {
+    border-top-color: rgba(10,14,26,0.95) !important;
+}
+
+/* ===== MAP LEGEND ===== */
+.map-legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+.map-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: #aaa;
+}
+.map-legend-color {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+/* ===== PASSPORT CARD HOVER CURSOR ===== */
+.passport-card { cursor: pointer; }
+
