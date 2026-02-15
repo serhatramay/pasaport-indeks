@@ -172,3 +172,5 @@ const TURKIYE_GECMIS = [
   { yil: 2025, puan: 120 },
   { yil: 2026, puan: 121 },
 ];
+
+// 199 ulke verisi tamamlandi
