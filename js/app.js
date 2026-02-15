@@ -120,7 +120,7 @@ function updateMapForCountry(data, countryCode) {
 
     geoLayer = L.geoJSON(geoData, {
         style: function(feature) {
-            const iso3 = feature.properties.ISO_A3;
+            const iso3 = feature.properties['ISO3166-1-Alpha-3'];
             const status = visaStatus[iso3];
             let color = '#222', opacity = 0.5;
 
@@ -133,8 +133,8 @@ function updateMapForCountry(data, countryCode) {
             return { fillColor: color, weight: 1, opacity: 0.6, color: '#444', fillOpacity: opacity };
         },
         onEachFeature: function(feature, layer) {
-            const iso3 = feature.properties.ISO_A3;
-            const name = feature.properties.ADMIN;
+            const iso3 = feature.properties['ISO3166-1-Alpha-3'];
+            const name = feature.properties.name;
             const status = visaStatus[iso3];
             let statusText = 'Veri yok';
             if (iso3 === selectedIso3) statusText = 'Se\u00e7ilen \u00fclke';
