@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://serhatramay.github.io/pasaport-indeks/sitemap.xml
