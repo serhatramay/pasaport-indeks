@@ -1,33 +1,23 @@
 // Pasaport Endeksi - Ana Uygulama
+const GEOJSON_URL = 'https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson';
+let map, geoLayer, geoData = null;
+
 document.addEventListener('DOMContentLoaded', () => {
     const data = PASAPORT_DATA.sort((a, b) => a.sira - b.sira);
     const turkiye = data.find(d => d.kod === 'TR');
 
-                            // Hero istatistiği
-                            if (turkiye) {
-                                  document.getElementById('stat-visa-free').textContent = turkiye.vizesiz + turkiye.varistaSiz;
-                            }
+    if (turkiye) {
+        document.getElementById('stat-visa-free').textContent = turkiye.vizesiz + turkiye.varistaSiz;
+    }
 
-                            // Pasaport Grid
-                            renderPassportGrid(data, 'all');
-
-                            // Sıralama Tablosu
-                            renderRankingTable(data);
-
-                            // Karşılaştır select doldur
-                            fillSelects(data);
-
-                            // Harita
-                            initMap();
-
-                            // Türkiye Spotlight
-                            renderTurkeySpotlight(turkiye);
-
-                            // Event Listeners
-                            initEventListeners(data);
+    renderPassportGrid(data, 'all');
+    renderRankingTable(data);
+    fillSelects(data);
+    initMap(data);
+    renderTurkeySpotlight(turkiye);
+    initEventListeners(data);
 });
 
-// ===== PASAPORT GRID =====
 function renderPassportGrid(data, filter) {
     const grid = document.getElementById('passport-grid');
     let filtered = [...data];
@@ -35,226 +25,303 @@ function renderPassportGrid(data, filter) {
     else if (filter === 'visa-free') filtered = filtered.filter(d => d.vizesiz >= 100);
     grid.innerHTML = filtered.map(d => `
         <article class="passport-card" data-code="${d.kod}" tabindex="0" aria-label="${d.ulke} pasaportu, puan: ${d.puan}">
-              <span class="rank-badge">#${d.sira}</span>
-                    <span class="flag">${d.bayrak}</span>
-                          <span class="country-name">${d.ulke}</span>
-                                <span class="score">${d.puan}</span>
-                                    </article>
-                                      `).join('');
+            <span class="rank-badge">#${d.sira}</span>
+            <span class="flag">${d.bayrak}</span>
+            <span class="country-name">${d.ulke}</span>
+            <span class="score">${d.puan}</span>
+        </article>
+    `).join('');
 }
 
-// ===== SIRALAMA TABLOSU =====
 function renderRankingTable(data) {
     const tbody = document.getElementById('ranking-body');
     tbody.innerHTML = data.map(d => `
         <tr>
-              <td class="rank-col">${d.sira}</td>
-                    <td><div class="country-col"><span class="flag">${d.bayrak}</span> ${d.ulke}</div></td>
-                          <td class="visa-free">${d.vizesiz}</td>
-                                <td class="visa-arrival">${d.varistaSiz}</td>
-                                      <td class="evisa">${d.evize}</td>
-                                            <td class="visa-required">${d.vizeGerekli}</td>
-                                                  <td class="score-col">${d.puan}</td>
-                                                      </tr>
-                                                        `).join('');
+            <td class="rank-col">${d.sira}</td>
+            <td><div class="country-col"><span class="flag">${d.bayrak}</span> ${d.ulke}</div></td>
+            <td class="visa-free">${d.vizesiz}</td>
+            <td class="visa-arrival">${d.varistaSiz}</td>
+            <td class="evisa">${d.evize}</td>
+            <td class="visa-required">${d.vizeGerekli}</td>
+            <td class="score-col">${d.puan}</td>
+        </tr>
+    `).join('');
 }
 
-// ===== SELECT DOLDUR =====
 function fillSelects(data) {
     const selects = ['compare-select-1', 'compare-select-2', 'map-country-select'];
     selects.forEach(id => {
-          const el = document.getElementById(id);
-          if (!el) return;
-          data.forEach(d => {
-                  const opt = document.createElement('option');
-                  opt.value = d.kod;
-                  opt.textContent = `${d.bayrak} ${d.ulke}`;
-                  el.appendChild(opt);
-          });
+        const el = document.getElementById(id);
+        if (!el) return;
+        data.forEach(d => {
+            const opt = document.createElement('option');
+            opt.value = d.kod;
+            opt.textContent = d.bayrak + ' ' + d.ulke;
+            el.appendChild(opt);
+        });
     });
+    const mapSel = document.getElementById('map-country-select');
+    if (mapSel) mapSel.value = 'TR';
 }
 
-// ===== KARŞILAŞTIR =====
 function renderCompare(id, country) {
     const el = document.getElementById(id);
     if (!country) { el.innerHTML = ''; return; }
     const total = country.vizesiz + country.varistaSiz + country.evize;
     el.innerHTML = `
         <span class="compare-flag">${country.bayrak}</span>
-            <div class="compare-country-name">${country.ulke}</div>
-                <div class="compare-stat"><span class="compare-stat-label">Pasaport Gücü</span><span class="compare-stat-value">${country.puan}</span></div>
-                    <div class="compare-stat"><span class="compare-stat-label">Dünya Sırası</span><span class="compare-stat-value">#${country.sira}</span></div>
-                        <div class="compare-stat"><span class="compare-stat-label">Vizesiz</span><span class="compare-stat-value" style="color:#2ecc71">${country.vizesiz}</span></div>
-                            <div class="compare-stat"><span class="compare-stat-label">Varışta Vize</span><span class="compare-stat-value" style="color:#f39c12">${country.varistaSiz}</span></div>
-                                <div class="compare-stat"><span class="compare-stat-label">E-Vize</span><span class="compare-stat-value" style="color:#3498db">${country.evize}</span></div>
-                                    <div class="compare-stat"><span class="compare-stat-label">Vize Gerekli</span><span class="compare-stat-value" style="color:#e74c3c">${country.vizeGerekli}</span></div>
-                                        <div class="compare-stat"><span class="compare-stat-label">Toplam Erişim</span><span class="compare-stat-value">${total} ülke</span></div>
-                                            <div class="compare-stat"><span class="compare-stat-label">Nüfus</span><span class="compare-stat-value">${country.nufus}</span></div>
-                                              `;
+        <div class="compare-country-name">${country.ulke}</div>
+        <div class="compare-stat"><span class="compare-stat-label">Pasaport G\u00fcc\u00fc</span><span class="compare-stat-value">${country.puan}</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">D\u00fcnya S\u0131ras\u0131</span><span class="compare-stat-value">#${country.sira}</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">Vizesiz</span><span class="compare-stat-value" style="color:#2ecc71">${country.vizesiz}</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">Var\u0131\u015fta Vize</span><span class="compare-stat-value" style="color:#f39c12">${country.varistaSiz}</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">E-Vize</span><span class="compare-stat-value" style="color:#3498db">${country.evize}</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">Vize Gerekli</span><span class="compare-stat-value" style="color:#e74c3c">${country.vizeGerekli}</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">Toplam Eri\u015fim</span><span class="compare-stat-value">${total} \u00fclke</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">N\u00fcfus</span><span class="compare-stat-value">${country.nufus}</span></div>
+    `;
 }
 
-// ===== HARİTA =====
-let map, geoLayer;
-function initMap() {
+const ISO2_TO_ISO3 = {};
+function buildIsoMap(data) {
+    data.forEach(d => { ISO2_TO_ISO3[d.kod] = d.iso3; });
+}
+
+function initMap(data) {
+    buildIsoMap(data);
     map = L.map('world-map', {
-          center: [30, 20],
-          zoom: 2,
-          minZoom: 2,
-          maxZoom: 6,
-          scrollWheelZoom: true,
-          zoomControl: true
+        center: [30, 20], zoom: 2, minZoom: 2, maxZoom: 6,
+        scrollWheelZoom: true, zoomControl: true
     });
+
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
-          attribution: '&copy; OpenStreetMap &copy; CARTO',
-          subdomains: 'abcd',
-          maxZoom: 19
+        attribution: '&copy; OpenStreetMap &copy; CARTO',
+        subdomains: 'abcd', maxZoom: 19
+    }).addTo(map);
+
+    fetch(GEOJSON_URL)
+        .then(r => r.json())
+        .then(geo => {
+            geoData = geo;
+            updateMapForCountry(data, 'TR');
+        })
+        .catch(err => console.warn('GeoJSON yuklenemedi:', err));
+}
+
+function updateMapForCountry(data, countryCode) {
+    if (!geoData) return;
+    const country = data.find(d => d.kod === countryCode);
+    if (!country) return;
+
+    if (geoLayer) map.removeLayer(geoLayer);
+
+    const selectedIso3 = country.iso3;
+    const visaStatus = buildVisaStatusMap(data, country);
+
+    geoLayer = L.geoJSON(geoData, {
+        style: function(feature) {
+            const iso3 = feature.properties.ISO_A3;
+            const status = visaStatus[iso3];
+            let color = '#222', opacity = 0.5;
+
+            if (iso3 === selectedIso3) { color = '#f5c518'; opacity = 1; }
+            else if (status === 'vizesiz') { color = '#2ecc71'; opacity = 0.8; }
+            else if (status === 'varista') { color = '#f39c12'; opacity = 0.8; }
+            else if (status === 'evize') { color = '#3498db'; opacity = 0.8; }
+            else if (status === 'vize') { color = '#e74c3c'; opacity = 0.7; }
+
+            return { fillColor: color, weight: 1, opacity: 0.6, color: '#444', fillOpacity: opacity };
+        },
+        onEachFeature: function(feature, layer) {
+            const iso3 = feature.properties.ISO_A3;
+            const name = feature.properties.ADMIN;
+            const status = visaStatus[iso3];
+            let statusText = 'Veri yok';
+            if (iso3 === selectedIso3) statusText = 'Se\u00e7ilen \u00fclke';
+            else if (status === 'vizesiz') statusText = 'Vizesiz giri\u015f';
+            else if (status === 'varista') statusText = 'Var\u0131\u015fta vize';
+            else if (status === 'evize') statusText = 'E-Vize';
+            else if (status === 'vize') statusText = 'Vize gerekli';
+
+            layer.bindTooltip('<strong>' + name + '</strong><br>' + statusText, {
+                sticky: true, className: 'map-tooltip'
+            });
+        }
     }).addTo(map);
 }
 
-// ===== TÜRKİYE SPOTLIGHT =====
+function buildVisaStatusMap(data, selectedCountry) {
+    const statusMap = {};
+    if (typeof VISA_MAP !== 'undefined' && VISA_MAP[selectedCountry.kod]) {
+        const vm = VISA_MAP[selectedCountry.kod];
+        data.forEach(d => {
+            if (d.kod === selectedCountry.kod) return;
+            if (vm.vizesiz && vm.vizesiz.includes(d.iso3)) statusMap[d.iso3] = 'vizesiz';
+            else if (vm.varista && vm.varista.includes(d.iso3)) statusMap[d.iso3] = 'varista';
+            else if (vm.evize && vm.evize.includes(d.iso3)) statusMap[d.iso3] = 'evize';
+            else statusMap[d.iso3] = 'vize';
+        });
+        return statusMap;
+    }
+
+    const allCountries = [...data].filter(d => d.kod !== selectedCountry.kod);
+    allCountries.sort((a, b) => b.puan - a.puan);
+    let vizesizCount = selectedCountry.vizesiz;
+    let varistaCount = selectedCountry.varistaSiz;
+    let evizeCount = selectedCountry.evize;
+    let idx = 0;
+
+    allCountries.forEach(d => {
+        if (idx < vizesizCount) statusMap[d.iso3] = 'vizesiz';
+        else if (idx < vizesizCount + varistaCount) statusMap[d.iso3] = 'varista';
+        else if (idx < vizesizCount + varistaCount + evizeCount) statusMap[d.iso3] = 'evize';
+        else statusMap[d.iso3] = 'vize';
+        idx++;
+    });
+    return statusMap;
+}
+
 function renderTurkeySpotlight(tr) {
     if (!tr) return;
     const statsEl = document.getElementById('turkey-stats');
     const total = tr.vizesiz + tr.varistaSiz + tr.evize;
     statsEl.innerHTML = `
-        <div class="spotlight-stat-item"><span class="label">Pasaport Gücü</span><span class="value">${tr.puan}</span></div>
-            <div class="spotlight-stat-item"><span class="label">Dünya Sırası</span><span class="value">#${tr.sira}</span></div>
-                <div class="spotlight-stat-item"><span class="label">Vizesiz Giriş</span><span class="value">${tr.vizesiz} ülke</span></div>
-                    <div class="spotlight-stat-item"><span class="label">Varışta Vize</span><span class="value">${tr.varistaSiz} ülke</span></div>
-                        <div class="spotlight-stat-item"><span class="label">E-Vize</span><span class="value">${tr.evize} ülke</span></div>
-                            <div class="spotlight-stat-item"><span class="label">Vize Gerekli</span><span class="value">${tr.vizeGerekli} ülke</span></div>
-                                <div class="spotlight-stat-item"><span class="label">Toplam Erişim</span><span class="value">${total} ülke</span></div>
-                                    <div class="spotlight-stat-item"><span class="label">Nüfus</span><span class="value">${tr.nufus}</span></div>
-                                      `;
-    // Chart
-  const ctx = document.getElementById('turkey-chart');
+        <div class="spotlight-stat-item"><span class="label">Pasaport G\u00fcc\u00fc</span><span class="value">${tr.puan}</span></div>
+        <div class="spotlight-stat-item"><span class="label">D\u00fcnya S\u0131ras\u0131</span><span class="value">#${tr.sira}</span></div>
+        <div class="spotlight-stat-item"><span class="label">Vizesiz Giri\u015f</span><span class="value">${tr.vizesiz} \u00fclke</span></div>
+        <div class="spotlight-stat-item"><span class="label">Var\u0131\u015fta Vize</span><span class="value">${tr.varistaSiz} \u00fclke</span></div>
+        <div class="spotlight-stat-item"><span class="label">E-Vize</span><span class="value">${tr.evize} \u00fclke</span></div>
+        <div class="spotlight-stat-item"><span class="label">Vize Gerekli</span><span class="value">${tr.vizeGerekli} \u00fclke</span></div>
+        <div class="spotlight-stat-item"><span class="label">Toplam Eri\u015fim</span><span class="value">${total} \u00fclke</span></div>
+        <div class="spotlight-stat-item"><span class="label">N\u00fcfus</span><span class="value">${tr.nufus}</span></div>
+    `;
+
+    const ctx = document.getElementById('turkey-chart');
     if (ctx && typeof Chart !== 'undefined') {
-          new Chart(ctx, {
-                  type: 'line',
-                  data: {
-                            labels: TURKIYE_GECMIS.map(d => d.yil),
-                            datasets: [{
-                                        label: 'Pasaport Gücü',
-                                        data: TURKIYE_GECMIS.map(d => d.puan),
-                                        borderColor: '#f5c518',
-                                        backgroundColor: 'rgba(245,197,24,0.1)',
-                                        fill: true,
-                                        tension: 0.4,
-                                        pointBackgroundColor: '#f5c518',
-                                        pointRadius: 5,
-                                        pointHoverRadius: 8
-                            }]
-                  },
-                  options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                        legend: { display: false },
-                                        tooltip: {
-                                                      backgroundColor: '#1a1a2e',
-                                                      titleColor: '#f5c518',
-                                                      bodyColor: '#fff',
-                                                      borderColor: 'rgba(245,197,24,0.3)',
-                                                      borderWidth: 1
-                                        }
-                            },
-                            scales: {
-                                        x: { ticks: { color: '#888' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-                                        y: { ticks: { color: '#888' }, grid: { color: 'rgba(255,255,255,0.05)' }, min: 60 }
-                            }
-                  }
-          });
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: TURKIYE_GECMIS.map(d => d.yil),
+                datasets: [{
+                    label: 'Pasaport G\u00fcc\u00fc',
+                    data: TURKIYE_GECMIS.map(d => d.puan),
+                    borderColor: '#f5c518',
+                    backgroundColor: 'rgba(245,197,24,0.1)',
+                    fill: true, tension: 0.4,
+                    pointBackgroundColor: '#f5c518',
+                    pointRadius: 5, pointHoverRadius: 8
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { backgroundColor: '#1a1a2e', titleColor: '#f5c518', bodyColor: '#fff', borderColor: 'rgba(245,197,24,0.3)', borderWidth: 1 }
+                },
+                scales: {
+                    x: { ticks: { color: '#888' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                    y: { ticks: { color: '#888' }, grid: { color: 'rgba(255,255,255,0.05)' }, min: 60 }
+                }
+            }
+        });
     }
 }
 
-// ===== EVENT LISTENERS =====
 function initEventListeners(data) {
-    // Filtre butonları
-  document.querySelectorAll('.filter-btn').forEach(btn => {
+    document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                renderPassportGrid(data, btn.dataset.filter);
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderPassportGrid(data, btn.dataset.filter);
         });
-  });
+    });
 
-  // Karşılaştır
-  document.getElementById('compare-select-1')?.addEventListener('change', e => {
+    document.getElementById('compare-select-1')?.addEventListener('change', e => {
         const c = data.find(d => d.kod === e.target.value);
         renderCompare('compare-result-1', c);
-  });
+    });
     document.getElementById('compare-select-2')?.addEventListener('change', e => {
-          const c = data.find(d => d.kod === e.target.value);
-          renderCompare('compare-result-2', c);
+        const c = data.find(d => d.kod === e.target.value);
+        renderCompare('compare-result-2', c);
     });
 
-  // Arama
-  const searchInput = document.getElementById('ulke-ara');
+    document.getElementById('map-country-select')?.addEventListener('change', e => {
+        const code = e.target.value;
+        if (code && geoData) updateMapForCountry(data, code);
+    });
+
+    const searchInput = document.getElementById('ulke-ara');
     const searchBox = searchInput?.parentElement;
     if (searchInput && searchBox) {
-          let resultsDiv = document.createElement('div');
-          resultsDiv.className = 'search-results';
-          searchBox.appendChild(resultsDiv);
+        let resultsDiv = document.createElement('div');
+        resultsDiv.className = 'search-results';
+        searchBox.appendChild(resultsDiv);
 
-      searchInput.addEventListener('input', e => {
-              const q = e.target.value.toLowerCase().trim();
-              if (q.length < 2) { resultsDiv.classList.remove('active'); return; }
-              const results = data.filter(d => d.ulke.toLowerCase().includes(q)).slice(0, 8);
-              if (results.length === 0) { resultsDiv.classList.remove('active'); return; }
-              resultsDiv.innerHTML = results.map(d => `
-                      <div class="search-result-item" data-code="${d.kod}">
-                                <span class="flag">${d.bayrak}</span> ${d.ulke} <span style="color:#f5c518;margin-left:auto">${d.puan}</span>
-                                        </div>
-                                              `).join('');
-              resultsDiv.classList.add('active');
-      });
+        searchInput.addEventListener('input', e => {
+            const q = e.target.value.toLowerCase().trim();
+            if (q.length < 2) { resultsDiv.classList.remove('active'); return; }
+            const results = data.filter(d => d.ulke.toLowerCase().includes(q)).slice(0, 8);
+            if (results.length === 0) { resultsDiv.classList.remove('active'); return; }
+            resultsDiv.innerHTML = results.map(d => `
+                <div class="search-result-item" data-code="${d.kod}">
+                    <span class="flag">${d.bayrak}</span> ${d.ulke}
+                    <span style="color:#f5c518;margin-left:auto">${d.puan}</span>
+                </div>
+            `).join('');
+            resultsDiv.classList.add('active');
+        });
 
-      resultsDiv.addEventListener('click', e => {
-              const item = e.target.closest('.search-result-item');
-              if (item) {
-                        const code = item.dataset.code;
-                        const country = data.find(d => d.kod === code);
-                        if (country) {
-                                    document.getElementById('compare-select-1').value = code;
-                                    renderCompare('compare-result-1', country);
-                                    document.getElementById('karsilastir').scrollIntoView({ behavior: 'smooth' });
-                        }
-                        resultsDiv.classList.remove('active');
-                        searchInput.value = '';
-              }
-      });
+        resultsDiv.addEventListener('click', e => {
+            const item = e.target.closest('.search-result-item');
+            if (item) {
+                const code = item.dataset.code;
+                const country = data.find(d => d.kod === code);
+                if (country) {
+                    document.getElementById('compare-select-1').value = code;
+                    renderCompare('compare-result-1', country);
+                    document.getElementById('karsilastir').scrollIntoView({ behavior: 'smooth' });
+                }
+                resultsDiv.classList.remove('active');
+                searchInput.value = '';
+            }
+        });
 
-      document.addEventListener('click', e => {
-              if (!searchBox.contains(e.target)) resultsDiv.classList.remove('active');
-      });
+        document.addEventListener('click', e => {
+            if (!searchBox.contains(e.target)) resultsDiv.classList.remove('active');
+        });
     }
 
-  // Mobil menü
-  const menuBtn = document.querySelector('.mobile-menu-btn');
+    const menuBtn = document.querySelector('.mobile-menu-btn');
     const nav = document.querySelector('.main-nav');
     menuBtn?.addEventListener('click', () => {
-          nav.classList.toggle('open');
-          menuBtn.setAttribute('aria-expanded', nav.classList.contains('open'));
+        nav.classList.toggle('open');
+        menuBtn.setAttribute('aria-expanded', nav.classList.contains('open'));
     });
 
-  // Smooth scroll nav
-  document.querySelectorAll('.nav-link').forEach(link => {
+    document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', e => {
-                e.preventDefault();
-                const target = document.querySelector(link.getAttribute('href'));
-                if (target) {
-                          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                          nav?.classList.remove('open');
-                          document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                          link.classList.add('active');
-                }
+            e.preventDefault();
+            const target = document.querySelector(link.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                nav?.classList.remove('open');
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            }
         });
-  });
+    });
 
-  // Header scroll effect
-  window.addEventListener('scroll', () => {
+    document.getElementById('passport-grid')?.addEventListener('click', e => {
+        const card = e.target.closest('.passport-card');
+        if (card) {
+            const code = card.dataset.code;
+            window.location.href = 'ulke/' + code.toLowerCase() + '.html';
+        }
+    });
+
+    window.addEventListener('scroll', () => {
         const header = document.getElementById('header');
         if (window.scrollY > 50) header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
         else header.style.boxShadow = 'none';
-  });
+    });
 }
