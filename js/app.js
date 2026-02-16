@@ -1,4 +1,5 @@
 // Pasaport Endeksi - Ana Uygulama
+passport-index-tidy-iso3.csv';
 const GEOJSON_URL = 'https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson';
 let map, geoLayer, geoData = null;
 
