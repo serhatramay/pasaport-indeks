@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ulke Detayi | Pasaport Endeksi</title>
+    <meta name="description" content="Ulke pasaport gucu, vize dagilimi ve temel metrikleri inceleyin.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://serhatramay.github.io/pasaport-indeks/ulke.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="site-header" id="header">
+        <div class="container">
+            <a href="./" class="logo" aria-label="Pasaport Endeksi Ana Sayfa">
+                <span class="logo-icon">🛂</span>
+                <span class="logo-text">Pasaport <strong>Endeksi</strong></span>
+            </a>
+            <nav class="main-nav" aria-label="Sayfa Navigasyonu">
+                <ul>
+                    <li><a href="./" class="nav-link">Ana Sayfa</a></li>
+                    <li><a href="#ulke-ozet" class="nav-link active">Ulke Ozet</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="country-page">
+        <section class="country-hero" id="ulke-ozet">
+            <div class="container">
+                <a class="back-link" href="./">← Ana sayfaya don</a>
+                <div class="country-hero-top">
+                    <h1 id="country-title">Ulke Yukleniyor...</h1>
+                    <div class="country-select-wrap">
+                        <label for="country-select">Ulke Degistir</label>
+                        <select id="country-select" aria-label="Ulke degistir">
+                            <option value="">Seciniz</option>
+                        </select>
+                    </div>
+                </div>
+                <p class="hero-subtitle" id="country-subtitle">Pasaport gucu ve vize dagilimi.</p>
+            </div>
+        </section>
+
+        <section class="country-metrics">
+            <div class="container">
+                <div class="country-metric-grid" id="country-metric-grid"></div>
+            </div>
+        </section>
+
+        <section class="country-visa-breakdown">
+            <div class="container">
+                <h2>Vize Dagilimi</h2>
+                <div class="visa-bars" id="visa-bars"></div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script src="js/country.js"></script>
+</body>
+</html>
