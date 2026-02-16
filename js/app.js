@@ -1,7 +1,9 @@
 // Pasaport Endeksi - Ana Uygulama
-passport-index-tidy-iso3.csv';
 const GEOJSON_URL = 'https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson';
+const VISA_CSV_URL = 'https://raw.githubusercontent.com/ilyankou/passport-index-dataset/master/passport-index-tidy-iso3.csv';
 let map, geoLayer, geoData = null;
+let visaMatrixByPassportIso3 = null;
+let visaLoadState = 'idle';
 
 document.addEventListener('DOMContentLoaded', () => {
     const data = PASAPORT_DATA.sort((a, b) => a.sira - b.sira);
@@ -42,6 +44,10 @@ function focusCountryForCompare(data, code) {
     document.getElementById('karsilastir')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+function getCountryDetailUrl(code) {
+    return 'ulke.html?code=' + encodeURIComponent(code);
+}
+
 function renderPassportGrid(data, filter) {
     const grid = document.getElementById('passport-grid');
     let filtered = [...data];
@@ -53,6 +59,7 @@ function renderPassportGrid(data, filter) {
             <span class="flag">${d.bayrak}</span>
             <span class="country-name">${d.ulke}</span>
             <span class="score">${d.puan}</span>
+            <a class="country-detail-link" href="${getCountryDetailUrl(d.kod)}" aria-label="${d.ulke} detay sayfasini ac">Detay</a>
         </article>
     `).join('');
 }
@@ -60,9 +67,14 @@ function renderPassportGrid(data, filter) {
 function renderRankingTable(data) {
     const tbody = document.getElementById('ranking-body');
     tbody.innerHTML = data.map(d => `
-        <tr>
+        <tr class="ranking-row" data-code="${d.kod}" tabindex="0" aria-label="${d.ulke} satirina git, karsilastirmada ac">
             <td class="rank-col">${d.sira}</td>
-            <td><div class="country-col"><span class="flag">${d.bayrak}</span> ${d.ulke}</div></td>
+            <td>
+                <div class="country-col">
+                    <span class="flag">${d.bayrak}</span>
+                    <a class="country-detail-link" href="${getCountryDetailUrl(d.kod)}" aria-label="${d.ulke} detay sayfasini ac">${d.ulke}</a>
+                </div>
+            </td>
             <td class="visa-free">${d.vizesiz}</td>
             <td class="visa-arrival">${d.varistaSiz}</td>
             <td class="evisa">${d.evize}</td>
@@ -95,20 +107,82 @@ function renderCompare(id, country) {
     el.innerHTML = `
         <span class="compare-flag">${country.bayrak}</span>
         <div class="compare-country-name">${country.ulke}</div>
-        <div class="compare-stat"><span class="compare-stat-label">Pasaport G\u00fcc\u00fc</span><span class="compare-stat-value">${country.puan}</span></div>
-        <div class="compare-stat"><span class="compare-stat-label">D\u00fcnya S\u0131ras\u0131</span><span class="compare-stat-value">#${country.sira}</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">Pasaport Gücü</span><span class="compare-stat-value">${country.puan}</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">Dünya Sırası</span><span class="compare-stat-value">#${country.sira}</span></div>
         <div class="compare-stat"><span class="compare-stat-label">Vizesiz</span><span class="compare-stat-value" style="color:#2ecc71">${country.vizesiz}</span></div>
-        <div class="compare-stat"><span class="compare-stat-label">Var\u0131\u015fta Vize</span><span class="compare-stat-value" style="color:#f39c12">${country.varistaSiz}</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">Varışta Vize</span><span class="compare-stat-value" style="color:#f39c12">${country.varistaSiz}</span></div>
         <div class="compare-stat"><span class="compare-stat-label">E-Vize</span><span class="compare-stat-value" style="color:#3498db">${country.evize}</span></div>
         <div class="compare-stat"><span class="compare-stat-label">Vize Gerekli</span><span class="compare-stat-value" style="color:#e74c3c">${country.vizeGerekli}</span></div>
-        <div class="compare-stat"><span class="compare-stat-label">Toplam Eri\u015fim</span><span class="compare-stat-value">${total} \u00fclke</span></div>
-        <div class="compare-stat"><span class="compare-stat-label">N\u00fcfus</span><span class="compare-stat-value">${country.nufus}</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">Toplam Erişim</span><span class="compare-stat-value">${total} ülke</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">Nüfus</span><span class="compare-stat-value">${country.nufus}</span></div>
     `;
 }
 
 const ISO2_TO_ISO3 = {};
 function buildIsoMap(data) {
     data.forEach(d => { ISO2_TO_ISO3[d.kod] = d.iso3; });
+}
+
+function setMapDataStatus(message, state) {
+    const el = document.getElementById('map-data-status');
+    if (!el) return;
+    el.textContent = message;
+    el.dataset.state = state || 'info';
+}
+
+function mapRequirementToStatus(requirement) {
+    const value = String(requirement || '').toLowerCase().trim();
+    if (value === 'visa free') return 'vizesiz';
+    if (value === 'visa on arrival') return 'varista';
+    if (value === 'e-visa' || value === 'eta') return 'evize';
+    if (value === 'visa required') return 'vize';
+    return null;
+}
+
+function parseVisaCsvToMatrix(csvText, data) {
+    const validIso3 = new Set(data.map(item => item.iso3));
+    const lines = csvText.split(/\r?\n/).filter(Boolean);
+    const matrix = {};
+
+    lines.slice(1).forEach(line => {
+        const parts = line.split(',');
+        if (parts.length < 3) return;
+
+        const passport = parts[0].trim();
+        const destination = parts[1].trim();
+        const requirement = parts[2].trim();
+
+        if (!validIso3.has(passport) || !validIso3.has(destination)) return;
+        if (passport === destination) return;
+
+        const status = mapRequirementToStatus(requirement);
+        if (!status) return;
+
+        if (!matrix[passport]) matrix[passport] = {};
+        matrix[passport][destination] = status;
+    });
+
+    return matrix;
+}
+
+async function preloadVisaDataset(data) {
+    if (visaLoadState === 'loading' || visaLoadState === 'loaded') return;
+    visaLoadState = 'loading';
+    setMapDataStatus('Gercek vize verisi yukleniyor...', 'loading');
+
+    try {
+        const response = await fetch(VISA_CSV_URL, { cache: 'force-cache' });
+        if (!response.ok) throw new Error('CSV indirilemedi: ' + response.status);
+
+        const csvText = await response.text();
+        visaMatrixByPassportIso3 = parseVisaCsvToMatrix(csvText, data);
+        visaLoadState = 'loaded';
+        setMapDataStatus('Gercek vize verisi aktif.', 'ok');
+    } catch (err) {
+        visaLoadState = 'error';
+        console.warn('Vize veri seti yuklenemedi:', err);
+        setMapDataStatus('Gercek vize verisi yuklenemedi. Haritada eksik alanlar olabilir.', 'warn');
+    }
 }
 
 function initMap(data) {
@@ -127,7 +201,12 @@ function initMap(data) {
         .then(r => r.json())
         .then(geo => {
             geoData = geo;
-            updateMapForCountry(data, 'TR');
+            const selectedCode = document.getElementById('map-country-select')?.value || 'TR';
+            updateMapForCountry(data, selectedCode);
+            preloadVisaDataset(data).then(() => {
+                const currentCode = document.getElementById('map-country-select')?.value || selectedCode;
+                updateMapForCountry(data, currentCode);
+            });
         })
         .catch(err => console.warn('GeoJSON yuklenemedi:', err));
 }
@@ -161,9 +240,9 @@ function updateMapForCountry(data, countryCode) {
             const name = feature.properties.name;
             const status = visaStatus[iso3];
             let statusText = 'Veri yok';
-            if (iso3 === selectedIso3) statusText = 'Se\u00e7ilen \u00fclke';
-            else if (status === 'vizesiz') statusText = 'Vizesiz giri\u015f';
-            else if (status === 'varista') statusText = 'Var\u0131\u015fta vize';
+            if (iso3 === selectedIso3) statusText = 'Seçilen ülke';
+            else if (status === 'vizesiz') statusText = 'Vizesiz giriş';
+            else if (status === 'varista') statusText = 'Varışta vize';
             else if (status === 'evize') statusText = 'E-Vize';
             else if (status === 'vize') statusText = 'Vize gerekli';
 
@@ -188,20 +267,14 @@ function buildVisaStatusMap(data, selectedCountry) {
         return statusMap;
     }
 
-    const allCountries = [...data].filter(d => d.kod !== selectedCountry.kod);
-    allCountries.sort((a, b) => b.puan - a.puan);
-    let vizesizCount = selectedCountry.vizesiz;
-    let varistaCount = selectedCountry.varistaSiz;
-    let evizeCount = selectedCountry.evize;
-    let idx = 0;
+    const source = visaMatrixByPassportIso3?.[selectedCountry.iso3];
+    if (!source) return statusMap;
 
-    allCountries.forEach(d => {
-        if (idx < vizesizCount) statusMap[d.iso3] = 'vizesiz';
-        else if (idx < vizesizCount + varistaCount) statusMap[d.iso3] = 'varista';
-        else if (idx < vizesizCount + varistaCount + evizeCount) statusMap[d.iso3] = 'evize';
-        else statusMap[d.iso3] = 'vize';
-        idx++;
+    data.forEach(d => {
+        if (d.kod === selectedCountry.kod) return;
+        if (source[d.iso3]) statusMap[d.iso3] = source[d.iso3];
     });
+
     return statusMap;
 }
 
@@ -210,14 +283,14 @@ function renderTurkeySpotlight(tr) {
     const statsEl = document.getElementById('turkey-stats');
     const total = tr.vizesiz + tr.varistaSiz + tr.evize;
     statsEl.innerHTML = `
-        <div class="spotlight-stat-item"><span class="label">Pasaport G\u00fcc\u00fc</span><span class="value">${tr.puan}</span></div>
-        <div class="spotlight-stat-item"><span class="label">D\u00fcnya S\u0131ras\u0131</span><span class="value">#${tr.sira}</span></div>
-        <div class="spotlight-stat-item"><span class="label">Vizesiz Giri\u015f</span><span class="value">${tr.vizesiz} \u00fclke</span></div>
-        <div class="spotlight-stat-item"><span class="label">Var\u0131\u015fta Vize</span><span class="value">${tr.varistaSiz} \u00fclke</span></div>
-        <div class="spotlight-stat-item"><span class="label">E-Vize</span><span class="value">${tr.evize} \u00fclke</span></div>
-        <div class="spotlight-stat-item"><span class="label">Vize Gerekli</span><span class="value">${tr.vizeGerekli} \u00fclke</span></div>
-        <div class="spotlight-stat-item"><span class="label">Toplam Eri\u015fim</span><span class="value">${total} \u00fclke</span></div>
-        <div class="spotlight-stat-item"><span class="label">N\u00fcfus</span><span class="value">${tr.nufus}</span></div>
+        <div class="spotlight-stat-item"><span class="label">Pasaport Gücü</span><span class="value">${tr.puan}</span></div>
+        <div class="spotlight-stat-item"><span class="label">Dünya Sırası</span><span class="value">#${tr.sira}</span></div>
+        <div class="spotlight-stat-item"><span class="label">Vizesiz Giriş</span><span class="value">${tr.vizesiz} ülke</span></div>
+        <div class="spotlight-stat-item"><span class="label">Varışta Vize</span><span class="value">${tr.varistaSiz} ülke</span></div>
+        <div class="spotlight-stat-item"><span class="label">E-Vize</span><span class="value">${tr.evize} ülke</span></div>
+        <div class="spotlight-stat-item"><span class="label">Vize Gerekli</span><span class="value">${tr.vizeGerekli} ülke</span></div>
+        <div class="spotlight-stat-item"><span class="label">Toplam Erişim</span><span class="value">${total} ülke</span></div>
+        <div class="spotlight-stat-item"><span class="label">Nüfus</span><span class="value">${tr.nufus}</span></div>
     `;
 
     const ctx = document.getElementById('turkey-chart');
@@ -227,7 +300,7 @@ function renderTurkeySpotlight(tr) {
             data: {
                 labels: TURKIYE_GECMIS.map(d => d.yil),
                 datasets: [{
-                    label: 'Pasaport G\u00fcc\u00fc',
+                    label: 'Pasaport Gücü',
                     data: TURKIYE_GECMIS.map(d => d.puan),
                     borderColor: '#f5c518',
                     backgroundColor: 'rgba(245,197,24,0.1)',
@@ -331,6 +404,7 @@ function initEventListeners(data) {
     });
 
     document.getElementById('passport-grid')?.addEventListener('click', e => {
+        if (e.target.closest('.country-detail-link')) return;
         const card = e.target.closest('.passport-card');
         if (card) {
             const code = card.dataset.code;
@@ -344,6 +418,20 @@ function initEventListeners(data) {
         if (!card) return;
         e.preventDefault();
         focusCountryForCompare(data, card.dataset.code);
+    });
+
+    document.getElementById('ranking-body')?.addEventListener('click', e => {
+        const row = e.target.closest('.ranking-row');
+        if (!row) return;
+        focusCountryForCompare(data, row.dataset.code);
+    });
+
+    document.getElementById('ranking-body')?.addEventListener('keydown', e => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        const row = e.target.closest('.ranking-row');
+        if (!row) return;
+        e.preventDefault();
+        focusCountryForCompare(data, row.dataset.code);
     });
 
     window.addEventListener('scroll', () => {
