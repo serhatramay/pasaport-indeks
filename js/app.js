@@ -5,6 +5,11 @@ let map, geoLayer, geoData = null;
 document.addEventListener('DOMContentLoaded', () => {
     const data = PASAPORT_DATA.sort((a, b) => a.sira - b.sira);
     const turkiye = data.find(d => d.kod === 'TR');
+    const countriesStat = document.getElementById('stat-countries');
+
+    if (countriesStat) {
+        countriesStat.textContent = String(data.length);
+    }
 
     if (turkiye) {
         document.getElementById('stat-visa-free').textContent = turkiye.vizesiz + turkiye.varistaSiz;
@@ -17,6 +22,24 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTurkeySpotlight(turkiye);
     initEventListeners(data);
 });
+
+function normalizeText(value) {
+    return String(value || '')
+        .toLowerCase()
+        .replace(/ı/g, 'i')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+}
+
+function focusCountryForCompare(data, code) {
+    const country = data.find(d => d.kod === code);
+    if (!country) return;
+
+    const select = document.getElementById('compare-select-1');
+    if (select) select.value = code;
+    renderCompare('compare-result-1', country);
+    document.getElementById('karsilastir')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
 function renderPassportGrid(data, filter) {
     const grid = document.getElementById('passport-grid');
@@ -258,9 +281,9 @@ function initEventListeners(data) {
         searchBox.appendChild(resultsDiv);
 
         searchInput.addEventListener('input', e => {
-            const q = e.target.value.toLowerCase().trim();
+            const q = normalizeText(e.target.value.trim());
             if (q.length < 2) { resultsDiv.classList.remove('active'); return; }
-            const results = data.filter(d => d.ulke.toLowerCase().includes(q)).slice(0, 8);
+            const results = data.filter(d => normalizeText(d.ulke).includes(q)).slice(0, 8);
             if (results.length === 0) { resultsDiv.classList.remove('active'); return; }
             resultsDiv.innerHTML = results.map(d => `
                 <div class="search-result-item" data-code="${d.kod}">
@@ -275,12 +298,7 @@ function initEventListeners(data) {
             const item = e.target.closest('.search-result-item');
             if (item) {
                 const code = item.dataset.code;
-                const country = data.find(d => d.kod === code);
-                if (country) {
-                    document.getElementById('compare-select-1').value = code;
-                    renderCompare('compare-result-1', country);
-                    document.getElementById('karsilastir').scrollIntoView({ behavior: 'smooth' });
-                }
+                focusCountryForCompare(data, code);
                 resultsDiv.classList.remove('active');
                 searchInput.value = '';
             }
@@ -315,8 +333,16 @@ function initEventListeners(data) {
         const card = e.target.closest('.passport-card');
         if (card) {
             const code = card.dataset.code;
-            window.location.href = 'ulke/' + code.toLowerCase() + '.html';
+            focusCountryForCompare(data, code);
         }
+    });
+
+    document.getElementById('passport-grid')?.addEventListener('keydown', e => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        const card = e.target.closest('.passport-card');
+        if (!card) return;
+        e.preventDefault();
+        focusCountryForCompare(data, card.dataset.code);
     });
 
     window.addEventListener('scroll', () => {
