@@ -1,4 +1,4 @@
-// Pasaport Endeksi - Ulke Verileri (199 Ulke)
+// Pasaport Endeksi - Ulke Verileri (153 Ulke)
 // Kaynak: Kamuya acik vize verileri, 2026 guncellemesi
 const PASAPORT_DATA = [
   { kod: "TR", ulke: "Turkiye", bayrak: "🇹🇷", vizesiz: 71, varistaSiz: 44, evize: 6, vizeGerekli: 77, puan: 121, sira: 40, nufus: "87.685.426", iso3: "TUR" },
@@ -146,14 +146,13 @@ const PASAPORT_DATA = [
   { kod: "PS", ulke: "Filistin", bayrak: "🇵🇸", vizesiz: 16, varistaSiz: 14, evize: 14, vizeGerekli: 154, puan: 44, sira: 94, nufus: "5.483.450", iso3: "PSE" },
   { kod: "LS", ulke: "Lesoto", bayrak: "🇱🇸", vizesiz: 32, varistaSiz: 14, evize: 14, vizeGerekli: 138, puan: 60, sira: 80, nufus: "2.330.318", iso3: "LSO" },
   { kod: "SZ", ulke: "Esvatini", bayrak: "🇸🇿", vizesiz: 34, varistaSiz: 14, evize: 14, vizeGerekli: 136, puan: 62, sira: 78, nufus: "1.210.822", iso3: "SWZ" },
-  { kod: "BN", ulke: "Brunei", bayrak: "🇧🇳", vizesiz: 120, varistaSiz: 22, evize: 10, vizeGerekli: 46, puan: 152, sira: 16, nufus: "449.002", iso3: "BRN" },
   { kod: "TL", ulke: "Dogu Timor", bayrak: "🇹🇱", vizesiz: 26, varistaSiz: 14, evize: 16, vizeGerekli: 142, puan: 56, sira: 85, nufus: "1.360.596", iso3: "TLS" },
   { kod: "SM", ulke: "San Marino", bayrak: "🇸🇲", vizesiz: 140, varistaSiz: 16, evize: 8, vizeGerekli: 34, puan: 164, sira: 12, nufus: "33.931", iso3: "SMR" },
   { kod: "LI", ulke: "Lihtenstayn", bayrak: "🇱🇮", vizesiz: 142, varistaSiz: 16, evize: 8, vizeGerekli: 32, puan: 166, sira: 10, nufus: "39.584", iso3: "LIE" },
   { kod: "MC", ulke: "Monako", bayrak: "🇲🇨", vizesiz: 140, varistaSiz: 16, evize: 8, vizeGerekli: 34, puan: 164, sira: 12, nufus: "36.297", iso3: "MCO" },
   { kod: "AD", ulke: "Andorra", bayrak: "🇦🇩", vizesiz: 130, varistaSiz: 16, evize: 8, vizeGerekli: 44, puan: 154, sira: 15, nufus: "80.088", iso3: "AND" },
   { kod: "VA", ulke: "Vatikan", bayrak: "🇻🇦", vizesiz: 130, varistaSiz: 16, evize: 8, vizeGerekli: 44, puan: 154, sira: 15, nufus: "825", iso3: "VAT" },
-  { kod: "BN", ulke: "Bahreyn", bayrak: "🇧🇭", vizesiz: 63, varistaSiz: 26, evize: 10, vizeGerekli: 99, puan: 99, sira: 52, nufus: "1.485.509", iso3: "BHR" },
+  { kod: "BH", ulke: "Bahreyn", bayrak: "🇧🇭", vizesiz: 63, varistaSiz: 26, evize: 10, vizeGerekli: 99, puan: 99, sira: 52, nufus: "1.485.509", iso3: "BHR" },
   { kod: "SO", ulke: "Somaliland", bayrak: "🇸🇴", vizesiz: 8, varistaSiz: 10, evize: 12, vizeGerekli: 168, puan: 30, sira: 99, nufus: "5.700.000", iso3: "SOL" },
 ];
 
@@ -173,4 +172,4 @@ const TURKIYE_GECMIS = [
   { yil: 2026, puan: 121 },
 ];
 
-// 199 ulke verisi tamamlandi
+// 153 ulke verisi tamamlandi
