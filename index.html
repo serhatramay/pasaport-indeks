@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pasaport Endeksi 2026 | Türkçe Pasaport Güç Sıralaması</title>
-    <meta name="description" content="Türkiye'nin ilk Türkçe pasaport güç endeksi. 199 ülkenin pasaport gücünü, vize durumlarını ve sıralamasını keşfedin.">
+    <meta name="description" content="Türkiye'nin ilk Türkçe pasaport güç endeksi. Ülkelerin pasaport gücünü, vize durumlarını ve sıralamasını keşfedin.">
     <meta name="keywords" content="pasaport endeksi, pasaport sıralaması, vize gereksinimleri, pasaport gücü, Türk pasaportu, vizesiz ülkeler">
     <meta name="author" content="Pasaport Endeksi">
     <meta name="robots" content="index, follow">
@@ -12,13 +12,13 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://serhatramay.github.io/pasaport-indeks/">
     <meta property="og:title" content="Pasaport Endeksi 2026 | Türkçe Pasaport Güç Sıralaması">
-    <meta property="og:description" content="199 ülkenin pasaport gücünü karşılaştırın.">
+    <meta property="og:description" content="Ülkelerin pasaport gücünü karşılaştırın.">
     <meta property="og:image" content="https://serhatramay.github.io/pasaport-indeks/img/og-image.png">
     <meta property="og:locale" content="tr_TR">
     <meta property="og:site_name" content="Pasaport Endeksi">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Pasaport Endeksi 2026">
-    <meta name="twitter:description" content="199 ülkenin pasaport gücünü karşılaştırın.">
+    <meta name="twitter:description" content="Ülkelerin pasaport gücünü karşılaştırın.">
     <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"WebApplication","name":"Pasaport Endeksi","url":"https://serhatramay.github.io/pasaport-indeks/","description":"Türkiye'nin ilk Türkçe pasaport güç endeksi.","applicationCategory":"ReferenceApplication","inLanguage":"tr"}
     </script>
@@ -30,7 +30,7 @@
 </head>
 <body>
     <header class="site-header" id="header"><div class="container"><a href="./" class="logo" aria-label="Pasaport Endeksi Ana Sayfa"><span class="logo-icon">🛂</span><span class="logo-text">Pasaport <strong>Endeksi</strong></span></a><nav class="main-nav" aria-label="Ana Navigasyon"><ul><li><a href="#kesfet" class="nav-link active">Keşfet</a></li><li><a href="#siralama" class="nav-link">Sıralama</a></li><li><a href="#karsilastir" class="nav-link">Karşılaştır</a></li><li><a href="#harita" class="nav-link">Harita</a></li></ul></nav><div class="header-actions"><div class="search-box"><input type="search" id="ulke-ara" placeholder="Ülke ara..." aria-label="Ülke arama"><span class="search-icon">🔍</span></div></div><button class="mobile-menu-btn" aria-label="Menü" aria-expanded="false"><span></span><span></span><span></span></button></div></header>
-    <section class="hero" id="kesfet"><div class="container"><h1>Pasaport Dünyasını <span class="text-gradient">Keşfet</span></h1><p class="hero-subtitle">199 ülkenin pasaport gücünü karşılaştırın. Pasaportunuzun dünyada kaç kapıyı açtığını öğrenin.</p><div class="hero-stats"><div class="stat-card"><span class="stat-number" id="stat-countries">199</span><span class="stat-label">Ülke</span></div><div class="stat-card"><span class="stat-number" id="stat-updated">2026</span><span class="stat-label">Güncel Veri</span></div><div class="stat-card"><span class="stat-number" id="stat-visa-free">---</span><span class="stat-label">TR Vizesiz</span></div></div></div></section>
+    <section class="hero" id="kesfet"><div class="container"><h1>Pasaport Dünyasını <span class="text-gradient">Keşfet</span></h1><p class="hero-subtitle">Ülkelerin pasaport gücünü karşılaştırın. Pasaportunuzun dünyada kaç kapıyı açtığını öğrenin.</p><div class="hero-stats"><div class="stat-card"><span class="stat-number" id="stat-countries">---</span><span class="stat-label">Ülke</span></div><div class="stat-card"><span class="stat-number" id="stat-updated">2026</span><span class="stat-label">Güncel Veri</span></div><div class="stat-card"><span class="stat-number" id="stat-visa-free">---</span><span class="stat-label">TR Vizesiz</span></div></div></div></section>
     <section class="passport-grid-section" id="pasaportlar"><div class="container"><div class="section-header"><h2>Tüm Pasaportlar</h2><div class="filter-bar"><button class="filter-btn active" data-filter="all">Tümü</button><button class="filter-btn" data-filter="visa-free">Vizesiz Erişim</button><button class="filter-btn" data-filter="top-20">İlk 20</button></div></div><div class="passport-grid" id="passport-grid"></div></div></section>
     <section class="ranking-section" id="siralama"><div class="container"><h2>Pasaport Güç Sıralaması</h2><p class="section-desc">Ülkelerin pasaport güçlerine göre sıralaması.</p><div class="ranking-table-wrapper"><table class="ranking-table" id="ranking-table"><thead><tr><th>Sıra</th><th>Ülke</th><th>Vizesiz</th><th>Varışta Vize</th><th>E-Vize</th><th>Vize Gerekli</th><th>Toplam Puan</th></tr></thead><tbody id="ranking-body"></tbody></table></div></div></section>
     <section class="compare-section" id="karsilastir"><div class="container"><h2>Pasaport Karşılaştır</h2><p class="section-desc">İki ülkenin pasaport güçlerini yan yana karşılaştırın.</p><div class="compare-wrapper"><div class="compare-card" id="compare-left"><select id="compare-select-1" aria-label="Birinci ülke seçin"><option value="">Ülke Seçin</option></select><div class="compare-result" id="compare-result-1"></div></div><div class="compare-vs">VS</div><div class="compare-card" id="compare-right"><select id="compare-select-2" aria-label="İkinci ülke seçin"><option value="">Ülke Seçin</option></select><div class="compare-result" id="compare-result-2"></div></div></div></div></section>
