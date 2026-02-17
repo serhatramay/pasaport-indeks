@@ -4,6 +4,22 @@ const VISA_CSV_URL = 'https://raw.githubusercontent.com/ilyankou/passport-index-
 const COUNTRIES_META_URL = 'https://raw.githubusercontent.com/annexare/Countries/master/dist/countries.min.json';
 const LEAFLET_JS_URL = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
 const CHART_JS_URL = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
+const TRIP_CITY_OPTIONS = {
+    TR: ['İstanbul', 'Ankara', 'İzmir', 'Antalya', 'Kapadokya', 'Bodrum'],
+    DE: ['Berlin', 'Münih', 'Hamburg', 'Frankfurt', 'Köln', 'Düsseldorf'],
+    FR: ['Paris', 'Lyon', 'Nice', 'Marsilya', 'Bordeaux', 'Toulouse'],
+    ES: ['Madrid', 'Barselona', 'Valensiya', 'Sevilla', 'Malaga', 'Palma'],
+    IT: ['Roma', 'Milano', 'Venedik', 'Floransa', 'Napoli', 'Bologna'],
+    GB: ['Londra', 'Manchester', 'Edinburgh', 'Birmingham', 'Liverpool', 'Bristol'],
+    US: ['New York', 'Los Angeles', 'Miami', 'Chicago', 'San Francisco', 'Washington DC'],
+    CA: ['Toronto', 'Vancouver', 'Montreal', 'Calgary', 'Ottawa', 'Quebec City'],
+    JP: ['Tokyo', 'Osaka', 'Kyoto', 'Sapporo', 'Fukuoka', 'Nara'],
+    TH: ['Bangkok', 'Phuket', 'Chiang Mai', 'Krabi', 'Pattaya', 'Ko Samui'],
+    AE: ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ajman', 'Ras Al Khaimah', 'Al Ain'],
+    SG: ['Marina Bay', 'Orchard', 'Sentosa', 'Chinatown', 'Little India', 'Bugis'],
+    NL: ['Amsterdam', 'Rotterdam', 'Lahey', 'Utrecht', 'Eindhoven', 'Haarlem'],
+    CH: ['Zürih', 'Cenevre', 'Luzern', 'Interlaken', 'Bern', 'Lozan']
+};
 let map, geoLayer, geoData = null;
 let visaMatrixByPassportIso3 = null;
 let visaLoadState = 'idle';
@@ -444,6 +460,29 @@ function setupTripPlannerSelects(data) {
     originEl.value = 'TR';
     destinationEl.value = 'DE';
     tripPlannerSetupDone = true;
+    renderTripCityOptions('DE');
+}
+
+function getTripCityOptionsByCode(code) {
+    const key = String(code || '').toUpperCase();
+    if (TRIP_CITY_OPTIONS[key]) return TRIP_CITY_OPTIONS[key];
+    return ['Başkent', 'Turistik Merkez', 'İş Merkezi', 'Sahil Bölgesi'];
+}
+
+function renderTripCityOptions(destinationCode) {
+    const optionsEl = document.getElementById('trip-city-options');
+    if (!optionsEl) return;
+
+    const cities = getTripCityOptionsByCode(destinationCode);
+    optionsEl.innerHTML = cities.map((city, index) => `
+        <label class="trip-city-pill">
+            <input type="checkbox" name="trip-city-checkbox" value="${city}" ${index === 0 ? 'checked' : ''}>
+            <span>${city}</span>
+        </label>
+    `).join('');
+
+    const cityInput = document.getElementById('trip-city');
+    if (cityInput) cityInput.value = cities[0] || '';
 }
 
 function setupLazyTripPlanner(data) {
@@ -965,9 +1004,30 @@ function initEventListeners(data) {
         renderHomeTripPlanner(data);
     });
     document.getElementById('trip-destination')?.addEventListener('change', () => {
+        const destinationCode = document.getElementById('trip-destination')?.value || '';
+        renderTripCityOptions(destinationCode);
+        renderHomeTripPlanner(data);
+    });
+    document.getElementById('trip-city-options')?.addEventListener('change', e => {
+        const target = e.target;
+        if (!(target instanceof HTMLInputElement) || target.name !== 'trip-city-checkbox') return;
+        document.querySelectorAll('input[name="trip-city-checkbox"]').forEach(input => {
+            if (input !== target) input.checked = false;
+        });
+        if (!target.checked) {
+            target.checked = true;
+        }
+        const cityInput = document.getElementById('trip-city');
+        if (cityInput) cityInput.value = target.value || '';
         renderHomeTripPlanner(data);
     });
     document.getElementById('trip-city')?.addEventListener('input', () => {
+        const typed = document.getElementById('trip-city')?.value?.trim() || '';
+        if (typed) {
+            document.querySelectorAll('input[name="trip-city-checkbox"]').forEach(input => {
+                input.checked = false;
+            });
+        }
         renderHomeTripPlanner(data);
     });
     document.getElementById('trip-run')?.addEventListener('click', () => {
