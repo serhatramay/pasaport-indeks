@@ -348,6 +348,41 @@ function renderTravelSnapshot(country) {
     `;
 }
 
+function getProfileField(profile, fieldName) {
+    const field = profile?.fields?.[fieldName];
+    if (field && typeof field === 'object' && Object.prototype.hasOwnProperty.call(field, 'value')) {
+        return field;
+    }
+
+    return {
+        value: profile?.[fieldName] || '-',
+        source_url: '',
+        source_name: '',
+        checked_at: profile?.updatedAt || '',
+        trust_score: 50,
+        note: ''
+    };
+}
+
+function renderFieldMeta(field) {
+    const sourceLink = field.source_url
+        ? `<a href="${field.source_url}" target="_blank" rel="noopener noreferrer">${field.source_name || 'Kaynak'}</a>`
+        : 'Kaynak eklenmedi';
+    const checkedText = field.checked_at ? field.checked_at : '-';
+    const trust = Number.isFinite(Number(field.trust_score)) ? Number(field.trust_score) : 50;
+    const trustClass = trust >= 80 ? 'trust-high' : (trust >= 65 ? 'trust-medium' : 'trust-low');
+    const note = field.note ? `<small class="field-note">${field.note}</small>` : '';
+
+    return `
+        <div class="field-meta">
+            <span class="field-source">Kaynak: ${sourceLink}</span>
+            <span class="field-checked">Son kontrol: ${checkedText}</span>
+            <span class="field-trust ${trustClass}">Güven: ${trust}/100</span>
+        </div>
+        ${note}
+    `;
+}
+
 function renderKnowledgeSection(country) {
     const grid = document.getElementById('country-knowledge-grid');
     const note = document.getElementById('country-knowledge-note');
@@ -365,7 +400,18 @@ function renderKnowledgeSection(country) {
         return;
     }
 
-    if (note) note.textContent = `Son editoryal güncelleme: ${profile.updatedAt}`;
+    const statusLabel = profile.editorial_status === 'gold'
+        ? 'Gold'
+        : (profile.editorial_status === 'standard' ? 'Standard' : 'Draft');
+    const nextReview = profile.next_review_at || '-';
+    if (note) note.textContent = `Son editoryal güncelleme: ${profile.updatedAt} | Durum: ${statusLabel} | Sonraki planlı yenileme: ${nextReview}`;
+
+    const currencyField = getProfileField(profile, 'currency');
+    const minimumWageField = getProfileField(profile, 'minimumWage');
+    const livingCostField = getProfileField(profile, 'livingCost');
+    const inflationField = getProfileField(profile, 'inflation');
+    const governmentField = getProfileField(profile, 'government');
+    const foodCultureField = getProfileField(profile, 'foodCulture');
 
     const schoolItems = profile.schools.map(item => `
         <li><a href="${item.url}" target="_blank" rel="noopener noreferrer">${item.name}</a></li>
@@ -378,6 +424,24 @@ function renderKnowledgeSection(country) {
     `).join('');
 
     const famousItems = profile.famousPeople.map(item => `<span class="knowledge-tag">${item}</span>`).join('');
+    const sourceRegistry = profile.source_registry || {};
+    const sourceRows = Object.entries(sourceRegistry).map(([key, item]) => {
+        const labelMap = {
+            schools: 'Okullar',
+            places: 'Gezilecek Yerler',
+            operators: 'Operatörler',
+            famousPeople: 'Ünlü Kişiler'
+        };
+        const label = labelMap[key] || key;
+        const name = item?.source_name || 'Kaynak';
+        const url = item?.source_url || '';
+        const checkedAt = item?.checked_at || '-';
+        const trust = Number.isFinite(Number(item?.trust_score)) ? Number(item.trust_score) : 50;
+        const link = url
+            ? `<a href="${url}" target="_blank" rel="noopener noreferrer">${name}</a>`
+            : name;
+        return `<li><strong>${label}:</strong> ${link} · Son kontrol: ${checkedAt} · Güven: ${trust}/100</li>`;
+    }).join('');
 
     grid.innerHTML = `
         <article class="knowledge-card">
@@ -395,20 +459,48 @@ function renderKnowledgeSection(country) {
         <article class="knowledge-card">
             <h3>Ekonomi Özeti</h3>
             <div class="knowledge-stats">
-                <div class="knowledge-stat"><span>Para Birimi</span><strong>${profile.currency}</strong></div>
-                <div class="knowledge-stat"><span>Asgari Ücret</span><strong>${profile.minimumWage}</strong></div>
-                <div class="knowledge-stat"><span>Yaşam Maliyeti</span><strong>${profile.livingCost}</strong></div>
-                <div class="knowledge-stat"><span>Enflasyon</span><strong>${profile.inflation}</strong></div>
+                <div class="knowledge-stat">
+                    <span>Para Birimi</span>
+                    <strong>${currencyField.value}</strong>
+                    ${renderFieldMeta(currencyField)}
+                </div>
+                <div class="knowledge-stat">
+                    <span>Asgari Ücret</span>
+                    <strong>${minimumWageField.value}</strong>
+                    ${renderFieldMeta(minimumWageField)}
+                </div>
+                <div class="knowledge-stat">
+                    <span>Yaşam Maliyeti</span>
+                    <strong>${livingCostField.value}</strong>
+                    ${renderFieldMeta(livingCostField)}
+                </div>
+                <div class="knowledge-stat">
+                    <span>Enflasyon</span>
+                    <strong>${inflationField.value}</strong>
+                    ${renderFieldMeta(inflationField)}
+                </div>
             </div>
         </article>
         <article class="knowledge-card">
             <h3>Yönetim ve Yaşam Tarzı</h3>
-            <p><strong>Yönetim Biçimi:</strong> ${profile.government}</p>
-            <p><strong>Yeme-İçme Alışkanlıkları:</strong> ${profile.foodCulture}</p>
+            <p><strong>Yönetim Biçimi:</strong> ${governmentField.value}</p>
+            ${renderFieldMeta(governmentField)}
+            <p><strong>Yeme-İçme Alışkanlıkları:</strong> ${foodCultureField.value}</p>
+            ${renderFieldMeta(foodCultureField)}
         </article>
         <article class="knowledge-card">
             <h3>En Ünlü 10 Kişi</h3>
             <div class="knowledge-tags">${famousItems}</div>
+        </article>
+        <article class="knowledge-card knowledge-card-full">
+            <h3>Veri Güven ve Yenileme Politikası</h3>
+            <p>Bu kartlar kaynaklı veri modeli ile yayınlanır: <code>source_url</code>, <code>checked_at</code>, <code>trust_score</code>.</p>
+            <ul class="knowledge-list">
+                <li><strong>Ekonomi alanları:</strong> 30-45 gün</li>
+                <li><strong>Operatör / yaşam maliyeti:</strong> 60-90 gün</li>
+                <li><strong>Okul / gezi / kültür:</strong> 180 gün</li>
+            </ul>
+            ${sourceRows ? `<ul class="knowledge-list source-list">${sourceRows}</ul>` : ''}
         </article>
     `;
 }
