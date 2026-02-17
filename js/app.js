@@ -2,11 +2,18 @@
 const GEOJSON_URL = 'https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson';
 const VISA_CSV_URL = 'https://raw.githubusercontent.com/ilyankou/passport-index-dataset/master/passport-index-tidy-iso3.csv';
 const COUNTRIES_META_URL = 'https://raw.githubusercontent.com/annexare/Countries/master/dist/countries.min.json';
+const LEAFLET_JS_URL = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+const CHART_JS_URL = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
 let map, geoLayer, geoData = null;
 let visaMatrixByPassportIso3 = null;
 let visaLoadState = 'idle';
 let countryMetaByIso2 = null;
 const compareFilterState = { search: '', region: 'all', sort: 'rank' };
+let rankingRendered = false;
+let mapInitStarted = false;
+let turkeyChartStarted = false;
+let passportGridRendered = false;
+const externalScriptCache = {};
 
 document.addEventListener('DOMContentLoaded', () => {
     const data = PASAPORT_DATA.sort((a, b) => a.sira - b.sira);
@@ -26,18 +33,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     setDataQualityBadge('Veri doğrulama: kontrol ediliyor...', 'loading');
-    renderPassportGrid(data, 'all');
-    renderRankingTable(data);
-    renderRankingInfo(data);
-    renderSourceComparison();
+    setupLazyPassportGrid(data);
+    setupLazyRankingSection(data);
     fillSelects(data);
-    initMap(data);
     renderTurkeySpotlight(turkiye);
+    setupLazyMap(data);
+    setupLazyTurkeyChart(turkiye);
     initEventListeners(data);
     applyInitialSearchFromUrl();
-    preloadCountryMeta().then(() => {
-        applyCompareFilters(data);
-    });
+    runWhenIdle(() => { preloadCountryMeta(); }, 1800);
 });
 
 function normalizeText(value) {
@@ -60,6 +64,41 @@ function applyInitialSearchFromUrl() {
 
 function getAccessScore(country) {
     return country.vizesiz + country.varistaSiz + country.evize;
+}
+
+function runWhenIdle(task, timeoutMs) {
+    if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(() => task(), { timeout: timeoutMs || 1500 });
+    } else {
+        setTimeout(task, timeoutMs || 1500);
+    }
+}
+
+function loadExternalScript(url, globalSymbol) {
+    if (globalSymbol && typeof window[globalSymbol] !== 'undefined') {
+        return Promise.resolve();
+    }
+    if (externalScriptCache[url]) return externalScriptCache[url];
+
+    externalScriptCache[url] = new Promise((resolve, reject) => {
+        const existing = document.querySelector(`script[data-src="${url}"]`);
+        if (existing) {
+            existing.addEventListener('load', () => resolve(), { once: true });
+            existing.addEventListener('error', () => reject(new Error('Script yuklenemedi: ' + url)), { once: true });
+            return;
+        }
+
+        const script = document.createElement('script');
+        script.src = url;
+        script.defer = true;
+        script.async = true;
+        script.dataset.src = url;
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error('Script yuklenemedi: ' + url));
+        document.head.appendChild(script);
+    });
+
+    return externalScriptCache[url];
 }
 
 function formatDateTr(isoDate) {
@@ -130,6 +169,60 @@ function renderSourceComparison() {
             </table>
         </div>
     `;
+}
+
+function setupLazyPassportGrid(data) {
+    if (passportGridRendered) return;
+    const section = document.getElementById('pasaportlar');
+    const renderCards = () => {
+        if (passportGridRendered) return;
+        renderPassportGrid(data, 'all');
+        passportGridRendered = true;
+    };
+
+    if (!section) {
+        renderCards();
+        return;
+    }
+
+    const observer = new IntersectionObserver(entries => {
+        const visible = entries.some(entry => entry.isIntersecting);
+        if (!visible) return;
+        observer.disconnect();
+        renderCards();
+    }, { rootMargin: '180px 0px' });
+    observer.observe(section);
+
+    runWhenIdle(renderCards, 2200);
+}
+
+function setupLazyRankingSection(data) {
+    if (rankingRendered) return;
+    const section = document.getElementById('siralama');
+    if (!section) {
+        renderRankingInfo(data);
+        renderSourceComparison();
+        renderRankingTable(data);
+        rankingRendered = true;
+        return;
+    }
+
+    const renderAll = () => {
+        if (rankingRendered) return;
+        renderRankingInfo(data);
+        renderSourceComparison();
+        renderRankingTable(data);
+        rankingRendered = true;
+    };
+
+    const observer = new IntersectionObserver(entries => {
+        const visible = entries.some(entry => entry.isIntersecting);
+        if (!visible) return;
+        observer.disconnect();
+        renderAll();
+    }, { rootMargin: '220px 0px' });
+
+    observer.observe(section);
 }
 
 async function preloadCountryMeta() {
@@ -403,6 +496,37 @@ async function preloadVisaDataset(data) {
     }
 }
 
+function setupLazyMap(data) {
+    if (mapInitStarted) return;
+    const section = document.getElementById('harita');
+    const select = document.getElementById('map-country-select');
+
+    const triggerMapInit = () => {
+        if (mapInitStarted) return;
+        mapInitStarted = true;
+        setMapDataStatus('Harita motoru yukleniyor...', 'loading');
+        loadExternalScript(LEAFLET_JS_URL, 'L')
+            .then(() => initMap(data))
+            .catch(err => {
+                console.warn(err);
+                setMapDataStatus('Harita yuklenemedi.', 'warn');
+            });
+    };
+
+    if (section) {
+        const observer = new IntersectionObserver(entries => {
+            const visible = entries.some(entry => entry.isIntersecting);
+            if (!visible) return;
+            observer.disconnect();
+            triggerMapInit();
+        }, { rootMargin: '260px 0px' });
+        observer.observe(section);
+    }
+
+    select?.addEventListener('focus', triggerMapInit, { once: true });
+    select?.addEventListener('pointerdown', triggerMapInit, { once: true });
+}
+
 function initMap(data) {
     buildIsoMap(data);
     map = L.map('world-map', {
@@ -511,35 +635,62 @@ function renderTurkeySpotlight(tr) {
         <div class="spotlight-stat-item"><span class="label">N\u00fcfus</span><span class="value">${tr.nufus}</span></div>
     `;
 
+    renderTurkeyChart(tr);
+}
+
+function renderTurkeyChart(tr) {
     const ctx = document.getElementById('turkey-chart');
-    if (ctx && typeof Chart !== 'undefined') {
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: TURKIYE_GECMIS.map(d => d.yil),
-                datasets: [{
-                    label: 'Pasaport G\u00fcc\u00fc',
-                    data: TURKIYE_GECMIS.map(d => d.puan),
-                    borderColor: '#f5c518',
-                    backgroundColor: 'rgba(245,197,24,0.1)',
-                    fill: true, tension: 0.4,
-                    pointBackgroundColor: '#f5c518',
-                    pointRadius: 5, pointHoverRadius: 8
-                }]
+    if (!ctx || typeof Chart === 'undefined' || ctx.dataset.ready === '1') return;
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: TURKIYE_GECMIS.map(d => d.yil),
+            datasets: [{
+                label: 'Pasaport G\u00fcc\u00fc',
+                data: TURKIYE_GECMIS.map(d => d.puan),
+                borderColor: '#f5c518',
+                backgroundColor: 'rgba(245,197,24,0.1)',
+                fill: true, tension: 0.4,
+                pointBackgroundColor: '#f5c518',
+                pointRadius: 5, pointHoverRadius: 8
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: { backgroundColor: '#1a1a2e', titleColor: '#f5c518', bodyColor: '#fff', borderColor: 'rgba(245,197,24,0.3)', borderWidth: 1 }
             },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: { backgroundColor: '#1a1a2e', titleColor: '#f5c518', bodyColor: '#fff', borderColor: 'rgba(245,197,24,0.3)', borderWidth: 1 }
-                },
-                scales: {
-                    x: { ticks: { color: '#888' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-                    y: { ticks: { color: '#888' }, grid: { color: 'rgba(255,255,255,0.05)' }, min: 60 }
-                }
+            scales: {
+                x: { ticks: { color: '#888' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                y: { ticks: { color: '#888' }, grid: { color: 'rgba(255,255,255,0.05)' }, min: 60 }
             }
-        });
-    }
+        }
+    });
+    ctx.dataset.ready = '1';
+}
+
+function setupLazyTurkeyChart(tr) {
+    if (turkeyChartStarted) return;
+    const section = document.getElementById('turkiye');
+    if (!section) return;
+
+    const triggerChart = () => {
+        if (turkeyChartStarted) return;
+        turkeyChartStarted = true;
+        loadExternalScript(CHART_JS_URL, 'Chart')
+            .then(() => renderTurkeyChart(tr))
+            .catch(err => console.warn(err));
+    };
+
+    const observer = new IntersectionObserver(entries => {
+        const visible = entries.some(entry => entry.isIntersecting);
+        if (!visible) return;
+        observer.disconnect();
+        triggerChart();
+    }, { rootMargin: '240px 0px' });
+    observer.observe(section);
 }
 
 function initEventListeners(data) {
@@ -567,6 +718,10 @@ function initEventListeners(data) {
 
     document.getElementById('compare-region')?.addEventListener('change', e => {
         compareFilterState.region = e.target.value || 'all';
+        if (!countryMetaByIso2) {
+            preloadCountryMeta().then(() => applyCompareFilters(data));
+            return;
+        }
         applyCompareFilters(data);
     });
 
