@@ -96,6 +96,32 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
 .ranking-table .visa-arrival { color: #f39c12; }
 .ranking-table .evisa { color: #3498db; }
 .ranking-table .visa-required { color: #e74c3c; }
+.ranking-info {
+    margin: 0 0 18px;
+    padding: 14px 16px;
+    border: 1px solid rgba(245,197,24,0.2);
+    border-radius: 12px;
+    background: linear-gradient(145deg, rgba(245,197,24,0.08), rgba(255,255,255,0.02));
+}
+.ranking-info-grid {
+    display: grid;
+    gap: 8px;
+}
+.ranking-info p {
+    font-size: 0.9rem;
+    color: #d8e2f2;
+}
+.ranking-info strong {
+    color: #f5c518;
+}
+.ranking-info a {
+    color: #8bc5ff;
+    text-decoration: underline;
+}
+.ranking-info .ranking-note {
+    color: #b8c5da;
+    font-size: 0.84rem;
+}
 
 /* ===== COMPARE ===== */
 .compare-section { background: #0a0e1a; }
@@ -244,6 +270,7 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
         min-width: 0;
     }
     .ranking-table th, .ranking-table td { padding: 10px 8px; font-size: 0.8rem; }
+    .ranking-info p { font-size: 0.82rem; }
     .search-box input { width: 150px; }
     .search-box input:focus { width: 200px; }
     .world-map { height: 350px; }
