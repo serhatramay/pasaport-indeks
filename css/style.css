@@ -35,6 +35,8 @@ img { max-width: 100%; height: auto; }
 .hero-stats { display: flex; justify-content: center; gap: 40px; }
 .stat-card { text-align: center; }
 .stat-number { display: block; font-size: 2.4rem; font-weight: 800; color: #f5c518; }
+.stat-number-link { text-decoration: none; color: #f5c518; border-bottom: 2px dashed rgba(245,197,24,0.35); padding-bottom: 2px; }
+.stat-number-link:hover { color: #ffd85a; border-bottom-color: rgba(245,197,24,0.75); }
 .stat-label { font-size: 0.85rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; }
 
 /* ===== SECTION COMMON ===== */
