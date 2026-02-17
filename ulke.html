@@ -32,33 +32,63 @@
         <section class="country-hero" id="ulke-ozet">
             <div class="container">
                 <a class="back-link" href="./">← Ana sayfaya don</a>
-                <div class="country-hero-top">
-                    <h1 id="country-title">Ulke Yukleniyor...</h1>
+                <div class="country-hero-top-panel">
                     <div class="country-select-wrap">
                         <label for="country-select">Ulke Degistir</label>
                         <select id="country-select" aria-label="Ulke degistir">
                             <option value="">Seciniz</option>
                         </select>
                     </div>
+                    <a class="hero-home-btn" href="./#siralama">Siralamaya Don</a>
                 </div>
-                <p class="hero-subtitle" id="country-subtitle">Pasaport gucu ve vize dagilimi.</p>
+
+                <div class="country-hero-layout">
+                    <div class="passport-hero-card" id="passport-hero-card">
+                        <div class="passport-stamp" id="passport-flag">🌍</div>
+                        <div class="passport-country" id="passport-country">YUKLENIYOR</div>
+                        <div class="passport-code" id="passport-code">---</div>
+                    </div>
+
+                    <div class="country-hero-content">
+                        <h1 id="country-title">Ulke Yukleniyor...</h1>
+                        <p class="hero-subtitle" id="country-subtitle">Pasaport gucu ve vize dagilimi.</p>
+                        <div class="hero-badges" id="hero-badges"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="country-analytics">
+            <div class="container">
+                <div class="country-analytics-grid">
+                    <article class="analytics-card">
+                        <h2>Vize Profili</h2>
+                        <canvas id="visa-chart" aria-label="Ulke vize dagilimi grafigi"></canvas>
+                    </article>
+                    <article class="analytics-card">
+                        <h2>Seyahat Icgorusu</h2>
+                        <div class="travel-snapshot" id="travel-snapshot"></div>
+                    </article>
+                </div>
             </div>
         </section>
 
         <section class="country-metrics">
             <div class="container">
+                <h2>Ana Metrikler</h2>
                 <div class="country-metric-grid" id="country-metric-grid"></div>
             </div>
         </section>
 
         <section class="country-visa-breakdown">
             <div class="container">
-                <h2>Vize Dagilimi</h2>
+                <h2>Detayli Vize Dagilimi</h2>
                 <div class="visa-bars" id="visa-bars"></div>
             </div>
         </section>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="js/data.js"></script>
     <script src="js/country.js"></script>
 </body>
