@@ -194,6 +194,14 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
     width: 100%;
     min-width: 0;
 }
+.compact-tools input,
+.compact-tools select,
+.compact-tools input:-webkit-autofill,
+.compact-tools input:-webkit-autofill:hover,
+.compact-tools input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #eef5ff !important;
+    box-shadow: 0 0 0 1000px rgba(16,24,40,0.9) inset !important;
+}
 .compact-tools select {
     appearance: none;
     -webkit-appearance: none;
@@ -229,6 +237,38 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+}
+
+@media (min-width: 1025px) {
+    .compact-tools {
+        grid-template-columns: 1.6fr 1fr 1fr;
+        gap: 12px;
+        padding: 14px;
+    }
+    .compact-tools input,
+    .compact-tools select {
+        height: 50px;
+        font-size: 1.08rem;
+        font-weight: 500;
+        border-radius: 12px;
+        border-color: rgba(255,255,255,0.22);
+        background: rgba(10, 16, 28, 0.95) !important;
+        color: #f3f7ff !important;
+    }
+    .compact-tools input::placeholder {
+        font-size: 1.05rem;
+        color: #a3b4cc;
+    }
+    .compact-meta {
+        font-size: 1.18rem;
+        margin: 4px 0 14px;
+    }
+    .compact-actions .mini-btn {
+        min-width: 280px;
+        height: 50px;
+        font-size: 1.12rem;
+        font-weight: 700;
+    }
 }
 
 /* ===== PASSPORT GRID ===== */
