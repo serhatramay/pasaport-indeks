@@ -195,6 +195,15 @@ function runWhenIdle(task, timeoutMs) {
     }
 }
 
+function scrollToSectionWithOffset(target) {
+    if (!target) return;
+    const header = document.getElementById('header');
+    const headerHeight = header ? header.offsetHeight : 64;
+    const offset = headerHeight + 8;
+    const top = window.scrollY + target.getBoundingClientRect().top - offset;
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+}
+
 function loadExternalScript(url, globalSymbol) {
     if (globalSymbol && typeof window[globalSymbol] !== 'undefined') {
         return Promise.resolve();
@@ -565,6 +574,17 @@ function setupTripPlannerSelects(data) {
     renderTripCityOptions('DE');
 }
 
+function setTripCityOptionsExpanded(expanded) {
+    const optionsEl = document.getElementById('trip-city-options');
+    const toggleEl = document.getElementById('trip-city-toggle');
+    if (!optionsEl || !toggleEl) return;
+
+    const isExpanded = Boolean(expanded);
+    optionsEl.classList.toggle('is-collapsed', !isExpanded);
+    toggleEl.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+    toggleEl.textContent = isExpanded ? 'Şehirleri Gizle' : 'Şehir Seç';
+}
+
 function getTripCityOptionsByCode(code) {
     const key = String(code || '').toUpperCase();
     if (TRIP_CITY_OPTIONS[key]) return TRIP_CITY_OPTIONS[key];
@@ -591,6 +611,7 @@ function renderTripCityOptions(destinationCode) {
 
     const cityInput = document.getElementById('trip-city');
     if (cityInput) cityInput.value = cities[0] || '';
+    setTripCityOptionsExpanded(false);
 }
 
 function setupLazyTripPlanner(data) {
@@ -1120,6 +1141,10 @@ function initEventListeners(data) {
         renderTripCityOptions(destinationCode);
         renderHomeTripPlanner(data);
     });
+    document.getElementById('trip-city-toggle')?.addEventListener('click', () => {
+        const expanded = document.getElementById('trip-city-toggle')?.getAttribute('aria-expanded') === 'true';
+        setTripCityOptionsExpanded(!expanded);
+    });
     document.getElementById('trip-city-options')?.addEventListener('change', e => {
         const target = e.target;
         if (!(target instanceof HTMLInputElement) || target.name !== 'trip-city-checkbox') return;
@@ -1131,15 +1156,7 @@ function initEventListeners(data) {
         }
         const cityInput = document.getElementById('trip-city');
         if (cityInput) cityInput.value = target.value || '';
-        renderHomeTripPlanner(data);
-    });
-    document.getElementById('trip-city')?.addEventListener('input', () => {
-        const typed = document.getElementById('trip-city')?.value?.trim() || '';
-        if (typed) {
-            document.querySelectorAll('input[name="trip-city-checkbox"]').forEach(input => {
-                input.checked = false;
-            });
-        }
+        setTripCityOptionsExpanded(false);
         renderHomeTripPlanner(data);
     });
     document.getElementById('trip-run')?.addEventListener('click', () => {
@@ -1198,7 +1215,9 @@ function initEventListeners(data) {
             e.preventDefault();
             const target = document.querySelector(link.getAttribute('href'));
             if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                scrollToSectionWithOffset(target);
+                // Lazy-render/layout shift sonrası hizayı tekrar düzelt.
+                setTimeout(() => scrollToSectionWithOffset(target), 420);
                 nav?.classList.remove('open');
                 document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
                 link.classList.add('active');
