@@ -44,6 +44,18 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
 .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
 .section-header h2 { margin-bottom: 0; }
 
+/* Large sections render lazily for faster initial paint */
+.ranking-section,
+.compare-section,
+.map-section,
+.spotlight-section,
+.country-analytics,
+.country-metrics,
+.country-visa-breakdown {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 900px;
+}
+
 /* ===== FILTER BAR ===== */
 .filter-bar { display: flex; gap: 8px; }
 .filter-btn { padding: 8px 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: #aaa; font-size: 0.85rem; cursor: pointer; transition: all 0.3s; font-family: inherit; }
