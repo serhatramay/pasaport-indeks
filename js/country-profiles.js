@@ -395,3 +395,52 @@ const COUNTRY_PROFILES = {
     famousPeople: ['Mahatma Gandhi', 'Rabindranath Tagore', 'Narendra Modi', 'Shah Rukh Khan', 'A.R. Rahman', 'Virat Kohli', 'Priyanka Chopra', 'Sundar Pichai', 'Satya Nadella', 'Deepika Padukone']
   }
 };
+
+function buildWikiSearchUrl(query) {
+  return `https://tr.wikipedia.org/w/index.php?search=${encodeURIComponent(query)}`;
+}
+
+function buildAutoCountryProfile(country) {
+  const name = country.ulke;
+  return {
+    updatedAt: '2026-02-18 (otomatik temel profil)',
+    schools: [
+      { name: `${name} Üniversiteleri (Wikipedia araması)`, url: buildWikiSearchUrl(`${name} üniversiteleri`) },
+      { name: 'QS World University Rankings', url: 'https://www.topuniversities.com/' },
+      { name: 'Times Higher Education Rankings', url: 'https://www.timeshighereducation.com/world-university-rankings' },
+      { name: `${name} Eğitim Sistemi (Wikipedia araması)`, url: buildWikiSearchUrl(`${name} eğitim sistemi`) },
+      { name: `${name} Öğrenci Rehberi (Wikipedia araması)`, url: buildWikiSearchUrl(`${name} yükseköğretim`) }
+    ],
+    places: [
+      `${name} başkent ve tarihi merkez`,
+      `${name} doğa ve milli park rotaları`,
+      `${name} müze ve kültür alanları`,
+      `${name} sahil/göl/dağ destinasyonları`,
+      `${name} yerel pazar ve şehir deneyimi`
+    ],
+    operators: [
+      { name: `${name} mobil operatörleri (Wikipedia araması)`, url: buildWikiSearchUrl(`${name} mobile network operators`) },
+      { name: 'Speedtest Global Index', url: 'https://www.speedtest.net/global-index' },
+      { name: 'GSMA Mobile Connectivity', url: 'https://www.gsma.com/' }
+    ],
+    currency: `${name} para birimi (güncel resmi kaynakla teyit önerilir)`,
+    minimumWage: `${name} için asgari ücret değeri dönemsel değişebilir; resmi kurum verisiyle güncel teyit edilmelidir.`,
+    livingCost: `${name} içinde şehirler arasında yaşam maliyeti farkı olabilir; konut ve ulaşım kalemleri özellikle kontrol edilmelidir.`,
+    government: `${name} yönetim biçimi (resmi kaynaklarla doğrulanmalıdır)`,
+    inflation: `${name} için enflasyon oranı dönemsel değişir; merkez bankası/istatistik kurumu verisiyle takip edilmelidir.`,
+    foodCulture: `${name} mutfak kültürü bölgesel farklılıklar içerir; yerel yemek alışkanlıkları şehirden şehre değişebilir.`,
+    famousPeople: ['Editoryal liste hazırlanıyor']
+  };
+}
+
+// Detaylı manuel içerikler korunur, eksik ülkeler için otomatik temel profil üretilir.
+(function buildAutoProfiles() {
+  if (typeof PASAPORT_DATA === 'undefined') return;
+  const allCountries = [...PASAPORT_DATA]
+    .sort((a, b) => a.sira - b.sira || a.ulke.localeCompare(b.ulke, 'tr'));
+
+  allCountries.forEach(country => {
+    if (COUNTRY_PROFILES[country.kod]) return;
+    COUNTRY_PROFILES[country.kod] = buildAutoCountryProfile(country);
+  });
+})();
