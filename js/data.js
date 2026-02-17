@@ -6,7 +6,33 @@ const DATA_INFO = {
   sourceUrl: "https://github.com/ilyankou/passport-index-dataset",
   methodology: "Pasaport puanı = vizesiz + varışta vize + e-vize.",
   coverageTarget: 198,
-  note: "Farklı endeksler farklı metodoloji kullanır; bu tablo iç metodoloji ile hesaplanır."
+  note: "Farklı endeksler farklı metodoloji kullanır; bu tablo iç metodoloji ile hesaplanır.",
+  comparisons: [
+    {
+      key: "local",
+      label: "Pasaport Endeksi (Bu Site)",
+      sourceType: "Açık CSV veri + iç puanlama",
+      refreshModel: "Elle/scriptten üretim",
+      checkedAt: "2026-02-17",
+      url: "https://serhatramay.github.io/pasaport-indeks/"
+    },
+    {
+      key: "henley",
+      label: "Henley Passport Index",
+      sourceType: "Kendi metodolojisi",
+      refreshModel: "Periyodik editoryal güncelleme",
+      checkedAt: "2026-02-17",
+      url: "https://www.henleyglobal.com/passport-index"
+    },
+    {
+      key: "arton",
+      label: "Arton Capital Passport Index",
+      sourceType: "Kendi metodolojisi",
+      refreshModel: "Canlı/periodik güncelleme",
+      checkedAt: "2026-02-17",
+      url: "https://www.passportindex.org/"
+    }
+  ]
 };
 
 const PASAPORT_DATA = [
