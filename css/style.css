@@ -422,11 +422,27 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
 .visa-list-controls select {
     min-width: 160px;
 }
+.mini-btn {
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid rgba(245,197,24,0.28);
+    background: rgba(245,197,24,0.1);
+    color: #f4d46a;
+    padding: 0 12px;
+    font-family: inherit;
+    font-size: 0.86rem;
+    cursor: pointer;
+}
+.mini-btn:hover {
+    border-color: rgba(245,197,24,0.55);
+    background: rgba(245,197,24,0.16);
+}
 .visa-list-controls input::placeholder {
     color: #91a0b8;
 }
 .visa-list-controls input:focus,
-.visa-list-controls select:focus {
+.visa-list-controls select:focus,
+.mini-btn:focus {
     outline: 2px solid rgba(245,197,24,0.45);
     outline-offset: 1px;
 }
@@ -434,6 +450,16 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
 .visa-list-controls select:disabled {
     opacity: 0.55;
     cursor: not-allowed;
+}
+.mini-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+.visa-quick-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 .visa-country-list {
     margin-top: 14px;
@@ -473,7 +499,9 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
     .country-select-wrap select { min-width: 180px; }
     .country-hero-content h1 { font-size: 2rem; }
     .visa-list-controls input,
-    .visa-list-controls select {
+    .visa-list-controls select,
+    .visa-list-controls .mini-btn,
+    .visa-quick-actions .mini-btn {
         width: 100%;
         min-width: 0;
     }
