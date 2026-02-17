@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderPassportGrid(data, 'all');
     renderRankingTable(data);
     renderRankingInfo(data);
+    renderSourceComparison();
     fillSelects(data);
     initMap(data);
     renderTurkeySpotlight(turkiye);
@@ -88,6 +89,45 @@ function renderRankingInfo(data) {
             <p><strong>Metodoloji:</strong> ${methodology}</p>
             <p><strong>Kaynak:</strong> <a href="${sourceUrl}" target="_blank" rel="noopener noreferrer">${sourceName}</a></p>
             ${note ? `<p class="ranking-note">${note}</p>` : ''}
+        </div>
+    `;
+}
+
+function renderSourceComparison() {
+    const el = document.getElementById('source-compare');
+    if (!el) return;
+
+    const rows = Array.isArray(DATA_INFO?.comparisons) ? DATA_INFO.comparisons : [];
+    if (!rows.length) {
+        el.innerHTML = '';
+        return;
+    }
+
+    el.innerHTML = `
+        <h3>Kaynak Karşılaştırması</h3>
+        <div class="source-compare-table-wrap">
+            <table class="source-compare-table">
+                <thead>
+                    <tr>
+                        <th>Kaynak</th>
+                        <th>Veri/Metodoloji Tipi</th>
+                        <th>Güncelleme Modeli</th>
+                        <th>Son Kontrol</th>
+                        <th>Bağlantı</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${rows.map(item => `
+                        <tr>
+                            <td>${item.label || '-'}</td>
+                            <td>${item.sourceType || '-'}</td>
+                            <td>${item.refreshModel || '-'}</td>
+                            <td>${formatDateTr(item.checkedAt)}</td>
+                            <td><a href="${item.url || '#'}" target="_blank" rel="noopener noreferrer">Aç</a></td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
         </div>
     `;
 }
