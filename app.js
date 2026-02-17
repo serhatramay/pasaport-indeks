@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initMap(data);
     renderTurkeySpotlight(turkiye);
     initEventListeners(data);
+    applyInitialSearchFromUrl();
     preloadCountryMeta().then(() => {
         applyCompareFilters(data);
     });
@@ -39,6 +40,16 @@ function normalizeText(value) {
         .replace(/ı/g, 'i')
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '');
+}
+
+function applyInitialSearchFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get('q');
+    if (!q) return;
+    const input = document.getElementById('ulke-ara');
+    if (!input) return;
+    input.value = q;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
 }
 
 function getAccessScore(country) {
