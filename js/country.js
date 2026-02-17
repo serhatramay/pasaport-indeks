@@ -1,4 +1,13 @@
 const VISA_CSV_URL = 'https://raw.githubusercontent.com/ilyankou/passport-index-dataset/master/passport-index-tidy-iso3.csv';
+const COUNTRIES_META_URL = 'https://raw.githubusercontent.com/annexare/Countries/master/dist/countries.min.json';
+const CONTINENT_LABELS_TR = {
+    AF: 'Afrika',
+    AS: 'Asya',
+    EU: 'Avrupa',
+    NA: 'Kuzey Amerika',
+    SA: 'Güney Amerika',
+    OC: 'Okyanusya'
+};
 
 const VISA_STATUS_META = {
     vizesiz: { label: 'Vizesiz', color: '#2ecc71', index: 0 },
@@ -14,6 +23,9 @@ let currentCountry = null;
 let activeVisaStatus = 'vize';
 let visaListSearchQuery = '';
 let visaListSortMode = 'az';
+let visaListRegion = 'all';
+let countryMetaByIso2 = null;
+let lastRenderedVisaItems = [];
 
 const COUNTRY_BY_ISO3 = {};
 PASAPORT_DATA.forEach(item => {
@@ -138,6 +150,24 @@ async function preloadVisaDataset() {
         visaLoadState = 'error';
         console.warn('Vize veri seti yüklenemedi:', err);
     }
+}
+
+async function preloadCountryMeta() {
+    if (countryMetaByIso2) return;
+    try {
+        const response = await fetch(COUNTRIES_META_URL, { cache: 'force-cache' });
+        if (!response.ok) throw new Error('Meta indirilemedi: ' + response.status);
+        countryMetaByIso2 = await response.json();
+    } catch (err) {
+        console.warn('Ülke meta verisi yüklenemedi:', err);
+        countryMetaByIso2 = {};
+    }
+}
+
+function getCountryContinentCode(kod) {
+    if (!kod || !countryMetaByIso2) return null;
+    const meta = countryMetaByIso2[kod.toUpperCase()];
+    return meta?.continent || null;
 }
 
 function setCountryMeta(country) {
@@ -360,13 +390,20 @@ function renderVisaCountryListLoading(message) {
     const subtitle = document.getElementById('visa-list-subtitle');
     const list = document.getElementById('visa-country-list');
     const search = document.getElementById('visa-list-search');
+    const region = document.getElementById('visa-list-region');
     const sort = document.getElementById('visa-list-sort');
+    const exportCsv = document.getElementById('export-list-csv');
+    const exportJson = document.getElementById('export-list-json');
 
     if (title) title.textContent = 'Ülke Listesi';
     if (subtitle) subtitle.textContent = message;
     if (list) list.innerHTML = '';
     if (search) search.disabled = true;
+    if (region) region.disabled = true;
     if (sort) sort.disabled = true;
+    if (exportCsv) exportCsv.disabled = true;
+    if (exportJson) exportJson.disabled = true;
+    lastRenderedVisaItems = [];
 }
 
 function updateActiveSelectionUI() {
@@ -401,9 +438,16 @@ function renderVisaCountryList(country, status, shouldScroll) {
         subtitle.textContent = 'Detay liste şu anda yüklenemedi. Lütfen daha sonra tekrar deneyin.';
         list.innerHTML = '';
         const search = document.getElementById('visa-list-search');
+        const region = document.getElementById('visa-list-region');
         const sort = document.getElementById('visa-list-sort');
+        const exportCsv = document.getElementById('export-list-csv');
+        const exportJson = document.getElementById('export-list-json');
         if (search) search.disabled = true;
+        if (region) region.disabled = true;
         if (sort) sort.disabled = true;
+        if (exportCsv) exportCsv.disabled = true;
+        if (exportJson) exportJson.disabled = true;
+        lastRenderedVisaItems = [];
         return;
     }
 
@@ -411,7 +455,11 @@ function renderVisaCountryList(country, status, shouldScroll) {
     const buckets = getVisaDestinationsByStatus(country);
     const baseItems = buckets[status] || [];
     const searchQuery = normalizeText(visaListSearchQuery);
-    const items = baseItems
+    const regionFiltered = baseItems.filter(item => {
+        if (visaListRegion === 'all') return true;
+        return getCountryContinentCode(item.kod) === visaListRegion;
+    });
+    const items = regionFiltered
         .filter(item => {
             if (!searchQuery) return true;
             return normalizeText(item.ulke).includes(searchQuery);
@@ -422,21 +470,33 @@ function renderVisaCountryList(country, status, shouldScroll) {
         });
 
     const search = document.getElementById('visa-list-search');
+    const region = document.getElementById('visa-list-region');
     const sort = document.getElementById('visa-list-sort');
+    const exportCsv = document.getElementById('export-list-csv');
+    const exportJson = document.getElementById('export-list-json');
     if (search) {
         search.disabled = false;
         if (search.value !== visaListSearchQuery) search.value = visaListSearchQuery;
+    }
+    if (region) {
+        region.disabled = false;
+        region.value = visaListRegion;
     }
     if (sort) {
         sort.disabled = false;
         sort.value = visaListSortMode;
     }
+    if (exportCsv) exportCsv.disabled = items.length === 0;
+    if (exportJson) exportJson.disabled = items.length === 0;
 
     title.textContent = `${country.ulke} için ${meta.label} Ülkeler`;
-    subtitle.textContent = `${items.length} / ${baseItems.length} ülke listeleniyor.`;
+    const regionLabel = visaListRegion === 'all'
+        ? 'Tüm Bölgeler'
+        : (CONTINENT_LABELS_TR[visaListRegion] || visaListRegion);
+    subtitle.textContent = `${items.length} / ${baseItems.length} ülke listeleniyor. Bölge: ${regionLabel}.`;
 
     if (!items.length) {
-        const emptyMessage = baseItems.length && searchQuery
+        const emptyMessage = baseItems.length && (searchQuery || visaListRegion !== 'all')
             ? 'Arama kriterine uygun ülke bulunamadı.'
             : 'Bu kategoride listelenecek ülke bulunamadı.';
         list.innerHTML = `<p class="visa-list-empty">${emptyMessage}</p>`;
@@ -446,6 +506,7 @@ function renderVisaCountryList(country, status, shouldScroll) {
             return `<a class="visa-country-chip" href="ulke.html?code=${encodeURIComponent(item.kod)}">${text}</a>`;
         }).join('');
     }
+    lastRenderedVisaItems = items;
 
     if (shouldScroll) {
         panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -457,6 +518,67 @@ function handleVisaCategorySelection(status, shouldScroll) {
     activeVisaStatus = status;
     updateActiveSelectionUI();
     renderVisaCountryList(currentCountry, status, shouldScroll);
+}
+
+function getCountryAccessScore(country) {
+    const counts = getVisaCounts(country);
+    return counts.vizesiz + counts.varista + counts.evize;
+}
+
+function getRankedCountriesByAccess() {
+    return [...PASAPORT_DATA].sort((a, b) => {
+        const diff = getCountryAccessScore(b) - getCountryAccessScore(a);
+        if (diff !== 0) return diff;
+        return a.ulke.localeCompare(b.ulke, 'tr');
+    });
+}
+
+function switchCountry(nextCountry) {
+    if (!nextCountry) return;
+    const select = document.getElementById('country-select');
+    if (select) select.value = nextCountry.kod;
+    updateUrl(nextCountry.kod);
+    renderCountryPage(nextCountry);
+}
+
+function downloadBlob(filename, content, mimeType) {
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = filename;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(url);
+}
+
+function exportCurrentList(format) {
+    if (!currentCountry || !lastRenderedVisaItems.length) return;
+    const meta = VISA_STATUS_META[activeVisaStatus];
+    const safeCountry = currentCountry.kod.toLowerCase();
+    const safeStatus = activeVisaStatus;
+
+    if (format === 'csv') {
+        const header = 'kod,ulke,bayrak,status\\n';
+        const rows = lastRenderedVisaItems
+            .map(item => `${item.kod},\"${item.ulke.replace(/\"/g, '\"\"')}\",${item.bayrak},${meta.label}`)
+            .join('\\n');
+        downloadBlob(`pasaport-${safeCountry}-${safeStatus}.csv`, header + rows, 'text/csv;charset=utf-8');
+        return;
+    }
+
+    const payload = {
+        sourceCountry: { kod: currentCountry.kod, ulke: currentCountry.ulke },
+        status: meta.label,
+        count: lastRenderedVisaItems.length,
+        items: lastRenderedVisaItems
+    };
+    downloadBlob(
+        `pasaport-${safeCountry}-${safeStatus}.json`,
+        JSON.stringify(payload, null, 2),
+        'application/json;charset=utf-8'
+    );
 }
 
 function bindInteractiveHandlers() {
@@ -501,6 +623,47 @@ function bindInteractiveHandlers() {
         });
         sort.dataset.bound = '1';
     }
+
+    const region = document.getElementById('visa-list-region');
+    if (region && !region.dataset.bound) {
+        region.addEventListener('change', event => {
+            visaListRegion = event.target.value || 'all';
+            if (currentCountry) {
+                renderVisaCountryList(currentCountry, activeVisaStatus, false);
+            }
+        });
+        region.dataset.bound = '1';
+    }
+
+    const exportCsv = document.getElementById('export-list-csv');
+    if (exportCsv && !exportCsv.dataset.bound) {
+        exportCsv.addEventListener('click', () => exportCurrentList('csv'));
+        exportCsv.dataset.bound = '1';
+    }
+
+    const exportJson = document.getElementById('export-list-json');
+    if (exportJson && !exportJson.dataset.bound) {
+        exportJson.addEventListener('click', () => exportCurrentList('json'));
+        exportJson.dataset.bound = '1';
+    }
+
+    const maxAccess = document.getElementById('quick-max-access');
+    if (maxAccess && !maxAccess.dataset.bound) {
+        maxAccess.addEventListener('click', () => {
+            const ranked = getRankedCountriesByAccess();
+            if (ranked[0]) switchCountry(ranked[0]);
+        });
+        maxAccess.dataset.bound = '1';
+    }
+
+    const minAccess = document.getElementById('quick-min-access');
+    if (minAccess && !minAccess.dataset.bound) {
+        minAccess.addEventListener('click', () => {
+            const ranked = getRankedCountriesByAccess();
+            if (ranked[ranked.length - 1]) switchCountry(ranked[ranked.length - 1]);
+        });
+        minAccess.dataset.bound = '1';
+    }
 }
 
 function renderCountryPage(country) {
@@ -528,7 +691,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateUrl(country.kod);
     renderCountryPage(country);
 
-    await preloadVisaDataset();
+    await Promise.all([preloadVisaDataset(), preloadCountryMeta()]);
     if (currentCountry) {
         renderCountryPage(currentCountry);
         renderVisaCountryList(currentCountry, activeVisaStatus, false);
@@ -537,10 +700,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('country-select')?.addEventListener('change', e => {
         const next = getCountryByCode(e.target.value);
         if (!next) return;
-        updateUrl(next.kod);
-        renderCountryPage(next);
-        if (visaLoadState === 'loaded') {
-            renderVisaCountryList(next, activeVisaStatus, false);
-        }
+        switchCountry(next);
     });
 });
