@@ -13,6 +13,8 @@ let rankingRendered = false;
 let mapInitStarted = false;
 let turkeyChartStarted = false;
 let passportGridRendered = false;
+let compareSelectsFilled = false;
+let mapSelectFilled = false;
 const externalScriptCache = {};
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -35,13 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
     setDataQualityBadge('Veri doğrulama: kontrol ediliyor...', 'loading');
     setupLazyPassportGrid(data);
     setupLazyRankingSection(data);
-    fillSelects(data);
+    setupLazyCompareSection(data);
     renderTurkeySpotlight(turkiye);
     setupLazyMap(data);
     setupLazyTurkeyChart(turkiye);
     initEventListeners(data);
     applyInitialSearchFromUrl();
-    runWhenIdle(() => { preloadCountryMeta(); }, 1800);
 });
 
 function normalizeText(value) {
@@ -196,6 +197,32 @@ function setupLazyPassportGrid(data) {
     runWhenIdle(renderCards, 2200);
 }
 
+function setupLazyCompareSection(data) {
+    const section = document.getElementById('karsilastir');
+    const fill = () => {
+        if (compareSelectsFilled) return;
+        compareSelectsFilled = true;
+        preloadCountryMeta().then(() => applyCompareFilters(data));
+    };
+
+    if (!section) {
+        fill();
+        return;
+    }
+
+    const observer = new IntersectionObserver(entries => {
+        const visible = entries.some(entry => entry.isIntersecting);
+        if (!visible) return;
+        observer.disconnect();
+        fill();
+    }, { rootMargin: '200px 0px' });
+    observer.observe(section);
+
+    document.getElementById('compare-search')?.addEventListener('focus', fill, { once: true });
+    document.getElementById('compare-select-1')?.addEventListener('focus', fill, { once: true });
+    document.getElementById('compare-select-2')?.addEventListener('focus', fill, { once: true });
+}
+
 function setupLazyRankingSection(data) {
     if (rankingRendered) return;
     const section = document.getElementById('siralama');
@@ -305,23 +332,46 @@ function getCountryDetailUrl(code) {
 
 function renderPassportGrid(data, filter) {
     const grid = document.getElementById('passport-grid');
+    if (!grid) return;
     let filtered = [...data];
     if (filter === 'top-20') filtered = filtered.slice(0, 20);
     else if (filter === 'visa-free') filtered = filtered.filter(d => d.vizesiz >= 100);
-    grid.innerHTML = filtered.map(d => `
-        <article class="passport-card" data-code="${d.kod}" tabindex="0" aria-label="${d.ulke} pasaportu, puan: ${d.puan}">
-            <span class="rank-badge">#${d.sira}</span>
-            <span class="flag">${d.bayrak}</span>
-            <span class="country-name">${d.ulke}</span>
-            <span class="score">${d.puan}</span>
-            <a class="country-detail-link" href="${getCountryDetailUrl(d.kod)}" aria-label="${d.ulke} detay sayfasini ac">Detay</a>
-        </article>
-    `).join('');
+    grid.innerHTML = '';
+    let index = 0;
+    const chunkSize = 24;
+
+    const renderChunk = () => {
+        const slice = filtered.slice(index, index + chunkSize);
+        if (!slice.length) return;
+        grid.insertAdjacentHTML('beforeend', slice.map(d => `
+            <article class="passport-card" data-code="${d.kod}" tabindex="0" aria-label="${d.ulke} pasaportu, puan: ${d.puan}">
+                <span class="rank-badge">#${d.sira}</span>
+                <span class="flag">${d.bayrak}</span>
+                <span class="country-name">${d.ulke}</span>
+                <span class="score">${d.puan}</span>
+                <a class="country-detail-link" href="${getCountryDetailUrl(d.kod)}" aria-label="${d.ulke} detay sayfasini ac">Detay</a>
+            </article>
+        `).join(''));
+        index += chunkSize;
+        if (index < filtered.length) {
+            requestAnimationFrame(renderChunk);
+        }
+    };
+
+    renderChunk();
 }
 
 function renderRankingTable(data) {
     const tbody = document.getElementById('ranking-body');
-    tbody.innerHTML = data.map(d => `
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    let index = 0;
+    const chunkSize = 30;
+
+    const renderChunk = () => {
+        const slice = data.slice(index, index + chunkSize);
+        if (!slice.length) return;
+        tbody.insertAdjacentHTML('beforeend', slice.map(d => `
         <tr class="ranking-row" data-code="${d.kod}" tabindex="0" aria-label="${d.ulke} satirina git, karsilastirmada ac">
             <td class="rank-col">${d.sira}</td>
             <td>
@@ -336,26 +386,28 @@ function renderRankingTable(data) {
             <td class="visa-required">${d.vizeGerekli}</td>
             <td class="score-col">${d.puan}</td>
         </tr>
-    `).join('');
+        `).join(''));
+        index += chunkSize;
+        if (index < data.length) requestAnimationFrame(renderChunk);
+    };
+
+    renderChunk();
 }
 
 function fillSelects(data) {
-    const mapSelect = document.getElementById('map-country-select');
-    if (mapSelect) {
-        data.forEach(d => {
-            const opt = document.createElement('option');
-            opt.value = d.kod;
-            opt.textContent = d.bayrak + ' ' + d.ulke;
-            mapSelect.appendChild(opt);
-        });
+    if (!mapSelectFilled) {
+        const mapSelect = document.getElementById('map-country-select');
+        if (mapSelect) {
+            data.forEach(d => {
+                const opt = document.createElement('option');
+                opt.value = d.kod;
+                opt.textContent = d.bayrak + ' ' + d.ulke;
+                mapSelect.appendChild(opt);
+            });
+            mapSelect.value = 'TR';
+            mapSelectFilled = true;
+        }
     }
-
-    // Ilk gorunumde filtrelenmemis compare listesi
-    fillSingleCompareSelect('compare-select-1', sortCompareData(data, 'rank'));
-    fillSingleCompareSelect('compare-select-2', sortCompareData(data, 'rank'));
-
-    const mapSel = document.getElementById('map-country-select');
-    if (mapSel) mapSel.value = 'TR';
 }
 
 function renderCompare(id, country) {
@@ -504,6 +556,7 @@ function setupLazyMap(data) {
     const triggerMapInit = () => {
         if (mapInitStarted) return;
         mapInitStarted = true;
+        fillSelects(data);
         setMapDataStatus('Harita motoru yukleniyor...', 'loading');
         loadExternalScript(LEAFLET_JS_URL, 'L')
             .then(() => initMap(data))
