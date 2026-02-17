@@ -29,7 +29,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=20260218-1">
+    <link rel="stylesheet" href="css/style.css?v=20260218-7">
 </head>
 <body>
     <header class="site-header" id="header">
@@ -145,11 +145,45 @@
                 <div class="country-knowledge-grid" id="country-knowledge-grid"></div>
             </div>
         </section>
+
+        <section class="trip-planner" id="trip-planner">
+            <div class="container">
+                <div class="trip-planner-head">
+                    <h2>Seyahat Planlayıcı</h2>
+                    <p>Her ülkeden her ülkeye seyahat planı oluşturun: vize durumu, temel adımlar ve hızlı bağlantılar.</p>
+                </div>
+                <div class="trip-planner-form">
+                    <div class="planner-field">
+                        <label for="planner-origin">Bu Ülkedeyim</label>
+                        <select id="planner-origin" aria-label="Kalkış ülkesi">
+                            <option value="">Seçiniz</option>
+                        </select>
+                    </div>
+                    <div class="planner-field">
+                        <label for="planner-destination">Buraya Gitmek İstiyorum</label>
+                        <select id="planner-destination" aria-label="Varış ülkesi">
+                            <option value="">Seçiniz</option>
+                        </select>
+                    </div>
+                    <div class="planner-field">
+                        <label for="planner-destination-city">Hedef Şehir (opsiyonel)</label>
+                        <input id="planner-destination-city" type="text" placeholder="Örn: Phuket, Paris, Tokyo" aria-label="Hedef şehir">
+                    </div>
+                    <div class="planner-field planner-action">
+                        <button type="button" class="mini-btn" id="planner-run">Planı Göster</button>
+                    </div>
+                </div>
+                <article class="trip-planner-result" id="trip-planner-result" aria-live="polite">
+                    <h3>Plan Özeti</h3>
+                    <p>Ülkeleri seçip planı oluşturun.</p>
+                </article>
+            </div>
+        </section>
     </main>
 
     <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script defer src="js/data.js?v=20260218-2"></script>
-    <script defer src="js/country-profiles.js?v=20260218-2"></script>
-    <script defer src="js/country.js?v=20260218-2"></script>
+    <script defer src="js/data.js?v=20260218-4"></script>
+    <script defer src="js/country-profiles.js?v=20260218-4"></script>
+    <script defer src="js/country.js?v=20260218-4"></script>
 </body>
 </html>
