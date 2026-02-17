@@ -4,7 +4,7 @@ const VISA_CSV_URL = 'https://raw.githubusercontent.com/ilyankou/passport-index-
 const COUNTRIES_META_URL = 'https://raw.githubusercontent.com/annexare/Countries/master/dist/countries.min.json';
 const LEAFLET_JS_URL = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
 const CHART_JS_URL = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
-const VISA_FREE_HIGHLIGHT_THRESHOLD = 140;
+const VISA_FREE_HIGHLIGHT_THRESHOLD = 150;
 const TRIP_CITY_OPTIONS = {
     TR: ['İstanbul', 'Ankara', 'İzmir', 'Antalya', 'Kapadokya', 'Bodrum'],
     DE: ['Berlin', 'Münih', 'Hamburg', 'Frankfurt', 'Köln', 'Düsseldorf'],
@@ -444,6 +444,7 @@ function applyPassportFilters(data) {
         filtered = sortListingData(filtered, 'rank').slice(0, 20);
     } else if (passportFilterState.mode === 'visa-free') {
         filtered = filtered.filter(d => d.vizesiz >= VISA_FREE_HIGHLIGHT_THRESHOLD);
+        filtered.sort((a, b) => b.vizesiz - a.vizesiz || b.puan - a.puan || a.ulke.localeCompare(b.ulke, 'tr'));
     }
 
     const search = normalizeText(passportFilterState.search || '');
