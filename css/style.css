@@ -726,9 +726,124 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
     font-size: 0.82rem;
 }
 
+.trip-planner {
+    padding-top: 0;
+    padding-bottom: 72px;
+}
+.trip-planner-head {
+    margin-bottom: 14px;
+}
+.trip-planner-head h2 {
+    text-align: left;
+    margin-bottom: 4px;
+}
+.trip-planner-head p {
+    color: #8ea1bb;
+    font-size: 0.9rem;
+}
+.trip-planner-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 10px;
+    align-items: end;
+    margin-bottom: 12px;
+}
+.planner-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.planner-field label {
+    font-size: 0.8rem;
+    color: #a2b2c9;
+}
+.planner-field input,
+.planner-field select {
+    height: 42px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.05);
+    color: #eef5ff;
+    padding: 0 12px;
+    font-family: inherit;
+    font-size: 0.9rem;
+}
+.planner-field input::placeholder {
+    color: #8ea1bb;
+}
+.planner-field input:focus,
+.planner-field select:focus {
+    outline: 2px solid rgba(245,197,24,0.45);
+    outline-offset: 1px;
+}
+.planner-action {
+    min-width: 130px;
+}
+.planner-action .mini-btn {
+    height: 42px;
+    width: 100%;
+}
+.trip-planner-result {
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(11,17,29,0.88);
+    padding: 14px;
+}
+.trip-planner-result h3 {
+    margin: 0 0 8px;
+    color: #f4f7ff;
+    font-size: 1.06rem;
+}
+.planner-status {
+    display: inline-block;
+    margin-bottom: 8px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+.planner-status.status-vizesiz {
+    color: #95efb9;
+    background: rgba(46,204,113,0.12);
+    border: 1px solid rgba(46,204,113,0.5);
+}
+.planner-status.status-varista {
+    color: #ffd08a;
+    background: rgba(243,156,18,0.12);
+    border: 1px solid rgba(243,156,18,0.5);
+}
+.planner-status.status-evize {
+    color: #9fd4ff;
+    background: rgba(52,152,219,0.12);
+    border: 1px solid rgba(52,152,219,0.5);
+}
+.planner-status.status-vize {
+    color: #ffb8ae;
+    background: rgba(231,76,60,0.12);
+    border: 1px solid rgba(231,76,60,0.5);
+}
+.planner-checklist {
+    margin: 10px 0 0;
+    padding-left: 18px;
+    color: #d7e2f3;
+}
+.planner-checklist li {
+    margin-bottom: 6px;
+}
+.planner-links {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.planner-links a {
+    font-size: 0.84rem;
+}
+
 @media (max-width: 1024px) {
     .country-hero-layout { grid-template-columns: 1fr; }
     .passport-hero-card { max-width: 360px; }
+    .trip-planner-form { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 768px) {
@@ -741,6 +856,9 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
     .visa-quick-actions .mini-btn {
         width: 100%;
         min-width: 0;
+    }
+    .trip-planner-form {
+        grid-template-columns: 1fr;
     }
 }
 
