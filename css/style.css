@@ -568,6 +568,94 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
     justify-content: center;
 }
 
+.country-knowledge {
+    padding-top: 4px;
+    padding-bottom: 72px;
+}
+.country-knowledge-head {
+    margin-bottom: 14px;
+}
+.country-knowledge-head h2 {
+    text-align: left;
+    margin-bottom: 4px;
+}
+#country-knowledge-note {
+    color: #8ea1bb;
+    font-size: 0.9rem;
+}
+.country-knowledge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+}
+.knowledge-card {
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(10,16,27,0.82);
+    padding: 14px;
+}
+.knowledge-card h3 {
+    margin: 0 0 10px;
+    font-size: 1rem;
+    color: #f4f7ff;
+}
+.knowledge-card p {
+    color: #b9c8de;
+    font-size: 0.9rem;
+}
+.knowledge-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.knowledge-list li {
+    color: #d8e4f6;
+    font-size: 0.9rem;
+}
+.knowledge-list a {
+    color: #9dd0ff;
+    text-decoration: underline;
+}
+.knowledge-list a:hover {
+    color: #f5c518;
+}
+.knowledge-stats {
+    display: grid;
+    gap: 8px;
+}
+.knowledge-stat {
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 10px;
+    background: rgba(255,255,255,0.02);
+}
+.knowledge-stat span {
+    display: block;
+    color: #8ea1bb;
+    font-size: 0.78rem;
+    margin-bottom: 5px;
+}
+.knowledge-stat strong {
+    color: #f4f7ff;
+    font-size: 0.88rem;
+    line-height: 1.4;
+}
+.knowledge-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.knowledge-tag {
+    display: inline-block;
+    border-radius: 999px;
+    padding: 6px 10px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.05);
+    color: #dce7f8;
+    font-size: 0.82rem;
+}
+
 @media (max-width: 1024px) {
     .country-hero-layout { grid-template-columns: 1fr; }
     .passport-hero-card { max-width: 360px; }
