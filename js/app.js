@@ -9,6 +9,7 @@ let visaMatrixByPassportIso3 = null;
 let visaLoadState = 'idle';
 let countryMetaByIso2 = null;
 const compareFilterState = { search: '', region: 'all', sort: 'rank' };
+let tripPlannerSetupDone = false;
 let rankingRendered = false;
 let mapInitStarted = false;
 let turkeyChartStarted = false;
@@ -40,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupLazyCompareSection(data);
     renderTurkeySpotlight(turkiye);
     setupLazyMap(data);
+    setupLazyTripPlanner(data);
     setupLazyTurkeyChart(turkiye);
     initEventListeners(data);
     applyInitialSearchFromUrl();
@@ -328,6 +330,147 @@ function focusCountryForCompare(data, code) {
 
 function getCountryDetailUrl(code) {
     return 'ulke.html?code=' + encodeURIComponent(code);
+}
+
+function findCountryByCode(data, code) {
+    const target = String(code || '').toUpperCase();
+    return data.find(item => item.kod === target) || null;
+}
+
+function getTripVisaStatus(originCountry, destinationCountry) {
+    if (!originCountry || !destinationCountry) return null;
+    if (originCountry.kod === destinationCountry.kod) return 'same';
+    const source = visaMatrixByPassportIso3?.[originCountry.iso3];
+    if (!source) return null;
+    return source[destinationCountry.iso3] || null;
+}
+
+function getTripChecklist(status, destinationName) {
+    if (status === 'vizesiz') {
+        return [
+            `${destinationName} için pasaport geçerlilik süresini kontrol et.`,
+            'Dönüş bileti ve konaklama rezervasyonunu hazır tut.',
+            'Seyahat sigortası yaptırmayı değerlendir.'
+        ];
+    }
+    if (status === 'varista') {
+        return [
+            'Varışta vize ücretini ve ödeme yöntemini önceden doğrula.',
+            'Girişte istenebilecek evrakları (rezervasyon, dönüş bileti vb.) hazır tut.',
+            'Havalimanı sürecinde ekstra süre planla.'
+        ];
+    }
+    if (status === 'evize') {
+        return [
+            'E-vize başvurusunu resmi kanal üzerinden tamamla.',
+            'Onay belgesini dijital ve basılı olarak sakla.',
+            'Kalış süresi ve giriş sayısı şartlarını kontrol et.'
+        ];
+    }
+    if (status === 'vize') {
+        return [
+            `${destinationName} için konsolosluk başvuru adımlarını kontrol et.`,
+            'Randevu, evrak, biyometri ve ücret planını netleştir.',
+            'Seyahat tarihinden önce tampon süre bırak.'
+        ];
+    }
+    return [
+        'Bu rota için canlı vize durumu şu an alınamadı.',
+        'Seyahat öncesi resmi konsolosluk ve sınır otoritesi kaynaklarını kontrol et.'
+    ];
+}
+
+function renderHomeTripPlanner(data) {
+    const resultEl = document.getElementById('trip-result');
+    const originCode = document.getElementById('trip-origin')?.value || '';
+    const destinationCode = document.getElementById('trip-destination')?.value || '';
+    const cityRaw = document.getElementById('trip-city')?.value || '';
+    const city = cityRaw.trim();
+
+    if (!resultEl) return;
+    const origin = findCountryByCode(data, originCode);
+    const destination = findCountryByCode(data, destinationCode);
+
+    if (!origin || !destination) {
+        resultEl.innerHTML = '<h3>Rota Özeti</h3><p>Ülkeleri seçip rotayı analiz edin.</p>';
+        return;
+    }
+    if (origin.kod === destination.kod) {
+        resultEl.innerHTML = '<h3>Rota Özeti</h3><p>Aynı ülke seçildi. Lütfen farklı bir hedef ülke seçin.</p>';
+        return;
+    }
+
+    const status = getTripVisaStatus(origin, destination);
+    const statusMap = {
+        vizesiz: { text: 'Vizesiz geçiş', cls: 'status-vizesiz' },
+        varista: { text: 'Varışta vize', cls: 'status-varista' },
+        evize: { text: 'E-vize gerekli', cls: 'status-evize' },
+        vize: { text: 'Önceden vize gerekli', cls: 'status-vize' },
+        unknown: { text: 'Durum doğrulanamadı', cls: 'status-vize' }
+    };
+    const selected = statusMap[status] || statusMap.unknown;
+    const destinationLabel = city ? `${city}, ${destination.ulke}` : destination.ulke;
+    const checklist = getTripChecklist(status || 'unknown', destination.ulke);
+    const checklistHtml = checklist.map(item => `<li>${item}</li>`).join('');
+    const flightsQuery = encodeURIComponent(`${origin.ulke} ${destinationLabel} uçuş`);
+    const hotelQuery = encodeURIComponent(destinationLabel);
+    const visaQuery = encodeURIComponent(`${origin.ulke} vatandaşları ${destination.ulke} vize şartları`);
+
+    resultEl.innerHTML = `
+        <h3>${origin.bayrak} ${origin.ulke} -> ${destination.bayrak} ${destinationLabel}</h3>
+        <span class="planner-status ${selected.cls}">${selected.text}</span>
+        <ul class="planner-checklist">${checklistHtml}</ul>
+        <div class="planner-links">
+            <a href="https://www.google.com/travel/flights?q=${flightsQuery}" target="_blank" rel="noopener noreferrer">Uçuş Ara</a>
+            <a href="https://www.booking.com/searchresults.tr.html?ss=${hotelQuery}" target="_blank" rel="noopener noreferrer">Konaklama Ara</a>
+            <a href="https://www.google.com/search?q=${visaQuery}" target="_blank" rel="noopener noreferrer">Vize Kaynakları</a>
+            <a href="${getCountryDetailUrl(destination.kod)}" target="_blank" rel="noopener noreferrer">Ülke Detayı</a>
+        </div>
+    `;
+}
+
+function setupTripPlannerSelects(data) {
+    if (tripPlannerSetupDone) return;
+    const originEl = document.getElementById('trip-origin');
+    const destinationEl = document.getElementById('trip-destination');
+    if (!originEl || !destinationEl) return;
+
+    const sorted = [...data].sort((a, b) => a.ulke.localeCompare(b.ulke, 'tr'));
+    const options = '<option value="">Ülke seçin</option>' + sorted.map(item => `
+        <option value="${item.kod}">${item.bayrak} ${item.ulke}</option>
+    `).join('');
+    originEl.innerHTML = options;
+    destinationEl.innerHTML = options;
+    originEl.value = 'TR';
+    destinationEl.value = 'DE';
+    tripPlannerSetupDone = true;
+}
+
+function setupLazyTripPlanner(data) {
+    const section = document.getElementById('rota-planlayici');
+    const trigger = () => {
+        setupTripPlannerSelects(data);
+        renderHomeTripPlanner(data);
+        if (visaLoadState === 'idle') {
+            preloadVisaDataset(data).then(() => renderHomeTripPlanner(data));
+        }
+    };
+
+    if (!section) {
+        trigger();
+        return;
+    }
+
+    const observer = new IntersectionObserver(entries => {
+        const visible = entries.some(entry => entry.isIntersecting);
+        if (!visible) return;
+        observer.disconnect();
+        trigger();
+    }, { rootMargin: '220px 0px' });
+    observer.observe(section);
+
+    document.getElementById('trip-origin')?.addEventListener('focus', trigger, { once: true });
+    document.getElementById('trip-destination')?.addEventListener('focus', trigger, { once: true });
 }
 
 function renderPassportGrid(data, filter) {
@@ -816,6 +959,23 @@ function initEventListeners(data) {
     document.getElementById('map-country-select')?.addEventListener('change', e => {
         const code = e.target.value;
         if (code && geoData) updateMapForCountry(data, code);
+    });
+
+    document.getElementById('trip-origin')?.addEventListener('change', () => {
+        renderHomeTripPlanner(data);
+    });
+    document.getElementById('trip-destination')?.addEventListener('change', () => {
+        renderHomeTripPlanner(data);
+    });
+    document.getElementById('trip-city')?.addEventListener('input', () => {
+        renderHomeTripPlanner(data);
+    });
+    document.getElementById('trip-run')?.addEventListener('click', () => {
+        if (visaLoadState === 'idle') {
+            preloadVisaDataset(data).then(() => renderHomeTripPlanner(data));
+        }
+        renderHomeTripPlanner(data);
+        document.getElementById('trip-result')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
     const searchInput = document.getElementById('ulke-ara');
