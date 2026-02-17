@@ -244,7 +244,7 @@ function renderHeroBadges(country) {
         `Dünya #${country.sira}`,
         `Güç ${country.puan}`,
         `%${percentile} dilimde`,
-        `${totalAccess} ülke erişim`,
+        `${totalAccess} ülke erişim (E-Vize dahil)`,
         tier
     ];
 
@@ -260,7 +260,7 @@ function renderCountryStats(country) {
     const metrics = [
         { label: 'Dünya Sırası', value: '#' + country.sira },
         { label: 'Pasaport Gücü', value: String(country.puan) },
-        { label: 'Toplam Erişim', value: totalAccess + ' ülke' },
+        { label: 'Toplam Erişim (E-Vize Dahil)', value: totalAccess + ' ülke' },
         { label: 'Vizesiz', value: counts.vizesiz + ' ülke', status: 'vizesiz' },
         { label: 'Varışta Vize', value: counts.varista + ' ülke', status: 'varista' },
         { label: 'E-Vize', value: counts.evize + ' ülke', status: 'evize' },
