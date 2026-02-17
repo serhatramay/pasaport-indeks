@@ -27,6 +27,9 @@ let visaListRegion = 'all';
 let countryMetaByIso2 = null;
 let lastRenderedVisaItems = [];
 let visaListVisibleCount = 80;
+let plannerOriginCode = '';
+let plannerDestinationCode = '';
+let plannerDestinationCity = '';
 
 const COUNTRY_BY_ISO3 = {};
 PASAPORT_DATA.forEach(item => {
@@ -465,6 +468,126 @@ function fillCountrySelect(selectedCode) {
     if (selectedCode) select.value = selectedCode;
 }
 
+function fillTripPlannerSelects(selectedOrigin, selectedDestination) {
+    const originEl = document.getElementById('planner-origin');
+    const destinationEl = document.getElementById('planner-destination');
+    if (!originEl || !destinationEl) return;
+
+    const sorted = [...PASAPORT_DATA].sort((a, b) => a.ulke.localeCompare(b.ulke, 'tr'));
+    const options = '<option value="">Seçiniz</option>' + sorted.map(item => `
+        <option value="${item.kod}">${item.bayrak} ${item.ulke}</option>
+    `).join('');
+
+    originEl.innerHTML = options;
+    destinationEl.innerHTML = options;
+
+    if (selectedOrigin) originEl.value = selectedOrigin;
+    if (selectedDestination && selectedDestination !== selectedOrigin) {
+        destinationEl.value = selectedDestination;
+    }
+}
+
+function getPairVisaStatus(originCountry, destinationCountry) {
+    if (!originCountry || !destinationCountry) return null;
+    if (originCountry.kod === destinationCountry.kod) return 'same';
+    const source = visaMatrixByPassportIso3?.[originCountry.iso3];
+    if (!source) return null;
+    return source[destinationCountry.iso3] || null;
+}
+
+function buildPlannerChecklist(status, destinationCountry) {
+    const countryName = destinationCountry?.ulke || 'hedef ülke';
+    if (status === 'vizesiz') {
+        return [
+            `Pasaport geçerlilik süresini ${countryName} için kontrol edin.`,
+            'Dönüş bileti ve konaklama rezervasyonunu hazır tutun.',
+            'Seyahat sigortası yaptırmayı değerlendirin.',
+            'Girişte istenebilecek finansal yeterlilik belgelerini hazırlayın.'
+        ];
+    }
+    if (status === 'varista') {
+        return [
+            'Varışta vize ücretini ve ödeme yöntemini önceden doğrulayın.',
+            'Pasaport, dönüş bileti ve konaklama belgelerini hazır tutun.',
+            'Varsa biyometrik fotoğraf ve başvuru formu gereksinimini kontrol edin.',
+            'Havalimanı yoğunluğunu hesaba katıp ekstra zaman planlayın.'
+        ];
+    }
+    if (status === 'evize') {
+        return [
+            'E-vize başvurusunu resmi kanallardan seyahat öncesi tamamlayın.',
+            'Onay belgesinin dijital ve basılı kopyasını taşıyın.',
+            'Pasaport geçerlilik süresi ve boş sayfa koşullarını kontrol edin.',
+            'E-vize kapsamındaki kalış süresi limitini aşmayın.'
+        ];
+    }
+    if (status === 'vize') {
+        return [
+            `${countryName} konsolosluğu başvuru adımlarını resmi siteden doğrulayın.`,
+            'Randevu, evrak listesi, biyometri ve ücret kalemlerini planlayın.',
+            'Başvuru sonuç süresi için seyahat tarihinden önce zaman tamponu bırakın.',
+            'Ret riskini azaltmak için evrak tutarlılığına dikkat edin.'
+        ];
+    }
+    return [
+        'Bu rota için güncel vize durumu şu anda doğrulanamadı.',
+        'Seyahatten önce resmi konsolosluk ve sınır otoritesi kaynaklarını kontrol edin.'
+    ];
+}
+
+function renderTripPlanner() {
+    const resultEl = document.getElementById('trip-planner-result');
+    if (!resultEl) return;
+
+    const origin = getCountryByCode(plannerOriginCode);
+    const destination = getCountryByCode(plannerDestinationCode);
+    if (!origin || !destination) {
+        resultEl.innerHTML = '<h3>Plan Özeti</h3><p>Ülkeleri seçip planı oluşturun.</p>';
+        return;
+    }
+
+    if (origin.kod === destination.kod) {
+        resultEl.innerHTML = `
+            <h3>Plan Özeti</h3>
+            <p>Aynı ülke seçildi. Lütfen farklı bir hedef ülke seçin.</p>
+        `;
+        return;
+    }
+
+    const city = plannerDestinationCity ? plannerDestinationCity.trim() : '';
+    const targetLabel = city ? `${city}, ${destination.ulke}` : destination.ulke;
+    const status = getPairVisaStatus(origin, destination);
+
+    const statusMeta = {
+        vizesiz: { text: 'Vizesiz geçiş', className: 'status-vizesiz' },
+        varista: { text: 'Varışta vize', className: 'status-varista' },
+        evize: { text: 'E-vize gerekli', className: 'status-evize' },
+        vize: { text: 'Önceden vize gerekli', className: 'status-vize' },
+        same: { text: 'Aynı ülke', className: 'status-vize' },
+        unknown: { text: 'Durum doğrulanamadı', className: 'status-vize' }
+    };
+    const mappedStatus = statusMeta[status || 'unknown'] || statusMeta.unknown;
+    const checklist = buildPlannerChecklist(status || 'unknown', destination);
+    const listHtml = checklist.map(item => `<li>${item}</li>`).join('');
+
+    const flightsQuery = encodeURIComponent(`${origin.ulke} ${targetLabel} uçuş`);
+    const hotelQuery = encodeURIComponent(targetLabel);
+    const visaQuery = encodeURIComponent(`${origin.ulke} vatandaşları ${destination.ulke} vize şartları`);
+    const mapsQuery = encodeURIComponent(targetLabel);
+
+    resultEl.innerHTML = `
+        <h3>${origin.bayrak} ${origin.ulke} → ${destination.bayrak} ${targetLabel}</h3>
+        <span class="planner-status ${mappedStatus.className}">${mappedStatus.text}</span>
+        <ul class="planner-checklist">${listHtml}</ul>
+        <div class="planner-links">
+            <a href="https://www.google.com/travel/flights?q=${flightsQuery}" target="_blank" rel="noopener noreferrer">Uçuş Ara</a>
+            <a href="https://www.booking.com/searchresults.tr.html?ss=${hotelQuery}" target="_blank" rel="noopener noreferrer">Konaklama Ara</a>
+            <a href="https://www.google.com/search?q=${visaQuery}" target="_blank" rel="noopener noreferrer">Vize Kaynaklarını Kontrol Et</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=${mapsQuery}" target="_blank" rel="noopener noreferrer">Haritada Aç</a>
+        </div>
+    `;
+}
+
 function getVisaDestinationsByStatus(country) {
     const empty = { vizesiz: [], varista: [], evize: [], vize: [] };
     const source = visaMatrixByPassportIso3?.[country.iso3];
@@ -790,6 +913,41 @@ function bindInteractiveHandlers() {
         });
         minAccess.dataset.bound = '1';
     }
+
+    const plannerOrigin = document.getElementById('planner-origin');
+    if (plannerOrigin && !plannerOrigin.dataset.bound) {
+        plannerOrigin.addEventListener('change', event => {
+            plannerOriginCode = event.target.value || '';
+            renderTripPlanner();
+        });
+        plannerOrigin.dataset.bound = '1';
+    }
+
+    const plannerDestination = document.getElementById('planner-destination');
+    if (plannerDestination && !plannerDestination.dataset.bound) {
+        plannerDestination.addEventListener('change', event => {
+            plannerDestinationCode = event.target.value || '';
+            renderTripPlanner();
+        });
+        plannerDestination.dataset.bound = '1';
+    }
+
+    const plannerCity = document.getElementById('planner-destination-city');
+    if (plannerCity && !plannerCity.dataset.bound) {
+        plannerCity.addEventListener('input', event => {
+            plannerDestinationCity = event.target.value || '';
+        });
+        plannerCity.dataset.bound = '1';
+    }
+
+    const plannerRun = document.getElementById('planner-run');
+    if (plannerRun && !plannerRun.dataset.bound) {
+        plannerRun.addEventListener('click', () => {
+            renderTripPlanner();
+            document.getElementById('trip-planner-result')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+        plannerRun.dataset.bound = '1';
+    }
 }
 
 function renderCountryPage(country) {
@@ -804,6 +962,16 @@ function renderCountryPage(country) {
     renderVisaBars(country);
     renderVisaChart(country);
     renderKnowledgeSection(country);
+
+    if (!plannerOriginCode || plannerOriginCode === currentCountry?.kod) {
+        plannerOriginCode = country.kod;
+    }
+    if (!plannerDestinationCode || plannerDestinationCode === plannerOriginCode) {
+        const fallbackDestination = PASAPORT_DATA.find(item => item.kod !== plannerOriginCode);
+        plannerDestinationCode = fallbackDestination ? fallbackDestination.kod : '';
+    }
+    fillTripPlannerSelects(plannerOriginCode, plannerDestinationCode);
+    renderTripPlanner();
 
     updateActiveSelectionUI();
     if (currentCountry) renderVisaCountryList(currentCountry, activeVisaStatus, false);
