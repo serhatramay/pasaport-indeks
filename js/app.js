@@ -8,7 +8,7 @@ const TRIP_CITY_OPTIONS = {
     TR: ['İstanbul', 'Ankara', 'İzmir', 'Antalya', 'Kapadokya', 'Bodrum'],
     DE: ['Berlin', 'Münih', 'Hamburg', 'Frankfurt', 'Köln', 'Düsseldorf'],
     FR: ['Paris', 'Lyon', 'Nice', 'Marsilya', 'Bordeaux', 'Toulouse'],
-    ES: ['Madrid', 'Barselona', 'Valensiya', 'Sevilla', 'Malaga', 'Palma'],
+    ES: ['Madrid', 'Barselona', 'Valensiya', 'Sevilla', 'Malaga', 'Bilbao'],
     IT: ['Roma', 'Milano', 'Venedik', 'Floransa', 'Napoli', 'Bologna'],
     GB: ['Londra', 'Manchester', 'Edinburgh', 'Birmingham', 'Liverpool', 'Bristol'],
     US: ['New York', 'Los Angeles', 'Miami', 'Chicago', 'San Francisco', 'Washington DC'],
@@ -18,7 +18,109 @@ const TRIP_CITY_OPTIONS = {
     AE: ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ajman', 'Ras Al Khaimah', 'Al Ain'],
     SG: ['Marina Bay', 'Orchard', 'Sentosa', 'Chinatown', 'Little India', 'Bugis'],
     NL: ['Amsterdam', 'Rotterdam', 'Lahey', 'Utrecht', 'Eindhoven', 'Haarlem'],
-    CH: ['Zürih', 'Cenevre', 'Luzern', 'Interlaken', 'Bern', 'Lozan']
+    CH: ['Zürih', 'Cenevre', 'Luzern', 'Interlaken', 'Bern', 'Lozan'],
+    AT: ['Viyana', 'Salzburg', 'Graz', 'Innsbruck', 'Linz', 'Hallstatt'],
+    BE: ['Brüksel', 'Anvers', 'Brugge', 'Gent', 'Leuven', 'Liège'],
+    DK: ['Kopenhag', 'Aarhus', 'Odense', 'Aalborg', 'Roskilde', 'Esbjerg'],
+    FI: ['Helsinki', 'Espoo', 'Tampere', 'Turku', 'Oulu', 'Rovaniemi'],
+    NO: ['Oslo', 'Bergen', 'Trondheim', 'Stavanger', 'Tromsø', 'Ålesund'],
+    SE: ['Stockholm', 'Göteborg', 'Malmö', 'Uppsala', 'Lund', 'Kiruna'],
+    PT: ['Lizbon', 'Porto', 'Faro', 'Braga', 'Coimbra', 'Madeira'],
+    GR: ['Atina', 'Selanik', 'Heraklion', 'Rodos', 'Patra', 'Kalamata'],
+    CZ: ['Prag', 'Brno', 'Ostrava', 'Plzen', 'Olomouc', 'Cesky Krumlov'],
+    PL: ['Varşova', 'Krakow', 'Wroclaw', 'Gdansk', 'Poznan', 'Lodz'],
+    HU: ['Budapeşte', 'Debrecen', 'Szeged', 'Pecs', 'Gyor', 'Miskolc'],
+    RO: ['Bükreş', 'Kluj-Napoka', 'Braşov', 'Timişoara', 'Sibiu', 'Iaşi'],
+    BG: ['Sofya', 'Plovdiv', 'Varna', 'Burgaz', 'Ruse', 'Veliko Tarnovo'],
+    HR: ['Zagreb', 'Split', 'Dubrovnik', 'Zadar', 'Rijeka', 'Pula'],
+    RS: ['Belgrad', 'Novi Sad', 'Niş', 'Kragujevac', 'Subotica', 'Kraljevo'],
+    RU: ['Moskova', 'St Petersburg', 'Soçi', 'Kazan', 'Novosibirsk', 'Vladivostok'],
+    UA: ['Kiev', 'Lviv', 'Odessa', 'Kharkiv', 'Dnipro', 'Ivano-Frankivsk'],
+    CN: ['Pekin', 'Şanghay', 'Guangzhou', 'Shenzhen', 'Chengdu', 'Xi’an'],
+    IN: ['Yeni Delhi', 'Mumbai', 'Bangalore', 'Hyderabad', 'Chennai', 'Kalküta'],
+    ID: ['Cakarta', 'Bali (Denpasar)', 'Surabaya', 'Bandung', 'Yogyakarta', 'Medan'],
+    MY: ['Kuala Lumpur', 'Penang', 'Johor Bahru', 'Kota Kinabalu', 'Kuching', 'Malakka'],
+    VN: ['Hanoi', 'Ho Chi Minh City', 'Da Nang', 'Nha Trang', 'Hue', 'Hoi An'],
+    KR: ['Seul', 'Busan', 'Incheon', 'Daegu', 'Daejeon', 'Jeju'],
+    HK: ['Hong Kong', 'Kowloon', 'New Territories', 'Lantau', 'Sha Tin', 'Causeway Bay'],
+    AU: ['Sydney', 'Melbourne', 'Brisbane', 'Perth', 'Adelaide', 'Gold Coast'],
+    NZ: ['Auckland', 'Wellington', 'Christchurch', 'Queenstown', 'Hamilton', 'Dunedin'],
+    MX: ['Mexico City', 'Cancun', 'Guadalajara', 'Monterrey', 'Tulum', 'Puebla'],
+    BR: ['São Paulo', 'Rio de Janeiro', 'Brasilia', 'Salvador', 'Recife', 'Curitiba'],
+    AR: ['Buenos Aires', 'Cordoba', 'Mendoza', 'Rosario', 'Bariloche', 'Ushuaia'],
+    CL: ['Santiago', 'Valparaiso', 'Viña del Mar', 'Antofagasta', 'La Serena', 'Puerto Varas'],
+    ZA: ['Cape Town', 'Johannesburg', 'Durban', 'Pretoria', 'Port Elizabeth', 'Stellenbosch'],
+    EG: ['Kahire', 'İskenderiye', 'Giza', 'Luksor', 'Asvan', 'Sharm El Sheikh'],
+    MA: ['Rabat', 'Kazablanka', 'Marakeş', 'Fes', 'Tanca', 'Agadir'],
+    SA: ['Riyad', 'Cidde', 'Mekke', 'Medine', 'Dammam', 'Abha'],
+    QA: ['Doha', 'Al Wakrah', 'Al Khor', 'Lusail', 'Umm Salal', 'Dukhan'],
+    KW: ['Kuveyt', 'Hawalli', 'Salmiya', 'Farwaniya', 'Ahmadi', 'Jahra'],
+    BH: ['Manama', 'Muharraq', 'Riffa', 'Isa Town', 'Sitra', 'Budaiya'],
+    OM: ['Maskat', 'Salalah', 'Sohar', 'Nizwa', 'Sur', 'Duqm'],
+    JO: ['Amman', 'Akabe', 'Petra', 'Irbid', 'Zarqa', 'Madaba'],
+    IE: ['Dublin', 'Cork', 'Galway', 'Limerick', 'Kilkenny', 'Waterford'],
+    IS: ['Reykjavik', 'Akureyri', 'Vik', 'Selfoss', 'Keflavik', 'Husavik'],
+    LU: ['Lüksemburg', 'Esch-sur-Alzette', 'Differdange', 'Dudelange', 'Ettelbruck', 'Wiltz'],
+    MT: ['Valletta', 'Sliema', 'St Julians', 'Mdina', 'Gozo', 'Mellieha'],
+    CY: ['Lefkoşa', 'Limasol', 'Larnaka', 'Baf', 'Gazimağusa', 'Girne'],
+    EE: ['Tallinn', 'Tartu', 'Narva', 'Parnu', 'Viljandi', 'Haapsalu'],
+    LV: ['Riga', 'Daugavpils', 'Liepaja', 'Jelgava', 'Jurmala', 'Ventspils'],
+    LT: ['Vilnius', 'Kaunas', 'Klaipeda', 'Siauliai', 'Panevezys', 'Palanga'],
+    SK: ['Bratislava', 'Kosice', 'Zilina', 'Presov', 'Nitra', 'Banska Bystrica'],
+    SI: ['Ljubljana', 'Maribor', 'Bled', 'Koper', 'Celje', 'Piran'],
+    BA: ['Saraybosna', 'Banja Luka', 'Mostar', 'Tuzla', 'Zenica', 'Bihac'],
+    AL: ['Tiran', 'Durres', 'Vlore', 'Shkoder', 'Sarande', 'Berat'],
+    MK: ['Üsküp', 'Ohri', 'Bitola', 'Tetovo', 'Kumanovo', 'Prilep'],
+    ME: ['Podgorica', 'Budva', 'Kotor', 'Herceg Novi', 'Bar', 'Cetinje'],
+    MD: ['Kişinev', 'Balti', 'Tiraspol', 'Comrat', 'Cahul', 'Orhei'],
+    GE: ['Tiflis', 'Batum', 'Kutaisi', 'Rustavi', 'Mtskheta', 'Telavi'],
+    AM: ['Erivan', 'Gümrü', 'Vanadzor', 'Dilijan', 'Sevan', 'Eçmiadzin'],
+    AZ: ['Bakü', 'Gence', 'Sumgayıt', 'Şeki', 'Lenkeran', 'Nahçıvan'],
+    KZ: ['Astana', 'Almatı', 'Şımkent', 'Aktau', 'Karagandı', 'Türkistan'],
+    UZ: ['Taşkent', 'Semerkant', 'Buhara', 'Hive', 'Namangan', 'Andican'],
+    KG: ['Bişkek', 'Oş', 'Karakol', 'Celalabad', 'Tokmok', 'Naryn'],
+    TJ: ['Duşanbe', 'Hucend', 'Kulob', 'Bokhtar', 'İstaravşan', 'Penjikent'],
+    TM: ['Aşkabat', 'Türkmenbaşı', 'Daşoğuz', 'Merv', 'Türkmenabat', 'Balkanabat'],
+    MN: ['Ulan Batur', 'Erdenet', 'Darkhan', 'Kharkhorin', 'Choibalsan', 'Ölgii'],
+    PK: ['İslamabad', 'Lahor', 'Karaçi', 'Rawalpindi', 'Faisalabad', 'Peşaver'],
+    BD: ['Dakha', 'Çittagong', 'Sylhet', 'Khulna', 'Rajshahi', 'Cox\'s Bazar'],
+    LK: ['Kolombo', 'Kandy', 'Galle', 'Negombo', 'Jaffna', 'Nuwara Eliya'],
+    NP: ['Katmandu', 'Pokhara', 'Lalitpur', 'Bhaktapur', 'Biratnagar', 'Chitwan'],
+    PH: ['Manila', 'Cebu', 'Davao', 'Boracay', 'Baguio', 'Palawan'],
+    KH: ['Phnom Penh', 'Siem Reap', 'Sihanoukville', 'Battambang', 'Kampot', 'Kep'],
+    LA: ['Vientiane', 'Luang Prabang', 'Pakse', 'Vang Vieng', 'Savannakhet', 'Thakhek'],
+    MM: ['Yangon', 'Mandalay', 'Naypyidaw', 'Bagan', 'Inle Lake', 'Mawlamyine'],
+    TW: ['Taipei', 'Kaohsiung', 'Taichung', 'Tainan', 'Hsinchu', 'Keelung'],
+    IL: ['Tel Aviv', 'Kudüs', 'Hayfa', 'Eilat', 'Beerşeva', 'Nazaret'],
+    IQ: ['Bağdat', 'Erbil', 'Basra', 'Musul', 'Necef', 'Kerbela'],
+    IR: ['Tahran', 'İsfahan', 'Şiraz', 'Meşhed', 'Tebriz', 'Yezd'],
+    LB: ['Beyrut', 'Trablusşam', 'Sayda', 'Sur', 'Jounieh', 'Baalbek'],
+    NG: ['Lagos', 'Abuja', 'Kano', 'Port Harcourt', 'Ibadan', 'Enugu'],
+    KE: ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Naivasha', 'Eldoret'],
+    TZ: ['Darüsselam', 'Zanzibar', 'Arusha', 'Dodoma', 'Mwanza', 'Moshi'],
+    UG: ['Kampala', 'Entebbe', 'Jinja', 'Mbarara', 'Gulu', 'Fort Portal'],
+    ET: ['Addis Ababa', 'Dire Dawa', 'Mekele', 'Bahir Dar', 'Gondar', 'Hawassa'],
+    GH: ['Accra', 'Kumasi', 'Takoradi', 'Tamale', 'Cape Coast', 'Tema'],
+    CI: ['Abidjan', 'Yamoussoukro', 'Bouake', 'San Pedro', 'Korhogo', 'Daloa'],
+    SN: ['Dakar', 'Saint-Louis', 'Thiès', 'Saly', 'Kaolack', 'Ziguinchor'],
+    DZ: ['Cezayir', 'Oran', 'Constantine', 'Annaba', 'Tlemcen', 'Bejaia'],
+    TN: ['Tunus', 'Sousse', 'Sfax', 'Hammamet', 'Monastir', 'Nabeul'],
+    CO: ['Bogota', 'Medellin', 'Cartagena', 'Cali', 'Barranquilla', 'Santa Marta'],
+    PE: ['Lima', 'Cusco', 'Arequipa', 'Trujillo', 'Iquitos', 'Piura'],
+    EC: ['Quito', 'Guayaquil', 'Cuenca', 'Manta', 'Loja', 'Galapagos'],
+    BO: ['La Paz', 'Santa Cruz', 'Sucre', 'Cochabamba', 'Potosi', 'Uyuni'],
+    PY: ['Asuncion', 'Ciudad del Este', 'Encarnacion', 'San Lorenzo', 'Luque', 'Pedro Juan Caballero'],
+    UY: ['Montevideo', 'Punta del Este', 'Colonia del Sacramento', 'Salto', 'Maldonado', 'Paysandu'],
+    VE: ['Karakas', 'Maracaibo', 'Valencia', 'Barquisimeto', 'Margarita', 'Merida'],
+    CR: ['San Jose', 'Liberia', 'La Fortuna', 'Tamarindo', 'Puerto Viejo', 'Monteverde'],
+    PA: ['Panama City', 'Bocas del Toro', 'David', 'Colon', 'Boquete', 'San Blas'],
+    DO: ['Santo Domingo', 'Punta Cana', 'Santiago de los Caballeros', 'La Romana', 'Puerto Plata', 'Samana'],
+    CU: ['Havana', 'Varadero', 'Santiago de Cuba', 'Trinidad', 'Cienfuegos', 'Holguin'],
+    JM: ['Kingston', 'Montego Bay', 'Negril', 'Ocho Rios', 'Port Antonio', 'Mandeville'],
+    GT: ['Guatemala City', 'Antigua', 'Flores', 'Quetzaltenango', 'Atitlan', 'Escuintla'],
+    HN: ['Tegucigalpa', 'San Pedro Sula', 'Roatan', 'La Ceiba', 'Copan', 'Tela'],
+    SV: ['San Salvador', 'Santa Ana', 'San Miguel', 'La Libertad', 'Sonsonate', 'Suchitoto'],
+    NI: ['Managua', 'Granada', 'Leon', 'San Juan del Sur', 'Masaya', 'Esteli']
 };
 let map, geoLayer, geoData = null;
 let visaMatrixByPassportIso3 = null;
@@ -466,7 +568,13 @@ function setupTripPlannerSelects(data) {
 function getTripCityOptionsByCode(code) {
     const key = String(code || '').toUpperCase();
     if (TRIP_CITY_OPTIONS[key]) return TRIP_CITY_OPTIONS[key];
-    return ['Başkent', 'Turistik Merkez', 'İş Merkezi', 'Sahil Bölgesi'];
+
+    const capital = countryMetaByIso2?.[key]?.capital;
+    if (capital) {
+        return [capital];
+    }
+
+    return ['Şehir verisi hazırlanıyor'];
 }
 
 function renderTripCityOptions(destinationCode) {
@@ -490,6 +598,10 @@ function setupLazyTripPlanner(data) {
     const trigger = () => {
         setupTripPlannerSelects(data);
         renderHomeTripPlanner(data);
+        preloadCountryMeta().then(() => {
+            const destinationCode = document.getElementById('trip-destination')?.value || '';
+            if (destinationCode) renderTripCityOptions(destinationCode);
+        });
         if (visaLoadState === 'idle') {
             preloadVisaDataset(data).then(() => renderHomeTripPlanner(data));
         }
