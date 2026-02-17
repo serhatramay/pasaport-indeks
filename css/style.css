@@ -77,6 +77,39 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
     font-family: inherit;
     font-size: 0.9rem;
 }
+.trip-city-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.trip-city-pill {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+.trip-city-pill input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+.trip-city-pill span {
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.04);
+    color: #d6e2f4;
+    padding: 6px 11px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.trip-city-pill input:checked + span {
+    border-color: rgba(245,197,24,0.75);
+    background: rgba(245,197,24,0.14);
+    color: #ffe08a;
+}
+.trip-city-pill span:hover {
+    border-color: rgba(245,197,24,0.45);
+}
 .trip-field input::placeholder { color: #8ea1bb; }
 .trip-field input:focus,
 .trip-field select:focus {
