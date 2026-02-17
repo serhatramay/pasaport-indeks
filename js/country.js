@@ -26,6 +26,7 @@ let visaListSortMode = 'az';
 let visaListRegion = 'all';
 let countryMetaByIso2 = null;
 let lastRenderedVisaItems = [];
+let visaListVisibleCount = 80;
 
 const COUNTRY_BY_ISO3 = {};
 PASAPORT_DATA.forEach(item => {
@@ -47,6 +48,11 @@ function updateUrl(code) {
     const url = new URL(window.location.href);
     url.searchParams.set('code', code);
     window.history.replaceState({}, '', url.toString());
+}
+
+function getCanonicalCountryUrl(code) {
+    const value = String(code || '').toUpperCase();
+    return `https://serhatramay.github.io/pasaport-indeks/ulke.html?code=${encodeURIComponent(value)}`;
 }
 
 function formatNumberTr(value) {
@@ -172,7 +178,42 @@ function getCountryContinentCode(kod) {
 
 function setCountryMeta(country) {
     if (!country) return;
-    document.title = `${country.ulke} Pasaportu | Pasaport Endeksi`;
+    const pageTitle = `${country.ulke} Pasaportu | Pasaport Endeksi`;
+    const pageDescription = `${country.ulke} pasaportunun vize profili, erişim metrikleri ve ülke bazlı detay listesi.`;
+    const canonicalUrl = getCanonicalCountryUrl(country.kod);
+
+    document.title = pageTitle;
+    const descriptionMeta = document.querySelector('meta[name="description"]');
+    if (descriptionMeta) descriptionMeta.setAttribute('content', pageDescription);
+
+    const canonicalLink = document.getElementById('canonical-link');
+    if (canonicalLink) canonicalLink.setAttribute('href', canonicalUrl);
+    const ogUrl = document.getElementById('og-url');
+    if (ogUrl) ogUrl.setAttribute('content', canonicalUrl);
+    const ogTitle = document.getElementById('og-title');
+    if (ogTitle) ogTitle.setAttribute('content', pageTitle);
+    const ogDescription = document.getElementById('og-description');
+    if (ogDescription) ogDescription.setAttribute('content', pageDescription);
+    const twitterTitle = document.getElementById('twitter-title');
+    if (twitterTitle) twitterTitle.setAttribute('content', pageTitle);
+    const twitterDescription = document.getElementById('twitter-description');
+    if (twitterDescription) twitterDescription.setAttribute('content', pageDescription);
+
+    const jsonldScript = document.getElementById('country-jsonld');
+    if (jsonldScript) {
+        const payload = {
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            name: pageTitle,
+            url: canonicalUrl,
+            inLanguage: 'tr',
+            about: {
+                '@type': 'Place',
+                name: country.ulke
+            }
+        };
+        jsonldScript.textContent = JSON.stringify(payload);
+    }
 
     const heading = document.getElementById('country-title');
     const subtitle = document.getElementById('country-subtitle');
@@ -501,10 +542,26 @@ function renderVisaCountryList(country, status, shouldScroll) {
             : 'Bu kategoride listelenecek ülke bulunamadı.';
         list.innerHTML = `<p class="visa-list-empty">${emptyMessage}</p>`;
     } else {
-        list.innerHTML = items.map(item => {
+        const visibleItems = items.slice(0, visaListVisibleCount);
+        const chips = visibleItems.map(item => {
             const text = `${item.bayrak} ${item.ulke}`;
             return `<a class="visa-country-chip" href="ulke.html?code=${encodeURIComponent(item.kod)}">${text}</a>`;
         }).join('');
+
+        const hasMore = items.length > visibleItems.length;
+        const moreButton = hasMore
+            ? `<div class="visa-list-actions"><button type="button" class="mini-btn" id="visa-list-more">Daha Fazla Göster (${items.length - visibleItems.length})</button></div>`
+            : '';
+
+        list.innerHTML = chips + moreButton;
+
+        if (hasMore) {
+            const moreBtn = document.getElementById('visa-list-more');
+            moreBtn?.addEventListener('click', () => {
+                visaListVisibleCount += 80;
+                renderVisaCountryList(currentCountry, activeVisaStatus, false);
+            });
+        }
     }
     lastRenderedVisaItems = items;
 
@@ -516,6 +573,7 @@ function renderVisaCountryList(country, status, shouldScroll) {
 function handleVisaCategorySelection(status, shouldScroll) {
     if (!currentCountry || !VISA_STATUS_META[status]) return;
     activeVisaStatus = status;
+    visaListVisibleCount = 80;
     updateActiveSelectionUI();
     renderVisaCountryList(currentCountry, status, shouldScroll);
 }
@@ -606,6 +664,7 @@ function bindInteractiveHandlers() {
     if (search && !search.dataset.bound) {
         search.addEventListener('input', event => {
             visaListSearchQuery = event.target.value || '';
+            visaListVisibleCount = 80;
             if (currentCountry) {
                 renderVisaCountryList(currentCountry, activeVisaStatus, false);
             }
@@ -617,6 +676,7 @@ function bindInteractiveHandlers() {
     if (sort && !sort.dataset.bound) {
         sort.addEventListener('change', event => {
             visaListSortMode = event.target.value === 'za' ? 'za' : 'az';
+            visaListVisibleCount = 80;
             if (currentCountry) {
                 renderVisaCountryList(currentCountry, activeVisaStatus, false);
             }
@@ -628,6 +688,7 @@ function bindInteractiveHandlers() {
     if (region && !region.dataset.bound) {
         region.addEventListener('change', event => {
             visaListRegion = event.target.value || 'all';
+            visaListVisibleCount = 80;
             if (currentCountry) {
                 renderVisaCountryList(currentCountry, activeVisaStatus, false);
             }
@@ -670,6 +731,7 @@ function renderCountryPage(country) {
     if (!country) return;
 
     currentCountry = country;
+    visaListVisibleCount = 80;
     setCountryMeta(country);
     renderHeroBadges(country);
     renderCountryStats(country);
