@@ -17,6 +17,7 @@ const COUNTRY_BY_ISO3 = {};
 PASAPORT_DATA.forEach(item => {
     COUNTRY_BY_ISO3[item.iso3] = item;
 });
+const VALID_ISO3 = new Set(PASAPORT_DATA.map(item => item.iso3));
 
 function getCountryByCode(code) {
     if (!code) return null;
@@ -76,6 +77,7 @@ function parseVisaCsvToMatrix(csvText) {
         const status = mapRequirementToStatus(requirement);
 
         if (!status || !passport || !destination) return;
+        if (!VALID_ISO3.has(passport) || !VALID_ISO3.has(destination)) return;
         if (passport === destination) return;
 
         if (!matrix[passport]) matrix[passport] = {};
@@ -296,23 +298,12 @@ function getVisaDestinationsByStatus(country) {
         if (iso3 === country.iso3) return;
 
         const knownCountry = COUNTRY_BY_ISO3[iso3];
-        if (knownCountry) {
-            empty[status].push({
-                iso3,
-                ulke: knownCountry.ulke,
-                bayrak: knownCountry.bayrak,
-                kod: knownCountry.kod,
-                known: true
-            });
-            return;
-        }
-
+        if (!knownCountry) return;
         empty[status].push({
             iso3,
-            ulke: iso3,
-            bayrak: '🌐',
-            kod: null,
-            known: false
+            ulke: knownCountry.ulke,
+            bayrak: knownCountry.bayrak,
+            kod: knownCountry.kod
         });
     });
 
@@ -379,10 +370,7 @@ function renderVisaCountryList(country, status, shouldScroll) {
     } else {
         list.innerHTML = items.map(item => {
             const text = `${item.bayrak} ${item.ulke}`;
-            if (item.kod) {
-                return `<a class="visa-country-chip" href="ulke.html?code=${encodeURIComponent(item.kod)}">${text}</a>`;
-            }
-            return `<span class="visa-country-chip is-readonly">${text}</span>`;
+            return `<a class="visa-country-chip" href="ulke.html?code=${encodeURIComponent(item.kod)}">${text}</a>`;
         }).join('');
     }
 
