@@ -985,6 +985,12 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
 .knowledge-card-full {
     grid-column: 1 / -1;
 }
+
+@media (min-width: 1200px) {
+    .country-knowledge-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
 .knowledge-card code {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     background: rgba(255,255,255,0.08);
