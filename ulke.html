@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=20260217-2">
+    <link rel="stylesheet" href="css/style.css?v=20260217-3">
 </head>
 <body>
     <header class="site-header" id="header">
@@ -90,6 +90,13 @@
                         <h3 id="visa-list-title">Ülke Listesi</h3>
                         <p id="visa-list-subtitle">Metrik veya grafik üzerinden bir kategori seçin.</p>
                     </div>
+                    <div class="visa-list-controls">
+                        <input id="visa-list-search" type="search" placeholder="Listede ülke ara..." aria-label="Listede ülke ara">
+                        <select id="visa-list-sort" aria-label="Liste sıralama">
+                            <option value="az">Sırala: A-Z</option>
+                            <option value="za">Sırala: Z-A</option>
+                        </select>
+                    </div>
                     <div class="visa-country-list" id="visa-country-list"></div>
                 </div>
             </div>
@@ -97,7 +104,7 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="js/data.js?v=20260217-2"></script>
-    <script src="js/country.js?v=20260217-2"></script>
+    <script src="js/data.js?v=20260217-3"></script>
+    <script src="js/country.js?v=20260217-3"></script>
 </body>
 </html>
