@@ -171,6 +171,41 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
 .filter-btn { padding: 8px 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: #aaa; font-size: 0.85rem; cursor: pointer; transition: all 0.3s; font-family: inherit; }
 .filter-btn:hover { border-color: #f5c518; color: #f5c518; }
 .filter-btn.active { background: #f5c518; color: #0a0e1a; border-color: #f5c518; font-weight: 600; }
+.compact-tools {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+.compact-tools input,
+.compact-tools select {
+    height: 42px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.04);
+    color: #eef5ff;
+    padding: 0 12px;
+    font-family: inherit;
+    font-size: 0.9rem;
+}
+.compact-tools input::placeholder {
+    color: #91a0b8;
+}
+.compact-tools input:focus,
+.compact-tools select:focus {
+    outline: 2px solid rgba(245,197,24,0.45);
+    outline-offset: 1px;
+}
+.compact-meta {
+    margin: 0 0 12px;
+    color: #9db0ca;
+    font-size: 0.88rem;
+}
+.compact-actions {
+    margin-top: 14px;
+    display: flex;
+    justify-content: center;
+}
 
 /* ===== PASSPORT GRID ===== */
 .passport-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; }
@@ -417,6 +452,14 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
     .compare-tools input,
     .compare-tools select,
     .compare-tools .mini-btn {
+        width: 100%;
+        min-width: 0;
+    }
+    .compact-tools {
+        grid-template-columns: 1fr;
+    }
+    .compact-tools input,
+    .compact-tools select {
         width: 100%;
         min-width: 0;
     }
