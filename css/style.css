@@ -876,12 +876,15 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 12px;
+    align-items: start;
 }
 .knowledge-card {
     border-radius: 14px;
     border: 1px solid rgba(255,255,255,0.1);
     background: rgba(10,16,27,0.82);
     padding: 14px;
+    align-self: start;
+    height: fit-content;
 }
 .knowledge-card h3 {
     margin: 0 0 10px;
