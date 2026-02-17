@@ -58,6 +58,8 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
 .passport-card .country-name { font-size: 0.8rem; font-weight: 500; color: #ccc; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .passport-card .score { font-size: 1.4rem; font-weight: 700; color: #f5c518; }
 .passport-card .rank-badge { position: absolute; top: 8px; right: 8px; background: rgba(245,197,24,0.15); color: #f5c518; font-size: 0.65rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+.country-detail-link { display: inline-block; margin-top: 8px; font-size: 0.75rem; color: #90caf9; text-decoration: underline; }
+.country-detail-link:hover { color: #f5c518; }
 
 /* ===== RANKING TABLE ===== */
 .ranking-section { background: #111827; }
@@ -67,7 +69,13 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
 .ranking-table th { padding: 14px 16px; text-align: left; font-size: 0.8rem; font-weight: 600; color: #f5c518; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
 .ranking-table td { padding: 12px 16px; font-size: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.04); }
 .ranking-table tbody tr { transition: background 0.2s; }
+.ranking-table tbody tr.ranking-row { cursor: pointer; }
 .ranking-table tbody tr:hover { background: rgba(245,197,24,0.04); }
+.ranking-table tbody tr.ranking-row:focus-visible {
+    outline: 2px solid #f5c518;
+    outline-offset: -2px;
+    background: rgba(245,197,24,0.08);
+}
 .ranking-table .rank-col { font-weight: 700; color: #f5c518; width: 60px; }
 .ranking-table .country-col { display: flex; align-items: center; gap: 10px; }
 .ranking-table .country-col .flag { font-size: 1.4rem; }
@@ -220,3 +228,142 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
 /* ===== PASSPORT CARD HOVER CURSOR ===== */
 .passport-card { cursor: pointer; }
 
+/* ===== COUNTRY DETAIL ===== */
+.country-page {
+    padding-top: 64px;
+    background:
+        radial-gradient(circle at 15% 8%, rgba(245,197,24,0.18), transparent 35%),
+        radial-gradient(circle at 85% 15%, rgba(52,152,219,0.12), transparent 30%),
+        #050812;
+}
+.country-hero { padding: 56px 0 30px; }
+.back-link { color: #9ac7ff; font-size: 0.9rem; display: inline-block; margin-bottom: 12px; }
+.country-hero-top-panel { display: flex; justify-content: space-between; gap: 12px; align-items: end; flex-wrap: wrap; }
+.hero-home-btn {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(245,197,24,0.35);
+    color: #f5c518;
+    background: rgba(245,197,24,0.08);
+    font-size: 0.82rem;
+}
+.country-select-wrap { display: flex; flex-direction: column; gap: 6px; }
+.country-select-wrap label { font-size: 0.76rem; color: #8f98aa; letter-spacing: 0.04em; text-transform: uppercase; }
+.country-select-wrap select {
+    min-width: 240px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.14);
+    color: #f8fbff;
+}
+
+.country-hero-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 28px;
+    align-items: center;
+    margin-top: 18px;
+}
+.passport-hero-card {
+    border-radius: 20px;
+    min-height: 260px;
+    padding: 22px 20px;
+    border: 1px solid rgba(255,255,255,0.18);
+    background:
+        linear-gradient(145deg, rgba(139,0,0,0.92), rgba(188,24,24,0.9) 60%, rgba(89,8,8,0.94)),
+        linear-gradient(180deg, #5f0202, #8f0f0f);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.passport-stamp { font-size: 3.2rem; line-height: 1; }
+.passport-country { font-size: 1.05rem; font-weight: 700; color: #f8db77; letter-spacing: 0.08em; }
+.passport-code {
+    align-self: flex-start;
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    background: rgba(0,0,0,0.26);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.country-hero-content h1 { font-size: clamp(2rem, 4.2vw, 3.1rem); color: #fff; line-height: 1.1; }
+.country-hero-content .hero-subtitle { margin: 12px 0 18px; color: #b8c0d0; max-width: 780px; }
+.hero-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+.hero-badge {
+    border: 1px solid rgba(255,255,255,0.16);
+    color: #d6deee;
+    border-radius: 999px;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    background: rgba(16,24,38,0.75);
+}
+
+.country-analytics { padding: 10px 0 10px; }
+.country-analytics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.analytics-card {
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.11);
+    background: linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    backdrop-filter: blur(2px);
+    padding: 18px;
+    min-height: 320px;
+}
+.analytics-card h2 { margin: 0 0 14px; text-align: left; font-size: 1.1rem; color: #eef2ff; }
+#visa-chart { width: 100%; height: 250px !important; max-height: 250px; }
+
+.travel-snapshot { display: grid; gap: 12px; margin-top: 6px; }
+.snapshot-item {
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(9,15,26,0.7);
+    padding: 12px 14px;
+}
+.snapshot-item .label { display: block; color: #9ca6ba; font-size: 0.8rem; }
+.snapshot-item .value { display: block; color: #fff; font-size: 1.55rem; font-weight: 800; margin: 2px 0; }
+.snapshot-item small { color: #8290a8; font-size: 0.78rem; }
+
+.country-metrics { padding: 26px 0 6px; }
+.country-metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.country-metric-card {
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(11,18,30,0.82);
+    padding: 14px;
+}
+.country-metric-card .label { color: #95a1b8; display: block; font-size: 0.75rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em; }
+.country-metric-card .value { color: #fff; font-weight: 700; font-size: 1.2rem; line-height: 1.2; }
+
+.country-visa-breakdown { padding-top: 18px; padding-bottom: 64px; }
+.country-visa-breakdown h2 { margin-bottom: 16px; text-align: left; }
+.visa-bars { display: flex; flex-direction: column; gap: 12px; }
+.visa-bar-row {
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(8,13,23,0.78);
+    padding: 12px;
+}
+.visa-bar-head { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 8px; color: #d5ddee; }
+.visa-bar-track { width: 100%; height: 10px; background: #162033; border-radius: 999px; overflow: hidden; }
+.visa-bar-fill { height: 100%; border-radius: 999px; transition: width 0.5s ease; }
+
+@media (max-width: 1024px) {
+    .country-hero-layout { grid-template-columns: 1fr; }
+    .passport-hero-card { max-width: 360px; }
+}
+
+@media (max-width: 768px) {
+    .country-analytics-grid { grid-template-columns: 1fr; }
+    .country-select-wrap select { min-width: 180px; }
+    .country-hero-content h1 { font-size: 2rem; }
+}
+
+@media (max-width: 480px) {
+    .country-hero-top-panel { align-items: stretch; }
+    .hero-home-btn { text-align: center; }
+    .country-select-wrap select { width: 100%; min-width: 0; }
+    .passport-hero-card { min-height: 220px; }
+}
