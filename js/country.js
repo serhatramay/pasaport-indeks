@@ -54,6 +54,26 @@ function getMobilityTier(country) {
     return 'Sınırlı Mobilite';
 }
 
+function getVisaCounts(country) {
+    const source = visaMatrixByPassportIso3?.[country.iso3];
+    if (!source) {
+        return {
+            vizesiz: country.vizesiz,
+            varista: country.varistaSiz,
+            evize: country.evize,
+            vize: country.vizeGerekli
+        };
+    }
+
+    const counts = { vizesiz: 0, varista: 0, evize: 0, vize: 0 };
+    Object.entries(source).forEach(([iso3, status]) => {
+        if (!VALID_ISO3.has(iso3)) return;
+        if (!counts[status] && counts[status] !== 0) return;
+        counts[status] += 1;
+    });
+    return counts;
+}
+
 function mapRequirementToStatus(requirement) {
     const value = String(requirement || '').toLowerCase().trim();
     if (value === 'visa free') return 'vizesiz';
@@ -128,7 +148,8 @@ function renderHeroBadges(country) {
 
     const percentile = getRankPercentile(country);
     const tier = getMobilityTier(country);
-    const totalAccess = country.vizesiz + country.varistaSiz + country.evize;
+    const counts = getVisaCounts(country);
+    const totalAccess = counts.vizesiz + counts.varista + counts.evize;
 
     const items = [
         `Dünya #${country.sira}`,
@@ -145,15 +166,16 @@ function renderCountryStats(country) {
     const grid = document.getElementById('country-metric-grid');
     if (!grid || !country) return;
 
-    const totalAccess = country.vizesiz + country.varistaSiz + country.evize;
+    const counts = getVisaCounts(country);
+    const totalAccess = counts.vizesiz + counts.varista + counts.evize;
     const metrics = [
         { label: 'Dünya Sırası', value: '#' + country.sira },
         { label: 'Pasaport Gücü', value: String(country.puan) },
         { label: 'Toplam Erişim', value: totalAccess + ' ülke' },
-        { label: 'Vizesiz', value: country.vizesiz + ' ülke', status: 'vizesiz' },
-        { label: 'Varışta Vize', value: country.varistaSiz + ' ülke', status: 'varista' },
-        { label: 'E-Vize', value: country.evize + ' ülke', status: 'evize' },
-        { label: 'Vize Gerekli', value: country.vizeGerekli + ' ülke', status: 'vize' },
+        { label: 'Vizesiz', value: counts.vizesiz + ' ülke', status: 'vizesiz' },
+        { label: 'Varışta Vize', value: counts.varista + ' ülke', status: 'varista' },
+        { label: 'E-Vize', value: counts.evize + ' ülke', status: 'evize' },
+        { label: 'Vize Gerekli', value: counts.vize + ' ülke', status: 'vize' },
         { label: 'Nüfus', value: formatNumberTr(country.nufus) },
         { label: 'Mobilite Segmenti', value: getMobilityTier(country) }
     ];
@@ -181,12 +203,13 @@ function renderVisaBars(country) {
     const bars = document.getElementById('visa-bars');
     if (!bars || !country) return;
 
-    const total = country.vizesiz + country.varistaSiz + country.evize + country.vizeGerekli;
+    const counts = getVisaCounts(country);
+    const total = counts.vizesiz + counts.varista + counts.evize + counts.vize;
     const items = [
-        ['Vizesiz', country.vizesiz, 'vizesiz'],
-        ['Varışta Vize', country.varistaSiz, 'varista'],
-        ['E-Vize', country.evize, 'evize'],
-        ['Vize Gerekli', country.vizeGerekli, 'vize']
+        ['Vizesiz', counts.vizesiz, 'vizesiz'],
+        ['Varışta Vize', counts.varista, 'varista'],
+        ['E-Vize', counts.evize, 'evize'],
+        ['Vize Gerekli', counts.vize, 'vize']
     ];
 
     bars.innerHTML = items.map(([label, value, status]) => {
@@ -210,11 +233,12 @@ function renderTravelSnapshot(country) {
     const el = document.getElementById('travel-snapshot');
     if (!el || !country) return;
 
-    const total = country.vizesiz + country.varistaSiz + country.evize + country.vizeGerekli;
-    const easyTravel = country.vizesiz + country.varistaSiz;
+    const counts = getVisaCounts(country);
+    const total = counts.vizesiz + counts.varista + counts.evize + counts.vize;
+    const easyTravel = counts.vizesiz + counts.varista;
     const easyPct = total ? Math.round((easyTravel / total) * 100) : 0;
-    const digitalPct = total ? Math.round((country.evize / total) * 100) : 0;
-    const restrictionPct = total ? Math.round((country.vizeGerekli / total) * 100) : 0;
+    const digitalPct = total ? Math.round((counts.evize / total) * 100) : 0;
+    const restrictionPct = total ? Math.round((counts.vize / total) * 100) : 0;
 
     el.innerHTML = `
         <div class="snapshot-item">
@@ -244,12 +268,14 @@ function renderVisaChart(country) {
         visaChart = null;
     }
 
+    const counts = getVisaCounts(country);
+
     visaChart = new Chart(canvas, {
         type: 'doughnut',
         data: {
             labels: ['Vizesiz', 'Varışta Vize', 'E-Vize', 'Vize Gerekli'],
             datasets: [{
-                data: [country.vizesiz, country.varistaSiz, country.evize, country.vizeGerekli],
+                data: [counts.vizesiz, counts.varista, counts.evize, counts.vize],
                 backgroundColor: ['#2ecc71', '#f39c12', '#3498db', '#e74c3c'],
                 borderColor: '#0f172a',
                 borderWidth: 2
@@ -435,6 +461,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     await preloadVisaDataset();
     if (currentCountry) {
+        renderCountryPage(currentCountry);
         renderVisaCountryList(currentCountry, activeVisaStatus, false);
     }
 
