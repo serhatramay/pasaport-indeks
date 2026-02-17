@@ -76,14 +76,14 @@ function renderRankingInfo(data) {
     const sourceName = info.sourceName || 'Belirtilmedi';
     const sourceUrl = info.sourceUrl || '#';
     const generatedAt = formatDateTr(info.generatedAt);
-    const methodology = info.methodology || 'Pasaport puani = vizesiz + varista vize + e-vize.';
+    const methodology = info.methodology || 'Pasaport puanı = vizesiz + varışta vize + e-vize.';
     const countryCount = String(data.length || 0);
     const coverageTarget = String(info.coverageTarget || 198);
     const note = info.note || '';
 
     el.innerHTML = `
         <div class="ranking-info-grid">
-            <p><strong>Son guncelleme:</strong> ${generatedAt}</p>
+            <p><strong>Son güncelleme:</strong> ${generatedAt}</p>
             <p><strong>Kapsam:</strong> ${countryCount} pasaport, hedef ${coverageTarget} destinasyon</p>
             <p><strong>Metodoloji:</strong> ${methodology}</p>
             <p><strong>Kaynak:</strong> <a href="${sourceUrl}" target="_blank" rel="noopener noreferrer">${sourceName}</a></p>
