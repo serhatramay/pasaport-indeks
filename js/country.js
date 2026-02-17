@@ -345,6 +345,71 @@ function renderTravelSnapshot(country) {
     `;
 }
 
+function renderKnowledgeSection(country) {
+    const grid = document.getElementById('country-knowledge-grid');
+    const note = document.getElementById('country-knowledge-note');
+    if (!grid) return;
+
+    const profile = typeof COUNTRY_PROFILES !== 'undefined' ? COUNTRY_PROFILES[country.kod] : null;
+    if (!profile) {
+        if (note) note.textContent = `${country.ulke} için detaylı yaşam bilgileri hazırlık aşamasında.`;
+        grid.innerHTML = `
+            <article class="knowledge-card">
+                <h3>Veri Durumu</h3>
+                <p>Bu ülke için geniş bilgi kartları henüz eklenmedi. Yakında okullar, operatörler, yaşam maliyeti ve kültürel içerikler yayınlanacak.</p>
+            </article>
+        `;
+        return;
+    }
+
+    if (note) note.textContent = `Son editoryal güncelleme: ${profile.updatedAt}`;
+
+    const schoolItems = profile.schools.map(item => `
+        <li><a href="${item.url}" target="_blank" rel="noopener noreferrer">${item.name}</a></li>
+    `).join('');
+
+    const placeItems = profile.places.map(item => `<li>${item}</li>`).join('');
+
+    const operatorItems = profile.operators.map(item => `
+        <li><a href="${item.url}" target="_blank" rel="noopener noreferrer">${item.name}</a></li>
+    `).join('');
+
+    const famousItems = profile.famousPeople.map(item => `<span class="knowledge-tag">${item}</span>`).join('');
+
+    grid.innerHTML = `
+        <article class="knowledge-card">
+            <h3>En İyi Okullar</h3>
+            <ul class="knowledge-list">${schoolItems}</ul>
+        </article>
+        <article class="knowledge-card">
+            <h3>Gezilecek Yerler</h3>
+            <ul class="knowledge-list">${placeItems}</ul>
+        </article>
+        <article class="knowledge-card">
+            <h3>İnternet ve Operatörler</h3>
+            <ul class="knowledge-list">${operatorItems}</ul>
+        </article>
+        <article class="knowledge-card">
+            <h3>Ekonomi Özeti</h3>
+            <div class="knowledge-stats">
+                <div class="knowledge-stat"><span>Para Birimi</span><strong>${profile.currency}</strong></div>
+                <div class="knowledge-stat"><span>Asgari Ücret</span><strong>${profile.minimumWage}</strong></div>
+                <div class="knowledge-stat"><span>Yaşam Maliyeti</span><strong>${profile.livingCost}</strong></div>
+                <div class="knowledge-stat"><span>Enflasyon</span><strong>${profile.inflation}</strong></div>
+            </div>
+        </article>
+        <article class="knowledge-card">
+            <h3>Yönetim ve Yaşam Tarzı</h3>
+            <p><strong>Yönetim Biçimi:</strong> ${profile.government}</p>
+            <p><strong>Yeme-İçme Alışkanlıkları:</strong> ${profile.foodCulture}</p>
+        </article>
+        <article class="knowledge-card">
+            <h3>En Ünlü 10 Kişi</h3>
+            <div class="knowledge-tags">${famousItems}</div>
+        </article>
+    `;
+}
+
 function renderVisaChart(country) {
     const canvas = document.getElementById('visa-chart');
     if (!canvas || !country || typeof Chart === 'undefined') return;
@@ -738,6 +803,7 @@ function renderCountryPage(country) {
     renderTravelSnapshot(country);
     renderVisaBars(country);
     renderVisaChart(country);
+    renderKnowledgeSection(country);
 
     updateActiveSelectionUI();
     if (currentCountry) renderVisaCountryList(currentCountry, activeVisaStatus, false);
