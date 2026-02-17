@@ -98,7 +98,7 @@ function getVisaCounts(country) {
 
     const counts = { vizesiz: 0, varista: 0, evize: 0, vize: 0 };
     Object.entries(source).forEach(([iso3, status]) => {
-        if (!VALID_ISO3.has(iso3)) return;
+        if (iso3 === country.iso3) return;
         if (!counts[status] && counts[status] !== 0) return;
         counts[status] += 1;
     });
@@ -133,7 +133,7 @@ function parseVisaCsvToMatrix(csvText) {
         const status = mapRequirementToStatus(requirement);
 
         if (!status || !passport || !destination) return;
-        if (!VALID_ISO3.has(passport) || !VALID_ISO3.has(destination)) return;
+        if (!VALID_ISO3.has(passport)) return;
         if (passport === destination) return;
 
         if (!matrix[passport]) matrix[passport] = {};
@@ -690,12 +690,12 @@ function getVisaDestinationsByStatus(country) {
         if (iso3 === country.iso3) return;
 
         const knownCountry = COUNTRY_BY_ISO3[iso3];
-        if (!knownCountry) return;
+        const destination = knownCountry || { ulke: iso3, bayrak: '🌐', kod: '' };
         empty[status].push({
             iso3,
-            ulke: knownCountry.ulke,
-            bayrak: knownCountry.bayrak,
-            kod: knownCountry.kod
+            ulke: destination.ulke,
+            bayrak: destination.bayrak,
+            kod: destination.kod
         });
     });
 
@@ -825,7 +825,10 @@ function renderVisaCountryList(country, status, shouldScroll) {
         const visibleItems = items.slice(0, visaListVisibleCount);
         const chips = visibleItems.map(item => {
             const text = `${item.bayrak} ${item.ulke}`;
-            return `<a class="visa-country-chip" href="ulke.html?code=${encodeURIComponent(item.kod)}">${text}</a>`;
+            if (item.kod) {
+                return `<a class="visa-country-chip" href="ulke.html?code=${encodeURIComponent(item.kod)}">${text}</a>`;
+            }
+            return `<span class="visa-country-chip is-readonly">${text}</span>`;
         }).join('');
 
         const hasMore = items.length > visibleItems.length;
