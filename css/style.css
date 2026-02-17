@@ -683,6 +683,16 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
     color: #d8e4f6;
     font-size: 0.9rem;
 }
+.knowledge-list.source-list {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(255,255,255,0.14);
+}
+.knowledge-list.source-list li {
+    font-size: 0.8rem;
+    color: #b8c8df;
+    line-height: 1.45;
+}
 .knowledge-list a {
     color: #9dd0ff;
     text-decoration: underline;
@@ -710,6 +720,56 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
     color: #f4f7ff;
     font-size: 0.88rem;
     line-height: 1.4;
+}
+.field-meta {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.field-meta span {
+    font-size: 0.74rem;
+    color: #9db0c9;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.03);
+    border-radius: 999px;
+    padding: 4px 8px;
+}
+.field-meta .field-source a {
+    color: #9dd0ff;
+    text-decoration: underline;
+}
+.field-meta .field-source a:hover {
+    color: #f5c518;
+}
+.field-meta .field-trust.trust-high {
+    border-color: rgba(46,204,113,0.4);
+    color: #95efb9;
+}
+.field-meta .field-trust.trust-medium {
+    border-color: rgba(243,156,18,0.45);
+    color: #ffd08a;
+}
+.field-meta .field-trust.trust-low {
+    border-color: rgba(231,76,60,0.45);
+    color: #ffb8ae;
+}
+.field-note {
+    display: block;
+    margin-top: 6px;
+    color: #8ea1bb;
+    font-size: 0.76rem;
+}
+.knowledge-card-full {
+    grid-column: 1 / -1;
+}
+.knowledge-card code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 1px 6px;
+    font-size: 0.78rem;
 }
 .knowledge-tags {
     display: flex;
