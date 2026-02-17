@@ -75,10 +75,15 @@ function getVisaCounts(country) {
 }
 
 function mapRequirementToStatus(requirement) {
-    const value = String(requirement || '').toLowerCase().trim();
-    if (value === 'visa free') return 'vizesiz';
+    const value = String(requirement || '').toLowerCase().trim().replace(/"/g, '');
+    if (!value) return null;
+
+    // CSV'de 30/90/180 gibi gün bazlı serbest kalış değerleri var: vizesiz kabul edilir.
+    if (/^\d+$/.test(value)) return 'vizesiz';
+    if (value === 'visa free' || value.includes('visa free') || value.includes('no visa')) return 'vizesiz';
+    if (value === 'eta' || value.includes('electronic travel authorization')) return 'vizesiz';
     if (value === 'visa on arrival') return 'varista';
-    if (value === 'e-visa' || value === 'eta') return 'evize';
+    if (value === 'e-visa') return 'evize';
     if (value === 'visa required') return 'vize';
     return null;
 }
