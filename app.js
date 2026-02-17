@@ -1,9 +1,12 @@
 // Pasaport Endeksi - Ana Uygulama
 const GEOJSON_URL = 'https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson';
 const VISA_CSV_URL = 'https://raw.githubusercontent.com/ilyankou/passport-index-dataset/master/passport-index-tidy-iso3.csv';
+const COUNTRIES_META_URL = 'https://raw.githubusercontent.com/annexare/Countries/master/dist/countries.min.json';
 let map, geoLayer, geoData = null;
 let visaMatrixByPassportIso3 = null;
 let visaLoadState = 'idle';
+let countryMetaByIso2 = null;
+const compareFilterState = { search: '', region: 'all', sort: 'rank' };
 
 document.addEventListener('DOMContentLoaded', () => {
     const data = PASAPORT_DATA.sort((a, b) => a.sira - b.sira);
@@ -18,12 +21,16 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('stat-visa-free').textContent = turkiye.vizesiz + turkiye.varistaSiz;
     }
 
+    setDataQualityBadge('Veri doğrulama: kontrol ediliyor...', 'loading');
     renderPassportGrid(data, 'all');
     renderRankingTable(data);
     fillSelects(data);
     initMap(data);
     renderTurkeySpotlight(turkiye);
     initEventListeners(data);
+    preloadCountryMeta().then(() => {
+        applyCompareFilters(data);
+    });
 });
 
 function normalizeText(value) {
@@ -32,6 +39,74 @@ function normalizeText(value) {
         .replace(/ı/g, 'i')
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '');
+}
+
+function getAccessScore(country) {
+    return country.vizesiz + country.varistaSiz + country.evize;
+}
+
+async function preloadCountryMeta() {
+    if (countryMetaByIso2) return;
+    try {
+        const response = await fetch(COUNTRIES_META_URL, { cache: 'force-cache' });
+        if (!response.ok) throw new Error('Meta indirilemedi: ' + response.status);
+        countryMetaByIso2 = await response.json();
+    } catch (err) {
+        console.warn('Ulke meta verisi yuklenemedi:', err);
+        countryMetaByIso2 = {};
+    }
+}
+
+function getCountryContinentCode(kod) {
+    if (!kod) return null;
+    const meta = countryMetaByIso2?.[kod.toUpperCase()];
+    return meta?.continent || null;
+}
+
+function sortCompareData(data, mode) {
+    const items = [...data];
+    if (mode === 'access-desc') {
+        return items.sort((a, b) => getAccessScore(b) - getAccessScore(a) || a.ulke.localeCompare(b.ulke, 'tr'));
+    }
+    if (mode === 'access-asc') {
+        return items.sort((a, b) => getAccessScore(a) - getAccessScore(b) || a.ulke.localeCompare(b.ulke, 'tr'));
+    }
+    if (mode === 'name') {
+        return items.sort((a, b) => a.ulke.localeCompare(b.ulke, 'tr'));
+    }
+    return items.sort((a, b) => a.sira - b.sira || a.ulke.localeCompare(b.ulke, 'tr'));
+}
+
+function fillSingleCompareSelect(selectId, list) {
+    const el = document.getElementById(selectId);
+    if (!el) return;
+
+    const previous = el.value;
+    el.innerHTML = '<option value="">Ülke Seçin</option>' + list.map(d => `
+        <option value="${d.kod}">${d.bayrak} ${d.ulke}</option>
+    `).join('');
+
+    if (previous && list.some(item => item.kod === previous)) {
+        el.value = previous;
+    } else {
+        el.value = '';
+        renderCompare(selectId === 'compare-select-1' ? 'compare-result-1' : 'compare-result-2', null);
+    }
+}
+
+function applyCompareFilters(data) {
+    const q = normalizeText(compareFilterState.search);
+    const region = compareFilterState.region;
+
+    const filtered = data.filter(item => {
+        const nameMatch = !q || normalizeText(item.ulke).includes(q);
+        const regionMatch = region === 'all' || getCountryContinentCode(item.kod) === region;
+        return nameMatch && regionMatch;
+    });
+
+    const sorted = sortCompareData(filtered, compareFilterState.sort);
+    fillSingleCompareSelect('compare-select-1', sorted);
+    fillSingleCompareSelect('compare-select-2', sorted);
 }
 
 function focusCountryForCompare(data, code) {
@@ -85,17 +160,20 @@ function renderRankingTable(data) {
 }
 
 function fillSelects(data) {
-    const selects = ['compare-select-1', 'compare-select-2', 'map-country-select'];
-    selects.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el) return;
+    const mapSelect = document.getElementById('map-country-select');
+    if (mapSelect) {
         data.forEach(d => {
             const opt = document.createElement('option');
             opt.value = d.kod;
             opt.textContent = d.bayrak + ' ' + d.ulke;
-            el.appendChild(opt);
+            mapSelect.appendChild(opt);
         });
-    });
+    }
+
+    // Ilk gorunumde filtrelenmemis compare listesi
+    fillSingleCompareSelect('compare-select-1', sortCompareData(data, 'rank'));
+    fillSingleCompareSelect('compare-select-2', sortCompareData(data, 'rank'));
+
     const mapSel = document.getElementById('map-country-select');
     if (mapSel) mapSel.value = 'TR';
 }
@@ -131,10 +209,13 @@ function setMapDataStatus(message, state) {
 }
 
 function mapRequirementToStatus(requirement) {
-    const value = String(requirement || '').toLowerCase().trim();
-    if (value === 'visa free') return 'vizesiz';
+    const value = String(requirement || '').toLowerCase().trim().replace(/"/g, '');
+    if (!value) return null;
+    if (/^\d+$/.test(value)) return 'vizesiz';
+    if (value === 'visa free' || value.includes('visa free') || value.includes('no visa')) return 'vizesiz';
+    if (value === 'eta' || value.includes('electronic travel authorization')) return 'vizesiz';
     if (value === 'visa on arrival') return 'varista';
-    if (value === 'e-visa' || value === 'eta') return 'evize';
+    if (value === 'e-visa') return 'evize';
     if (value === 'visa required') return 'vize';
     return null;
 }
@@ -165,6 +246,54 @@ function parseVisaCsvToMatrix(csvText, data) {
     return matrix;
 }
 
+function setDataQualityBadge(message, state) {
+    const el = document.getElementById('data-quality-badge');
+    if (!el) return;
+    el.textContent = message;
+    el.dataset.state = state || 'loading';
+}
+
+function evaluateDataQuality(data) {
+    if (!visaMatrixByPassportIso3) {
+        setDataQualityBadge('Veri doğrulama: canlı CSV alınamadı, yerel veri gösteriliyor.', 'warn');
+        return;
+    }
+
+    let mismatchCount = 0;
+    let checkedCount = 0;
+
+    data.forEach(country => {
+        const source = visaMatrixByPassportIso3[country.iso3];
+        if (!source) return;
+        checkedCount += 1;
+
+        const counts = { vizesiz: 0, varista: 0, evize: 0, vize: 0 };
+        Object.values(source).forEach(status => {
+            if (counts[status] || counts[status] === 0) counts[status] += 1;
+        });
+
+        const same =
+            counts.vizesiz === country.vizesiz &&
+            counts.varista === country.varistaSiz &&
+            counts.evize === country.evize &&
+            counts.vize === country.vizeGerekli;
+
+        if (!same) mismatchCount += 1;
+    });
+
+    if (checkedCount === 0) {
+        setDataQualityBadge('Veri doğrulama: karşılaştırma yapılamadı.', 'warn');
+        return;
+    }
+
+    if (mismatchCount === 0) {
+        setDataQualityBadge(`Veri doğrulama: ${checkedCount} ülke için tam uyum.`, 'ok');
+        return;
+    }
+
+    setDataQualityBadge(`Veri doğrulama: ${mismatchCount} ülkede CSV/data.js farkı var.`, 'warn');
+}
+
 async function preloadVisaDataset(data) {
     if (visaLoadState === 'loading' || visaLoadState === 'loaded') return;
     visaLoadState = 'loading';
@@ -178,10 +307,12 @@ async function preloadVisaDataset(data) {
         visaMatrixByPassportIso3 = parseVisaCsvToMatrix(csvText, data);
         visaLoadState = 'loaded';
         setMapDataStatus('Gercek vize verisi aktif.', 'ok');
+        evaluateDataQuality(data);
     } catch (err) {
         visaLoadState = 'error';
         console.warn('Vize veri seti yuklenemedi:', err);
         setMapDataStatus('Gercek vize verisi yuklenemedi. Haritada eksik alanlar olabilir.', 'warn');
+        setDataQualityBadge('Veri doğrulama: canlı CSV alınamadı, yerel veri kullanılıyor.', 'error');
     }
 }
 
@@ -340,6 +471,51 @@ function initEventListeners(data) {
     document.getElementById('compare-select-2')?.addEventListener('change', e => {
         const c = data.find(d => d.kod === e.target.value);
         renderCompare('compare-result-2', c);
+    });
+
+    document.getElementById('compare-search')?.addEventListener('input', e => {
+        compareFilterState.search = e.target.value || '';
+        applyCompareFilters(data);
+    });
+
+    document.getElementById('compare-region')?.addEventListener('change', e => {
+        compareFilterState.region = e.target.value || 'all';
+        applyCompareFilters(data);
+    });
+
+    document.getElementById('compare-sort')?.addEventListener('change', e => {
+        compareFilterState.sort = e.target.value || 'rank';
+        applyCompareFilters(data);
+    });
+
+    document.getElementById('compare-quick-best')?.addEventListener('click', () => {
+        const sorted = sortCompareData(data, 'access-desc');
+        if (!sorted[0]) return;
+        compareFilterState.search = '';
+        compareFilterState.region = 'all';
+        applyCompareFilters(data);
+        const searchEl = document.getElementById('compare-search');
+        const regionEl = document.getElementById('compare-region');
+        if (searchEl) searchEl.value = '';
+        if (regionEl) regionEl.value = 'all';
+        const left = document.getElementById('compare-select-1');
+        if (left) left.value = sorted[0].kod;
+        renderCompare('compare-result-1', sorted[0]);
+    });
+
+    document.getElementById('compare-quick-worst')?.addEventListener('click', () => {
+        const sorted = sortCompareData(data, 'access-asc');
+        if (!sorted[0]) return;
+        compareFilterState.search = '';
+        compareFilterState.region = 'all';
+        applyCompareFilters(data);
+        const searchEl = document.getElementById('compare-search');
+        const regionEl = document.getElementById('compare-region');
+        if (searchEl) searchEl.value = '';
+        if (regionEl) regionEl.value = 'all';
+        const right = document.getElementById('compare-select-2');
+        if (right) right.value = sorted[0].kod;
+        renderCompare('compare-result-2', sorted[0]);
     });
 
     document.getElementById('map-country-select')?.addEventListener('change', e => {
