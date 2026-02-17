@@ -12,9 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const data = PASAPORT_DATA.sort((a, b) => a.sira - b.sira);
     const turkiye = data.find(d => d.kod === 'TR');
     const countriesStat = document.getElementById('stat-countries');
+    const updatedStat = document.getElementById('stat-updated');
 
     if (countriesStat) {
         countriesStat.textContent = String(data.length);
+    }
+    if (updatedStat) {
+        updatedStat.textContent = formatDateTr(DATA_INFO?.generatedAt);
     }
 
     if (turkiye) {
@@ -24,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setDataQualityBadge('Veri doğrulama: kontrol ediliyor...', 'loading');
     renderPassportGrid(data, 'all');
     renderRankingTable(data);
+    renderRankingInfo(data);
     fillSelects(data);
     initMap(data);
     renderTurkeySpotlight(turkiye);
@@ -54,6 +59,37 @@ function applyInitialSearchFromUrl() {
 
 function getAccessScore(country) {
     return country.vizesiz + country.varistaSiz + country.evize;
+}
+
+function formatDateTr(isoDate) {
+    if (!isoDate) return 'Bilinmiyor';
+    const date = new Date(isoDate + 'T00:00:00');
+    if (Number.isNaN(date.getTime())) return isoDate;
+    return date.toLocaleDateString('tr-TR', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+function renderRankingInfo(data) {
+    const el = document.getElementById('ranking-info');
+    if (!el) return;
+
+    const info = typeof DATA_INFO !== 'undefined' ? DATA_INFO : {};
+    const sourceName = info.sourceName || 'Belirtilmedi';
+    const sourceUrl = info.sourceUrl || '#';
+    const generatedAt = formatDateTr(info.generatedAt);
+    const methodology = info.methodology || 'Pasaport puani = vizesiz + varista vize + e-vize.';
+    const countryCount = String(data.length || 0);
+    const coverageTarget = String(info.coverageTarget || 198);
+    const note = info.note || '';
+
+    el.innerHTML = `
+        <div class="ranking-info-grid">
+            <p><strong>Son guncelleme:</strong> ${generatedAt}</p>
+            <p><strong>Kapsam:</strong> ${countryCount} pasaport, hedef ${coverageTarget} destinasyon</p>
+            <p><strong>Metodoloji:</strong> ${methodology}</p>
+            <p><strong>Kaynak:</strong> <a href="${sourceUrl}" target="_blank" rel="noopener noreferrer">${sourceName}</a></p>
+            ${note ? `<p class="ranking-note">${note}</p>` : ''}
+        </div>
+    `;
 }
 
 async function preloadCountryMeta() {
