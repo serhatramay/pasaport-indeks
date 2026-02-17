@@ -1125,7 +1125,28 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
     gap: 8px;
 }
 .planner-links a {
-    font-size: 0.84rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(138, 197, 255, 0.35);
+    background: rgba(27, 63, 98, 0.3);
+    color: #9dd0ff;
+    font-size: 0.86rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+.planner-links a:hover {
+    border-color: rgba(245, 197, 24, 0.55);
+    background: rgba(245, 197, 24, 0.14);
+    color: #ffe08a;
+}
+.planner-links a:focus-visible {
+    outline: 2px solid rgba(245, 197, 24, 0.5);
+    outline-offset: 1px;
 }
 
 @media (max-width: 1024px) {
