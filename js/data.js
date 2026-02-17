@@ -4,9 +4,9 @@ const DATA_INFO = {
   generatedAt: "2026-02-17",
   sourceName: "passport-index-dataset (ilyankou)",
   sourceUrl: "https://github.com/ilyankou/passport-index-dataset",
-  methodology: "Pasaport puani = vizesiz + varista vize + e-vize.",
+  methodology: "Pasaport puanı = vizesiz + varışta vize + e-vize.",
   coverageTarget: 198,
-  note: "Farkli endeksler farkli metodoloji kullanir; bu tablo ic metodoloji ile hesaplanir."
+  note: "Farklı endeksler farklı metodoloji kullanır; bu tablo iç metodoloji ile hesaplanır."
 };
 
 const PASAPORT_DATA = [
