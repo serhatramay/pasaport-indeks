@@ -127,6 +127,8 @@ let visaMatrixByPassportIso3 = null;
 let visaLoadState = 'idle';
 let countryMetaByIso2 = null;
 const compareFilterState = { search: '', region: 'all', sort: 'rank' };
+const passportFilterState = { mode: 'all', search: '', region: 'all', sort: 'rank', limit: 24, step: 24 };
+const rankingFilterState = { search: '', region: 'all', limit: 20, step: 20 };
 let tripPlannerSetupDone = false;
 let rankingRendered = false;
 let mapInitStarted = false;
@@ -202,6 +204,13 @@ function scrollToSectionWithOffset(target) {
     const offset = headerHeight + 8;
     const top = window.scrollY + target.getBoundingClientRect().top - offset;
     window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+}
+
+function stabilizeSectionScroll(target) {
+    if (!target) return;
+    [0, 300, 800, 1600, 2600, 4000].forEach(delay => {
+        setTimeout(() => scrollToSectionWithOffset(target), delay);
+    });
 }
 
 function loadExternalScript(url, globalSymbol) {
@@ -306,7 +315,7 @@ function setupLazyPassportGrid(data) {
     const section = document.getElementById('pasaportlar');
     const renderCards = () => {
         if (passportGridRendered) return;
-        renderPassportGrid(data, 'all');
+        applyPassportFilters(data);
         passportGridRendered = true;
     };
 
@@ -358,7 +367,7 @@ function setupLazyRankingSection(data) {
     if (!section) {
         renderRankingInfo(data);
         renderSourceComparison();
-        renderRankingTable(data);
+        applyRankingFilters(data);
         rankingRendered = true;
         return;
     }
@@ -367,7 +376,7 @@ function setupLazyRankingSection(data) {
         if (rankingRendered) return;
         renderRankingInfo(data);
         renderSourceComparison();
-        renderRankingTable(data);
+        applyRankingFilters(data);
         rankingRendered = true;
     };
 
@@ -411,6 +420,91 @@ function sortCompareData(data, mode) {
         return items.sort((a, b) => a.ulke.localeCompare(b.ulke, 'tr'));
     }
     return items.sort((a, b) => a.sira - b.sira || a.ulke.localeCompare(b.ulke, 'tr'));
+}
+
+function sortListingData(data, mode) {
+    const items = [...data];
+    if (mode === 'name') {
+        return items.sort((a, b) => a.ulke.localeCompare(b.ulke, 'tr'));
+    }
+    if (mode === 'score-asc') {
+        return items.sort((a, b) => a.puan - b.puan || a.ulke.localeCompare(b.ulke, 'tr'));
+    }
+    if (mode === 'score-desc') {
+        return items.sort((a, b) => b.puan - a.puan || a.ulke.localeCompare(b.ulke, 'tr'));
+    }
+    return items.sort((a, b) => a.sira - b.sira || a.ulke.localeCompare(b.ulke, 'tr'));
+}
+
+function applyPassportFilters(data) {
+    let filtered = [...data];
+
+    if (passportFilterState.mode === 'top-20') {
+        filtered = sortListingData(filtered, 'rank').slice(0, 20);
+    } else if (passportFilterState.mode === 'visa-free') {
+        filtered = filtered.filter(d => d.vizesiz >= 100);
+    }
+
+    const search = normalizeText(passportFilterState.search || '');
+    if (search) {
+        filtered = filtered.filter(d => normalizeText(d.ulke).includes(search));
+    }
+
+    if (passportFilterState.region !== 'all') {
+        if (!countryMetaByIso2) {
+            preloadCountryMeta().then(() => applyPassportFilters(data));
+            return;
+        }
+        filtered = filtered.filter(item => getCountryContinentCode(item.kod) === passportFilterState.region);
+    }
+
+    filtered = sortListingData(filtered, passportFilterState.sort);
+
+    const limited = filtered.slice(0, passportFilterState.limit);
+    renderPassportGrid(limited);
+
+    const countEl = document.getElementById('passport-result-count');
+    if (countEl) countEl.textContent = String(limited.length);
+
+    const loadMore = document.getElementById('passport-load-more');
+    if (loadMore) {
+        const hasMore = filtered.length > passportFilterState.limit;
+        loadMore.style.display = hasMore ? 'inline-flex' : 'none';
+        loadMore.disabled = !hasMore;
+    }
+}
+
+function applyRankingFilters(data) {
+    let filtered = [...data];
+
+    const search = normalizeText(rankingFilterState.search || '');
+    if (search) {
+        filtered = filtered.filter(d => normalizeText(d.ulke).includes(search));
+    }
+
+    if (rankingFilterState.region !== 'all') {
+        if (!countryMetaByIso2) {
+            preloadCountryMeta().then(() => applyRankingFilters(data));
+            return;
+        }
+        filtered = filtered.filter(item => getCountryContinentCode(item.kod) === rankingFilterState.region);
+    }
+
+    filtered = sortListingData(filtered, 'rank');
+    const limit = rankingFilterState.limit === 'all' ? filtered.length : Number(rankingFilterState.limit) || 20;
+    const limited = filtered.slice(0, limit);
+
+    renderRankingTable(limited);
+
+    const countEl = document.getElementById('ranking-result-count');
+    if (countEl) countEl.textContent = String(limited.length);
+
+    const loadMore = document.getElementById('ranking-load-more');
+    if (loadMore) {
+        const hasMore = filtered.length > limited.length;
+        loadMore.style.display = hasMore ? 'inline-flex' : 'none';
+        loadMore.disabled = !hasMore;
+    }
 }
 
 function fillSingleCompareSelect(selectId, list) {
@@ -645,18 +739,15 @@ function setupLazyTripPlanner(data) {
     document.getElementById('trip-destination')?.addEventListener('focus', trigger, { once: true });
 }
 
-function renderPassportGrid(data, filter) {
+function renderPassportGrid(data) {
     const grid = document.getElementById('passport-grid');
     if (!grid) return;
-    let filtered = [...data];
-    if (filter === 'top-20') filtered = filtered.slice(0, 20);
-    else if (filter === 'visa-free') filtered = filtered.filter(d => d.vizesiz >= 100);
     grid.innerHTML = '';
     let index = 0;
     const chunkSize = 24;
 
     const renderChunk = () => {
-        const slice = filtered.slice(index, index + chunkSize);
+        const slice = data.slice(index, index + chunkSize);
         if (!slice.length) return;
         grid.insertAdjacentHTML('beforeend', slice.map(d => `
             <article class="passport-card" data-code="${d.kod}" tabindex="0" aria-label="${d.ulke} pasaportu, puan: ${d.puan}">
@@ -668,7 +759,7 @@ function renderPassportGrid(data, filter) {
             </article>
         `).join(''));
         index += chunkSize;
-        if (index < filtered.length) {
+        if (index < data.length) {
             requestAnimationFrame(renderChunk);
         }
     };
@@ -1066,8 +1157,65 @@ function initEventListeners(data) {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            renderPassportGrid(data, btn.dataset.filter);
+            passportFilterState.mode = btn.dataset.filter || 'all';
+            passportFilterState.limit = passportFilterState.step;
+            applyPassportFilters(data);
         });
+    });
+
+    document.getElementById('passport-search')?.addEventListener('input', e => {
+        passportFilterState.search = e.target.value || '';
+        passportFilterState.limit = passportFilterState.step;
+        applyPassportFilters(data);
+    });
+
+    document.getElementById('passport-region')?.addEventListener('change', e => {
+        passportFilterState.region = e.target.value || 'all';
+        passportFilterState.limit = passportFilterState.step;
+        applyPassportFilters(data);
+    });
+
+    document.getElementById('passport-sort')?.addEventListener('change', e => {
+        passportFilterState.sort = e.target.value || 'rank';
+        applyPassportFilters(data);
+    });
+
+    document.getElementById('passport-load-more')?.addEventListener('click', () => {
+        passportFilterState.limit += passportFilterState.step;
+        applyPassportFilters(data);
+    });
+
+    document.getElementById('ranking-search')?.addEventListener('input', e => {
+        rankingFilterState.search = e.target.value || '';
+        if (rankingFilterState.limit !== 'all') {
+            rankingFilterState.limit = 20;
+            const limitEl = document.getElementById('ranking-limit');
+            if (limitEl) limitEl.value = '20';
+        }
+        applyRankingFilters(data);
+    });
+
+    document.getElementById('ranking-region')?.addEventListener('change', e => {
+        rankingFilterState.region = e.target.value || 'all';
+        if (rankingFilterState.limit !== 'all') {
+            rankingFilterState.limit = 20;
+            const limitEl = document.getElementById('ranking-limit');
+            if (limitEl) limitEl.value = '20';
+        }
+        applyRankingFilters(data);
+    });
+
+    document.getElementById('ranking-limit')?.addEventListener('change', e => {
+        const value = e.target.value || '20';
+        rankingFilterState.limit = value === 'all' ? 'all' : Number(value);
+        applyRankingFilters(data);
+    });
+
+    document.getElementById('ranking-load-more')?.addEventListener('click', () => {
+        const limitEl = document.getElementById('ranking-limit');
+        if (limitEl) limitEl.value = 'all';
+        rankingFilterState.limit = 'all';
+        applyRankingFilters(data);
     });
 
     document.getElementById('compare-select-1')?.addEventListener('change', e => {
@@ -1215,9 +1363,7 @@ function initEventListeners(data) {
             e.preventDefault();
             const target = document.querySelector(link.getAttribute('href'));
             if (target) {
-                scrollToSectionWithOffset(target);
-                // Lazy-render/layout shift sonrası hizayı tekrar düzelt.
-                setTimeout(() => scrollToSectionWithOffset(target), 420);
+                stabilizeSectionScroll(target);
                 nav?.classList.remove('open');
                 document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
                 link.classList.add('active');
