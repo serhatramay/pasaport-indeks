@@ -12,6 +12,8 @@ let visaMatrixByPassportIso3 = null;
 let visaLoadState = 'idle';
 let currentCountry = null;
 let activeVisaStatus = 'vize';
+let visaListSearchQuery = '';
+let visaListSortMode = 'az';
 
 const COUNTRY_BY_ISO3 = {};
 PASAPORT_DATA.forEach(item => {
@@ -52,6 +54,14 @@ function getMobilityTier(country) {
     if (country.puan >= 140) return 'Yüksek Mobilite';
     if (country.puan >= 100) return 'Gelişen Mobilite';
     return 'Sınırlı Mobilite';
+}
+
+function normalizeText(value) {
+    return String(value || '')
+        .toLowerCase()
+        .replace(/ı/g, 'i')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
 }
 
 function getVisaCounts(country) {
@@ -349,10 +359,14 @@ function renderVisaCountryListLoading(message) {
     const title = document.getElementById('visa-list-title');
     const subtitle = document.getElementById('visa-list-subtitle');
     const list = document.getElementById('visa-country-list');
+    const search = document.getElementById('visa-list-search');
+    const sort = document.getElementById('visa-list-sort');
 
     if (title) title.textContent = 'Ülke Listesi';
     if (subtitle) subtitle.textContent = message;
     if (list) list.innerHTML = '';
+    if (search) search.disabled = true;
+    if (sort) sort.disabled = true;
 }
 
 function updateActiveSelectionUI() {
@@ -386,18 +400,46 @@ function renderVisaCountryList(country, status, shouldScroll) {
         title.textContent = 'Ülke Listesi';
         subtitle.textContent = 'Detay liste şu anda yüklenemedi. Lütfen daha sonra tekrar deneyin.';
         list.innerHTML = '';
+        const search = document.getElementById('visa-list-search');
+        const sort = document.getElementById('visa-list-sort');
+        if (search) search.disabled = true;
+        if (sort) sort.disabled = true;
         return;
     }
 
     const meta = VISA_STATUS_META[status];
     const buckets = getVisaDestinationsByStatus(country);
-    const items = buckets[status] || [];
+    const baseItems = buckets[status] || [];
+    const searchQuery = normalizeText(visaListSearchQuery);
+    const items = baseItems
+        .filter(item => {
+            if (!searchQuery) return true;
+            return normalizeText(item.ulke).includes(searchQuery);
+        })
+        .sort((a, b) => {
+            const cmp = a.ulke.localeCompare(b.ulke, 'tr');
+            return visaListSortMode === 'za' ? -cmp : cmp;
+        });
+
+    const search = document.getElementById('visa-list-search');
+    const sort = document.getElementById('visa-list-sort');
+    if (search) {
+        search.disabled = false;
+        if (search.value !== visaListSearchQuery) search.value = visaListSearchQuery;
+    }
+    if (sort) {
+        sort.disabled = false;
+        sort.value = visaListSortMode;
+    }
 
     title.textContent = `${country.ulke} için ${meta.label} Ülkeler`;
-    subtitle.textContent = `${items.length} ülke listeleniyor.`;
+    subtitle.textContent = `${items.length} / ${baseItems.length} ülke listeleniyor.`;
 
     if (!items.length) {
-        list.innerHTML = '<p class="visa-list-empty">Bu kategoride listelenecek ülke bulunamadı.</p>';
+        const emptyMessage = baseItems.length && searchQuery
+            ? 'Arama kriterine uygun ülke bulunamadı.'
+            : 'Bu kategoride listelenecek ülke bulunamadı.';
+        list.innerHTML = `<p class="visa-list-empty">${emptyMessage}</p>`;
     } else {
         list.innerHTML = items.map(item => {
             const text = `${item.bayrak} ${item.ulke}`;
@@ -436,6 +478,28 @@ function bindInteractiveHandlers() {
             handleVisaCategorySelection(row.dataset.visaStatus, true);
         });
         visaBars.dataset.bound = '1';
+    }
+
+    const search = document.getElementById('visa-list-search');
+    if (search && !search.dataset.bound) {
+        search.addEventListener('input', event => {
+            visaListSearchQuery = event.target.value || '';
+            if (currentCountry) {
+                renderVisaCountryList(currentCountry, activeVisaStatus, false);
+            }
+        });
+        search.dataset.bound = '1';
+    }
+
+    const sort = document.getElementById('visa-list-sort');
+    if (sort && !sort.dataset.bound) {
+        sort.addEventListener('change', event => {
+            visaListSortMode = event.target.value === 'za' ? 'za' : 'az';
+            if (currentCountry) {
+                renderVisaCountryList(currentCountry, activeVisaStatus, false);
+            }
+        });
+        sort.dataset.bound = '1';
     }
 }
 
