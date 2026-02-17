@@ -1,5 +1,14 @@
 // Pasaport Endeksi - Ulke Verileri (153 Ulke)
 // Kaynak: Kamuya acik vize verileri, 2026 guncellemesi
+const DATA_INFO = {
+  generatedAt: "2026-02-17",
+  sourceName: "passport-index-dataset (ilyankou)",
+  sourceUrl: "https://github.com/ilyankou/passport-index-dataset",
+  methodology: "Pasaport puani = vizesiz + varista vize + e-vize.",
+  coverageTarget: 198,
+  note: "Farkli endeksler farkli metodoloji kullanir; bu tablo ic metodoloji ile hesaplanir."
+};
+
 const PASAPORT_DATA = [
   { kod: "TR", ulke: "Turkiye", bayrak: "🇹🇷", vizesiz: 71, varistaSiz: 44, evize: 6, vizeGerekli: 77, puan: 121, sira: 40, nufus: "87.685.426", iso3: "TUR" },
   { kod: "DE", ulke: "Almanya", bayrak: "🇩🇪", vizesiz: 155, varistaSiz: 18, evize: 8, vizeGerekli: 17, puan: 181, sira: 1, nufus: "84.482.267", iso3: "DEU" },
