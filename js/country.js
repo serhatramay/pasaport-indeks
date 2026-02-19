@@ -42,18 +42,71 @@ function getCountryByCode(code) {
     return PASAPORT_DATA.find(item => item.kod === code.toUpperCase()) || null;
 }
 
+function slugifyCountryName(value) {
+    const table = { 'ç': 'c', 'ğ': 'g', 'ı': 'i', 'ö': 'o', 'ş': 's', 'ü': 'u', 'â': 'a', 'î': 'i', 'û': 'u' };
+    return String(value || '')
+        .toLowerCase()
+        .replace(/[çğıöşüâîû]/g, ch => table[ch] || ch)
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '') || 'ulke';
+}
+
+function getCountrySlugByCode(code) {
+    const country = getCountryByCode(code);
+    return country ? slugifyCountryName(country.ulke) : '';
+}
+
+function getSiteBasePath() {
+    const marker = '/pasaport-indeks/';
+    const path = window.location.pathname || '/';
+    const idx = path.indexOf(marker);
+    if (idx >= 0) return path.slice(0, idx + marker.length);
+    return '/';
+}
+
+function getCleanCountryPath(code) {
+    const slug = getCountrySlugByCode(code);
+    if (!slug) return 'ulke.html?code=' + encodeURIComponent(String(code || '').toUpperCase());
+    return `ulke/${slug}/`;
+}
+
+function findCountryBySlug(slug) {
+    const normalized = String(slug || '').toLowerCase();
+    return PASAPORT_DATA.find(item => slugifyCountryName(item.ulke) === normalized) || null;
+}
+
 function parseCountryCodeFromUrl() {
+    const bodyCode = document.body?.dataset?.countryCode;
+    if (bodyCode) return String(bodyCode).toUpperCase();
+
+    const pathMatch = window.location.pathname.match(/\/ulke\/([^\/?#]+)\/?$/i);
+    if (pathMatch && pathMatch[1]) {
+        const bySlug = findCountryBySlug(decodeURIComponent(pathMatch[1]));
+        if (bySlug) return bySlug.kod;
+    }
+
     const params = new URLSearchParams(window.location.search);
     return (params.get('code') || '').toUpperCase();
 }
 
 function updateUrl(code) {
+    const cleanPath = getCleanCountryPath(code);
+    if (cleanPath.startsWith('ulke/')) {
+        const next = `${window.location.origin}${getSiteBasePath()}${cleanPath}`;
+        window.history.replaceState({}, '', next);
+        return;
+    }
     const url = new URL(window.location.href);
     url.searchParams.set('code', code);
     window.history.replaceState({}, '', url.toString());
 }
 
 function getCanonicalCountryUrl(code) {
+    const cleanPath = getCleanCountryPath(code);
+    if (cleanPath.startsWith('ulke/')) {
+        return `https://serhatramay.github.io/pasaport-indeks/${cleanPath}`;
+    }
     const value = String(code || '').toUpperCase();
     return `https://serhatramay.github.io/pasaport-indeks/ulke.html?code=${encodeURIComponent(value)}`;
 }
@@ -826,7 +879,7 @@ function renderVisaCountryList(country, status, shouldScroll) {
         const chips = visibleItems.map(item => {
             const text = `${item.bayrak} ${item.ulke}`;
             if (item.kod) {
-                return `<a class="visa-country-chip" href="ulke.html?code=${encodeURIComponent(item.kod)}">${text}</a>`;
+                return `<a class="visa-country-chip" href="${getSiteBasePath()}${getCleanCountryPath(item.kod)}">${text}</a>`;
             }
             return `<span class="visa-country-chip is-readonly">${text}</span>`;
         }).join('');
