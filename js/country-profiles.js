@@ -393,6 +393,376 @@ const COUNTRY_PROFILES = {
     inflation: 'RBI ve resmi istatistik verileriyle dönemsel takip önerilir.',
     foodCulture: 'Baharatlı ve bölgesel çeşitliliği yüksek mutfak kültürü baskındır.',
     famousPeople: ['Mahatma Gandhi', 'Rabindranath Tagore', 'Narendra Modi', 'Shah Rukh Khan', 'A.R. Rahman', 'Virat Kohli', 'Priyanka Chopra', 'Sundar Pichai', 'Satya Nadella', 'Deepika Padukone']
+  },
+  KR: {
+    updatedAt: '2026-02-20',
+    schools: [
+      { name: 'Seoul National University', url: 'https://en.snu.ac.kr/' },
+      { name: 'KAIST', url: 'https://www.kaist.ac.kr/en/' },
+      { name: 'POSTECH', url: 'https://www.postech.ac.kr/eng/' },
+      { name: 'Yonsei University', url: 'https://www.yonsei.ac.kr/en_sc/' },
+      { name: 'Korea University', url: 'https://www.korea.edu/' }
+    ],
+    places: ['Seul Gyeongbokgung', 'Busan Haeundae', 'Jeju Adası', 'Gyeongju Tarihi Alanları', 'DMZ Turları'],
+    operators: [
+      { name: 'SK Telecom', url: 'https://www.sktelecom.com/en/' },
+      { name: 'KT', url: 'https://corp.kt.com/eng/' },
+      { name: 'LG U+', url: 'https://www.lguplus.com/' }
+    ],
+    currency: 'Güney Kore Wonu (KRW)',
+    minimumWage: 'Ulusal saatlik ücret her yıl güncellenir; resmi duyurularla teyit edilmelidir.',
+    livingCost: 'Seul’de konut maliyeti yüksektir; şehirler arasında fark belirgindir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Kore İstatistik Servisi ve merkez bankası verileriyle izlenmelidir.',
+    foodCulture: 'Kimchi, barbecue ve sokak yemeği kültürü güçlüdür.',
+    famousPeople: ['BTS', 'Son Heung-min', 'Bong Joon-ho', 'Park Chan-wook', 'Kim Yuna', 'PSY', 'IU', 'Lee Min-ho', 'Yuna Kim', 'Ban Ki-moon']
+  },
+  AT: {
+    updatedAt: '2026-02-20',
+    schools: [
+      { name: 'University of Vienna', url: 'https://www.univie.ac.at/en/' },
+      { name: 'TU Wien', url: 'https://www.tuwien.at/en/' },
+      { name: 'Medical University of Vienna', url: 'https://www.meduniwien.ac.at/web/en/' },
+      { name: 'University of Graz', url: 'https://www.uni-graz.at/en/' },
+      { name: 'University of Innsbruck', url: 'https://www.uibk.ac.at/en/' }
+    ],
+    places: ['Viyana Schönbrunn', 'Salzburg Eski Şehir', 'Hallstatt', 'Innsbruck Alpleri', 'Graz Merkez'],
+    operators: [
+      { name: 'A1 Telekom Austria', url: 'https://www.a1.net/' },
+      { name: 'Magenta Telekom', url: 'https://www.magenta.at/' },
+      { name: 'Drei (3 Austria)', url: 'https://www.drei.at/' }
+    ],
+    currency: 'Euro (EUR)',
+    minimumWage: 'Ulusal asgari ücret yerine sektörel toplu sözleşme sistemi yaygındır.',
+    livingCost: 'Viyana Avrupa ortalamasının üzerinde; öğrenci şehirlerinde görece daha dengelidir.',
+    government: 'Federal parlamenter cumhuriyet',
+    inflation: 'Statistik Austria ve Eurostat üzerinden takip edilmelidir.',
+    foodCulture: 'Kahvehane kültürü, şinitzel ve hamur işi geleneği öne çıkar.',
+    famousPeople: ['Wolfgang Amadeus Mozart', 'Sigmund Freud', 'Gustav Klimt', 'Arnold Schwarzenegger', 'Niki Lauda', 'Joseph Haydn', 'Stefan Zweig', 'Hedy Lamarr', 'Dominic Thiem', 'Franz Kafka']
+  },
+  BE: {
+    updatedAt: '2026-02-20',
+    schools: [
+      { name: 'KU Leuven', url: 'https://www.kuleuven.be/english/' },
+      { name: 'Ghent University', url: 'https://www.ugent.be/en' },
+      { name: 'Université catholique de Louvain', url: 'https://uclouvain.be/en/index.html' },
+      { name: 'Vrije Universiteit Brussel', url: 'https://www.vub.be/en' },
+      { name: 'University of Antwerp', url: 'https://www.uantwerpen.be/en/' }
+    ],
+    places: ['Brüksel Grand Place', 'Brugge Kanalları', 'Gent Tarihi Merkez', 'Antwerp Limanı', 'Ardennes'],
+    operators: [
+      { name: 'Proximus', url: 'https://www.proximus.com/' },
+      { name: 'Orange Belgium', url: 'https://www.orange.be/' },
+      { name: 'Telenet', url: 'https://www.telenet.be/' }
+    ],
+    currency: 'Euro (EUR)',
+    minimumWage: 'Asgari ücret endeksleme mekanizmalarıyla dönemsel güncellenir.',
+    livingCost: 'Brüksel ve Antwerp daha pahalı; küçük şehirlerde daha dengeli olabilir.',
+    government: 'Federal parlamenter monarşi',
+    inflation: 'Belçika istatistik kurumu ve Eurostat verileriyle takip edilir.',
+    foodCulture: 'Waffle, çikolata, patates kızartması ve bira kültürü belirgindir.',
+    famousPeople: ['Audrey Hepburn', 'Hergé', 'Eddy Merckx', 'Kevin De Bruyne', 'Jean-Claude Van Damme', 'Georges Simenon', 'Stromae', 'Eden Hazard', 'René Magritte', 'Romelu Lukaku']
+  },
+  DK: {
+    updatedAt: '2026-02-20',
+    schools: [
+      { name: 'University of Copenhagen', url: 'https://www.ku.dk/english/' },
+      { name: 'Technical University of Denmark', url: 'https://www.dtu.dk/english/' },
+      { name: 'Aarhus University', url: 'https://international.au.dk/' },
+      { name: 'Copenhagen Business School', url: 'https://www.cbs.dk/en' },
+      { name: 'Aalborg University', url: 'https://www.en.aau.dk/' }
+    ],
+    places: ['Kopenhag Nyhavn', 'Tivoli Bahçeleri', 'Aarhus ARoS', 'Odense', 'Skagen'],
+    operators: [
+      { name: 'TDC NET', url: 'https://tdcnet.dk/' },
+      { name: 'Telenor Denmark', url: 'https://www.telenor.dk/' },
+      { name: '3 Denmark', url: 'https://www.3.dk/' }
+    ],
+    currency: 'Danimarka Kronu (DKK)',
+    minimumWage: 'Merkezi asgari ücret yerine toplu sözleşmeler belirleyicidir.',
+    livingCost: 'Kopenhag konut ve hizmet maliyetleri yüksektir.',
+    government: 'Parlamenter monarşi',
+    inflation: 'Danmarks Statistik ve merkez bankası verileriyle takip edilmelidir.',
+    foodCulture: 'Smørrebrød, deniz ürünleri ve yeni nordik mutfak yaklaşımı öne çıkar.',
+    famousPeople: ['Hans Christian Andersen', 'Niels Bohr', 'Søren Kierkegaard', 'Mads Mikkelsen', 'Caroline Wozniacki', 'Lars Ulrich', 'Viggo Mortensen', 'Nikolaj Coster-Waldau', 'Bjarne Stroustrup', 'Lukas Graham']
+  },
+  FI: {
+    updatedAt: '2026-02-20',
+    schools: [
+      { name: 'University of Helsinki', url: 'https://www.helsinki.fi/en' },
+      { name: 'Aalto University', url: 'https://www.aalto.fi/en' },
+      { name: 'University of Turku', url: 'https://www.utu.fi/en' },
+      { name: 'Tampere University', url: 'https://www.tuni.fi/en' },
+      { name: 'University of Oulu', url: 'https://www.oulu.fi/en' }
+    ],
+    places: ['Helsinki Design District', 'Lapland Kuzey Işıkları', 'Turku', 'Saimaa Göl Bölgesi', 'Rovaniemi'],
+    operators: [
+      { name: 'Elisa', url: 'https://elisa.fi/' },
+      { name: 'Telia Finland', url: 'https://www.telia.fi/' },
+      { name: 'DNA', url: 'https://www.dna.fi/' }
+    ],
+    currency: 'Euro (EUR)',
+    minimumWage: 'Sektörel sözleşme ağırlıklı model bulunur.',
+    livingCost: 'Helsinki pahalı; kuzey bölgelerde maliyet yapısı farklılaşır.',
+    government: 'Parlamenter cumhuriyet',
+    inflation: 'Tilastokeskus ve Eurostat üzerinden düzenli izlenmelidir.',
+    foodCulture: 'Balık, çavdar ve orman ürünleri temelli sade mutfak kültürü güçlüdür.',
+    famousPeople: ['Jean Sibelius', 'Kimi Räikkönen', 'Mika Häkkinen', 'Linus Torvalds', 'Alvar Aalto', 'Tarja Halonen', 'Mika Waltari', 'Lordi', 'Sanna Marin', 'Sauli Niinistö']
+  },
+  PT: {
+    updatedAt: '2026-02-20',
+    schools: [
+      { name: 'University of Porto', url: 'https://www.up.pt/portal/en/' },
+      { name: 'University of Lisbon', url: 'https://www.ulisboa.pt/en' },
+      { name: 'NOVA University Lisbon', url: 'https://www.unl.pt/en' },
+      { name: 'University of Coimbra', url: 'https://www.uc.pt/en/' },
+      { name: 'University of Minho', url: 'https://www.uminho.pt/EN' }
+    ],
+    places: ['Lizbon Alfama', 'Porto Ribeira', 'Sintra', 'Algarve Kıyıları', 'Madeira'],
+    operators: [
+      { name: 'MEO', url: 'https://www.meo.pt/' },
+      { name: 'NOS', url: 'https://www.nos.pt/' },
+      { name: 'Vodafone Portugal', url: 'https://www.vodafone.pt/' }
+    ],
+    currency: 'Euro (EUR)',
+    minimumWage: 'Ulusal asgari ücret yıllık olarak revize edilir.',
+    livingCost: 'Lizbon ve Porto artan kira baskısı nedeniyle daha maliyetlidir.',
+    government: 'Yarı başkanlık sistemi',
+    inflation: 'INE ve Eurostat kaynaklarıyla düzenli kontrol edilmelidir.',
+    foodCulture: 'Deniz ürünleri, bacalhau ve pastel de nata kültürü belirgindir.',
+    famousPeople: ['Cristiano Ronaldo', 'Fernando Pessoa', 'José Saramago', 'Luís de Camões', 'Amália Rodrigues', 'Eusébio', 'João Félix', 'Paula Rego', 'António Guterres', 'Rui Costa']
+  },
+  IE: {
+    updatedAt: '2026-02-20',
+    schools: [
+      { name: 'Trinity College Dublin', url: 'https://www.tcd.ie/' },
+      { name: 'University College Dublin', url: 'https://www.ucd.ie/' },
+      { name: 'University of Galway', url: 'https://www.universityofgalway.ie/' },
+      { name: 'University College Cork', url: 'https://www.ucc.ie/en/' },
+      { name: 'Dublin City University', url: 'https://www.dcu.ie/' }
+    ],
+    places: ['Dublin Temple Bar', 'Cliffs of Moher', 'Ring of Kerry', 'Galway', 'Giant’s Causeway'],
+    operators: [
+      { name: 'Vodafone Ireland', url: 'https://n.vodafone.ie/' },
+      { name: 'Three Ireland', url: 'https://www.three.ie/' },
+      { name: 'eir', url: 'https://www.eir.ie/' }
+    ],
+    currency: 'Euro (EUR)',
+    minimumWage: 'Ulusal saatlik ücret yapısı düzenli güncellenir.',
+    livingCost: 'Dublin kira maliyetleri yüksek; ülke içinde bölgesel fark vardır.',
+    government: 'Parlamenter cumhuriyet',
+    inflation: 'CSO Ireland ve Eurostat üzerinden takip edilir.',
+    foodCulture: 'Pub kültürü, et-güveç yemekleri ve modern füzyon mutfak yaygındır.',
+    famousPeople: ['James Joyce', 'Bono', 'Cillian Murphy', 'Saoirse Ronan', 'Conor McGregor', 'Enya', 'Liam Neeson', 'Niall Horan', 'Michael D. Higgins', 'Katie Taylor']
+  },
+  NO: {
+    updatedAt: '2026-02-20',
+    schools: [
+      { name: 'University of Oslo', url: 'https://www.uio.no/english/' },
+      { name: 'Norwegian University of Science and Technology', url: 'https://www.ntnu.edu/' },
+      { name: 'University of Bergen', url: 'https://www.uib.no/en' },
+      { name: 'BI Norwegian Business School', url: 'https://www.bi.edu/' },
+      { name: 'UiT The Arctic University of Norway', url: 'https://en.uit.no/' }
+    ],
+    places: ['Oslo Opera Binası', 'Geirangerfjord', 'Lofoten Adaları', 'Bergen', 'Tromsø'],
+    operators: [
+      { name: 'Telenor Norway', url: 'https://www.telenor.no/' },
+      { name: 'Telia Norway', url: 'https://www.telia.no/' },
+      { name: 'ice', url: 'https://www.ice.no/' }
+    ],
+    currency: 'Norveç Kronu (NOK)',
+    minimumWage: 'Sektörel sözleşmeler baskındır; bazı sektörlerde yasal taban ücret uygulanır.',
+    livingCost: 'Kuzey Avrupa ortalamasının üzerindedir; konut ve hizmet maliyetleri yüksektir.',
+    government: 'Parlamenter monarşi',
+    inflation: 'Statistics Norway ve Norges Bank verileriyle takip edilmelidir.',
+    foodCulture: 'Balık, somon ve sade kuzey mutfağı öne çıkar.',
+    famousPeople: ['Henrik Ibsen', 'Edvard Munch', 'Magnus Carlsen', 'Erling Haaland', 'A-ha', 'Roald Amundsen', 'Fridtjof Nansen', 'Sigrid', 'Lene Marlin', 'Jo Nesbø']
+  },
+  GR: {
+    updatedAt: '2026-02-20',
+    schools: [
+      { name: 'National and Kapodistrian University of Athens', url: 'https://en.uoa.gr/' },
+      { name: 'Aristotle University of Thessaloniki', url: 'https://www.auth.gr/en/' },
+      { name: 'National Technical University of Athens', url: 'https://www.ntua.gr/en/' },
+      { name: 'University of Crete', url: 'https://en.uoc.gr/' },
+      { name: 'Athens University of Economics and Business', url: 'https://www.aueb.gr/index_en' }
+    ],
+    places: ['Atina Akropolis', 'Santorini', 'Mikonos', 'Selanik', 'Meteora'],
+    operators: [
+      { name: 'COSMOTE', url: 'https://www.cosmote.gr/' },
+      { name: 'Vodafone Greece', url: 'https://www.vodafone.gr/' },
+      { name: 'Nova', url: 'https://nova.gr/' }
+    ],
+    currency: 'Euro (EUR)',
+    minimumWage: 'Ulusal asgari ücret dönemsel olarak revize edilir.',
+    livingCost: 'Atina ve turistik adalarda maliyet yükselir; iç bölgelerde daha dengelidir.',
+    government: 'Parlamenter cumhuriyet',
+    inflation: 'ELSTAT ve Eurostat verileriyle izlenmelidir.',
+    foodCulture: 'Zeytinyağı, deniz ürünleri, meze ve Akdeniz mutfağı temel yapıyı oluşturur.',
+    famousPeople: ['Aristoteles', 'Sokrates', 'Platon', 'Maria Callas', 'Mikis Theodorakis', 'Giannis Antetokounmpo', 'Odysseas Elytis', 'Yorgos Lanthimos', 'Stefanos Tsitsipas', 'Nana Mouskouri']
+  },
+  CZ: {
+    updatedAt: '2026-02-20',
+    schools: [
+      { name: 'Charles University', url: 'https://cuni.cz/UKEN-1.html' },
+      { name: 'Czech Technical University in Prague', url: 'https://www.cvut.cz/en' },
+      { name: 'Masaryk University', url: 'https://www.muni.cz/en' },
+      { name: 'Brno University of Technology', url: 'https://www.vut.cz/en/' },
+      { name: 'University of Chemistry and Technology Prague', url: 'https://www.vscht.cz/?jazyk=en' }
+    ],
+    places: ['Prag Eski Şehir', 'Karlovy Vary', 'Český Krumlov', 'Brno', 'Bohemia Kaleleri'],
+    operators: [
+      { name: 'T-Mobile Czech Republic', url: 'https://www.t-mobile.cz/' },
+      { name: 'O2 Czech Republic', url: 'https://www.o2.cz/' },
+      { name: 'Vodafone Czech Republic', url: 'https://www.vodafone.cz/' }
+    ],
+    currency: 'Çek Korunası (CZK)',
+    minimumWage: 'Ulusal asgari ücret yıllık güncellenir.',
+    livingCost: 'Prag’da konut maliyeti yüksek; diğer şehirlerde daha erişilebilir olabilir.',
+    government: 'Parlamenter cumhuriyet',
+    inflation: 'Çek istatistik kurumu ve merkez bankası verileriyle takip edilir.',
+    foodCulture: 'Et yemekleri, hamur işi ve bira kültürü öne çıkar.',
+    famousPeople: ['Franz Kafka', 'Antonín Dvořák', 'Milan Kundera', 'Václav Havel', 'Petr Čech', 'Jaromír Jágr', 'Martina Navratilova', 'Alfons Mucha', 'Karel Čapek', 'Tomáš Rosický']
+  },
+  HU: {
+    updatedAt: '2026-02-20',
+    schools: [
+      { name: 'Eötvös Loránd University', url: 'https://www.elte.hu/en/' },
+      { name: 'Budapest University of Technology and Economics', url: 'https://www.bme.hu/?language=en' },
+      { name: 'University of Szeged', url: 'https://u-szeged.hu/english' },
+      { name: 'University of Debrecen', url: 'https://www.unideb.hu/en' },
+      { name: 'Corvinus University of Budapest', url: 'https://www.uni-corvinus.hu/main-page/' }
+    ],
+    places: ['Budapeşte Parlamento', 'Buda Kalesi', 'Balaton Gölü', 'Eger', 'Szeged'],
+    operators: [
+      { name: 'Magyar Telekom', url: 'https://www.telekom.hu/' },
+      { name: 'Yettel Hungary', url: 'https://www.yettel.hu/' },
+      { name: 'Vodafone Hungary', url: 'https://www.vodafone.hu/' }
+    ],
+    currency: 'Macar Forinti (HUF)',
+    minimumWage: 'Ulusal düzeyde belirlenir ve periyodik olarak güncellenir.',
+    livingCost: 'Budapeşte ülke ortalamasının üzerindedir; taşrada daha düşüktür.',
+    government: 'Parlamenter cumhuriyet',
+    inflation: 'KSH ve merkez bankası verileriyle yakından izlenmelidir.',
+    foodCulture: 'Gulaş, paprika kullanımı ve et ağırlıklı Orta Avrupa mutfağı belirgindir.',
+    famousPeople: ['Ferenc Puskás', 'Béla Bartók', 'Imre Kertész', 'Harry Houdini', 'Zsa Zsa Gabor', 'László Bíró', 'Judit Polgár', 'Katalin Karikó', 'Miklós Rózsa', 'Ágnes Keleti']
+  },
+  PL: {
+    updatedAt: '2026-02-20',
+    schools: [
+      { name: 'University of Warsaw', url: 'https://www.uw.edu.pl/en/' },
+      { name: 'Jagiellonian University', url: 'https://en.uj.edu.pl/' },
+      { name: 'Warsaw University of Technology', url: 'https://www.pw.edu.pl/engpw' },
+      { name: 'AGH University of Science and Technology', url: 'https://www.agh.edu.pl/en/' },
+      { name: 'Adam Mickiewicz University', url: 'https://amu.edu.pl/en' }
+    ],
+    places: ['Varşova Eski Şehir', 'Kraków', 'Wrocław', 'Gdańsk', 'Tatra Dağları'],
+    operators: [
+      { name: 'Orange Polska', url: 'https://www.orange.pl/' },
+      { name: 'Play', url: 'https://www.play.pl/' },
+      { name: 'Plus', url: 'https://www.plus.pl/' },
+      { name: 'T-Mobile Poland', url: 'https://www.t-mobile.pl/' }
+    ],
+    currency: 'Polonya Zlotisi (PLN)',
+    minimumWage: 'Ulusal taban ücret yılda birden fazla kez revize edilebilir.',
+    livingCost: 'Varşova ve Kraków’da maliyet daha yüksek; diğer şehirlerde daha dengelidir.',
+    government: 'Parlamenter cumhuriyet',
+    inflation: 'GUS ve merkez bankası verileriyle güncel takip önerilir.',
+    foodCulture: 'Pierogi, çorba kültürü ve et ağırlıklı Orta Avrupa mutfağı öne çıkar.',
+    famousPeople: ['Frédéric Chopin', 'Marie Curie', 'Robert Lewandowski', 'Andrzej Wajda', 'Wisława Szymborska', 'Lech Wałęsa', 'Iga Świątek', 'Krzysztof Kieślowski', 'Olga Tokarczuk', 'Zbigniew Brzezinski']
+  },
+  NZ: {
+    updatedAt: '2026-02-20',
+    schools: [
+      { name: 'University of Auckland', url: 'https://www.auckland.ac.nz/' },
+      { name: 'University of Otago', url: 'https://www.otago.ac.nz/' },
+      { name: 'Victoria University of Wellington', url: 'https://www.wgtn.ac.nz/' },
+      { name: 'University of Canterbury', url: 'https://www.canterbury.ac.nz/' },
+      { name: 'Massey University', url: 'https://www.massey.ac.nz/' }
+    ],
+    places: ['Auckland', 'Queenstown', 'Milford Sound', 'Wellington', 'Rotorua'],
+    operators: [
+      { name: 'Spark NZ', url: 'https://www.spark.co.nz/' },
+      { name: 'One NZ', url: 'https://one.nz/' },
+      { name: '2degrees', url: 'https://www.2degrees.nz/' }
+    ],
+    currency: 'Yeni Zelanda Doları (NZD)',
+    minimumWage: 'Ulusal saatlik ücret modeli bulunur ve düzenli güncellenir.',
+    livingCost: 'Auckland ve Wellington’da kira maliyetleri görece yüksektir.',
+    government: 'Parlamenter monarşi',
+    inflation: 'Stats NZ ve merkez bankası verileriyle takip edilmelidir.',
+    foodCulture: 'Deniz ürünleri, kuzu eti ve çok kültürlü modern mutfak öne çıkar.',
+    famousPeople: ['Peter Jackson', 'Jacinda Ardern', 'Lorde', 'Taika Waititi', 'Russell Crowe', 'Sam Neill', 'Dan Carter', 'Richie McCaw', 'Kiri Te Kanawa', 'Ernest Rutherford']
+  },
+  LI: {
+    updatedAt: '2026-02-20',
+    schools: [
+      { name: 'University of Liechtenstein', url: 'https://www.uni.li/en' },
+      { name: 'UZH (yakın akademik merkez)', url: 'https://www.uzh.ch/en.html' },
+      { name: 'University of Innsbruck (yakın akademik merkez)', url: 'https://www.uibk.ac.at/en/' },
+      { name: 'ETH Zurich (bölgesel seçenek)', url: 'https://ethz.ch/en.html' },
+      { name: 'FH Vorarlberg (bölgesel seçenek)', url: 'https://www.fhv.at/en/' }
+    ],
+    places: ['Vaduz', 'Malbun', 'Liechtenstein Şatosu', 'Ren Vadisi', 'Gutenberg Kalesi'],
+    operators: [
+      { name: 'Telecom Liechtenstein', url: 'https://www.li-life.li/' },
+      { name: 'Salt Liechtenstein', url: 'https://www.salt.li/' },
+      { name: 'FL1', url: 'https://www.fl1.li/' }
+    ],
+    currency: 'İsviçre Frangı (CHF)',
+    minimumWage: 'Mikro devlet yapısı nedeniyle sektör bazlı sözleşmeler belirleyicidir.',
+    livingCost: 'Konut ve günlük giderler yüksektir; çevre ülkelerle bağlantılıdır.',
+    government: 'Anayasal monarşi',
+    inflation: 'İsviçre/yerel istatistik kaynaklarıyla birlikte değerlendirilir.',
+    foodCulture: 'İsviçre-Avusturya etkili Alp mutfağı yaygındır.',
+    famousPeople: ['Hans-Adam II', 'Alois von Liechtenstein', 'Hanni Wenzel', 'Marco Büchel', 'Tina Weirather', 'Ivana Trump (aile bağı)', 'Josef Hoop', 'Otmar Hasler', 'Adrian Hasler', 'Frick ailesi temsilcileri']
+  },
+  MY: {
+    updatedAt: '2026-02-20',
+    schools: [
+      { name: 'University of Malaya', url: 'https://um.edu.my/' },
+      { name: 'Universiti Putra Malaysia', url: 'https://www.upm.edu.my/' },
+      { name: 'Universiti Kebangsaan Malaysia', url: 'https://www.ukm.my/' },
+      { name: 'Universiti Sains Malaysia', url: 'https://www.usm.my/' },
+      { name: 'Universiti Teknologi Malaysia', url: 'https://www.utm.my/' }
+    ],
+    places: ['Kuala Lumpur Petronas', 'Penang George Town', 'Langkawi', 'Kota Kinabalu', 'Malakka'],
+    operators: [
+      { name: 'Maxis', url: 'https://www.maxis.com.my/' },
+      { name: 'CelcomDigi', url: 'https://www.celcomdigi.com/' },
+      { name: 'U Mobile', url: 'https://www.u.com.my/' },
+      { name: 'Unifi Mobile', url: 'https://unifi.com.my/mobile' }
+    ],
+    currency: 'Malezya Ringgiti (MYR)',
+    minimumWage: 'Ulusal asgari ücret dönemsel olarak güncellenir.',
+    livingCost: 'Kuala Lumpur’da maliyet yüksek; diğer bölgelerde daha düşük olabilir.',
+    government: 'Federal anayasal monarşi',
+    inflation: 'DOSM ve merkez bankası verileriyle takip edilmelidir.',
+    foodCulture: 'Malay, Çin ve Hint mutfaklarının harmanlandığı çok kültürlü yapı baskındır.',
+    famousPeople: ['Mahathir Mohamad', 'Michelle Yeoh', 'Lee Chong Wei', 'Nicol David', 'P. Ramlee', 'Siti Nurhaliza', 'Jimmy Choo', 'Yuna', 'Anwar Ibrahim', 'Lat']
+  },
+  MC: {
+    updatedAt: '2026-02-20',
+    schools: [
+      { name: 'International University of Monaco', url: 'https://www.monaco.edu/' },
+      { name: 'Université Côte d’Azur (yakın akademik seçenek)', url: 'https://univ-cotedazur.eu/' },
+      { name: 'Sciences Po Menton', url: 'https://www.sciencespo.fr/' },
+      { name: 'University of Nice Sophia Antipolis (bölgesel)', url: 'https://www.univ-cotedazur.fr/' },
+      { name: 'Monaco Scientific Center', url: 'https://www.centrescientifique.mc/en/' }
+    ],
+    places: ['Monte Carlo', 'Monaco-Ville', 'Oceanographic Museum', 'Larvotto', 'Prince’s Palace'],
+    operators: [
+      { name: 'Monaco Telecom', url: 'https://www.monaco-telecom.mc/' },
+      { name: 'Free Monaco', url: 'https://mobile.free.fr/' },
+      { name: 'Orange (roaming/region)', url: 'https://www.orange.com/' }
+    ],
+    currency: 'Euro (EUR)',
+    minimumWage: 'Fransa ile uyumlu sözleşme ve sektörel çerçeveler etkili olabilir.',
+    livingCost: 'Dünyanın en yüksek konut maliyetlerinden birine sahiptir.',
+    government: 'Anayasal monarşi',
+    inflation: 'Monako/Fransa/Eurostat veri setleri birlikte değerlendirilmelidir.',
+    foodCulture: 'Akdeniz-French Riviera mutfak etkisi baskındır.',
+    famousPeople: ['Prens II. Albert', 'Prenses Charlene', 'Grace Kelly', 'Charles Leclerc', 'Louis Chiron', 'Stéphanie of Monaco', 'Caroline of Monaco', 'Rainier III', 'Jean-Michel Jarre (Monako bağlantısı)', 'Nico Rosberg (Monako yerleşik)']
   }
 };
 
