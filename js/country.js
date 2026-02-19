@@ -234,13 +234,16 @@ function getCountryContinentCode(kod) {
 
 function setCountryMeta(country) {
     if (!country) return;
-    const pageTitle = `${country.ulke} Pasaportu | Pasaport Endeksi`;
-    const pageDescription = `${country.ulke} pasaportunun vize profili, erişim metrikleri ve ülke bazlı detay listesi.`;
+    const pageTitle = `${country.ulke} Pasaport, Vize ve Yaşam Rehberi 2026 | Pasaport Endeksi`;
+    const pageDescription = `${country.ulke} için pasaport gücü, vize dağılımı, yaşam maliyeti, asgari ücret, uçuş ve seyahat planlama rehberi.`;
+    const pageKeywords = `${country.ulke} pasaport, ${country.ulke} vize, ${country.ulke} yaşam maliyeti, ${country.ulke} asgari ücret, ${country.ulke} nasıl gidilir, ${country.ulke} uçak bileti`;
     const canonicalUrl = getCanonicalCountryUrl(country.kod);
 
     document.title = pageTitle;
     const descriptionMeta = document.querySelector('meta[name="description"]');
     if (descriptionMeta) descriptionMeta.setAttribute('content', pageDescription);
+    const keywordsMeta = document.querySelector('meta[name="keywords"]');
+    if (keywordsMeta) keywordsMeta.setAttribute('content', pageKeywords);
 
     const canonicalLink = document.getElementById('canonical-link');
     if (canonicalLink) canonicalLink.setAttribute('href', canonicalUrl);
@@ -282,6 +285,70 @@ function setCountryMeta(country) {
     if (flag) flag.textContent = country.bayrak;
     if (passportCountry) passportCountry.textContent = country.ulke.toUpperCase();
     if (passportCode) passportCode.textContent = country.kod;
+}
+
+function buildCountryFaqItems(country) {
+    const counts = getVisaCounts(country);
+    const totalAccess = counts.vizesiz + counts.varista + counts.evize;
+    const fastAccess = counts.vizesiz + counts.varista;
+
+    return [
+        {
+            question: `${country.ulke} pasaportu ile toplam kaç ülkeye erişim var?`,
+            answer: `${country.ulke} pasaportu ile toplam ${totalAccess} ülkeye erişim bulunur. Bu toplam, vizesiz + varışta vize + e-vize kategorilerinin toplamıdır.`
+        },
+        {
+            question: `${country.ulke} pasaportu ile hızlı erişim kaç ülke?`,
+            answer: `Hızlı erişim (vizesiz + varışta vize) toplamı ${fastAccess} ülkedir.`
+        },
+        {
+            question: `${country.ulke} için e-vize ve klasik vize dağılımı nasıl?`,
+            answer: `E-vize gereken ülke sayısı ${counts.evize}, önceden vize gereken ülke sayısı ${counts.vize}.`
+        },
+        {
+            question: `${country.ulke} pasaportunun dünya sırası kaç?`,
+            answer: `${country.ulke} pasaportu bu veri modelinde dünya sıralamasında #${country.sira} konumundadır.`
+        },
+        {
+            question: 'Bu sayfadaki pasaport puanı nasıl hesaplanıyor?',
+            answer: 'Pasaport puanı = vizesiz ülke + varışta vize ülke + e-vize ülke.'
+        }
+    ];
+}
+
+function renderCountryFaq(country) {
+    const faqList = document.getElementById('country-faq-list');
+    const faqNote = document.getElementById('country-faq-note');
+    if (!faqList) return;
+
+    const items = buildCountryFaqItems(country);
+    faqList.innerHTML = items.map(item => `
+        <details class="faq-item">
+            <summary>${item.question}</summary>
+            <p>${item.answer}</p>
+        </details>
+    `).join('');
+
+    if (faqNote) {
+        faqNote.textContent = `${country.ulke} için bu sorular veriye bağlı olarak otomatik güncellenir.`;
+    }
+
+    const faqJsonldScript = document.getElementById('country-faq-jsonld');
+    if (faqJsonldScript) {
+        const payload = {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: items.map(item => ({
+                '@type': 'Question',
+                name: item.question,
+                acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: item.answer
+                }
+            }))
+        };
+        faqJsonldScript.textContent = JSON.stringify(payload);
+    }
 }
 
 function renderHeroBadges(country) {
@@ -1110,6 +1177,7 @@ function renderCountryPage(country) {
     renderVisaBars(country);
     renderVisaChart(country);
     renderKnowledgeSection(country);
+    renderCountryFaq(country);
 
     if (!plannerOriginCode || plannerOriginCode === currentCountry?.kod) {
         plannerOriginCode = country.kod;
