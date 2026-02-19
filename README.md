@@ -23,10 +23,16 @@ python3 scripts/build_data.py
 ```bash
 ./scripts/validate-data.sh
 ```
-3. Değişiklikleri commit/publish et.
+3. Sayfalar arası tutarlılık doğrulaması çalıştır:
+```bash
+./scripts/validate-site-consistency.sh
+```
+4. Değişiklikleri commit/publish et.
 
 ## Doğrulama Kontrolleri
 - Beyan edilen ülke sayısı vs gerçek kayıt sayısı
 - Tekrarlanan `kod` (ISO2) ve `iso3`
 - `puan = vizesiz + varistaSiz + evize`
 - `vizesiz + varistaSiz + evize + vizeGerekli = 198`
+- `index.html` ve `ulke.html` için asset versiyon tutarlılığı (`css/style.css`, `js/data.js`)
+- Ana/Detay etiketlerinin tutarlılığı (`TR Hızlı Erişim`, `Toplam Erişim (E-Vize Dahil)`)
