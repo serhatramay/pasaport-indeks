@@ -5,6 +5,8 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 INDEX_FILE="$ROOT_DIR/index.html"
 COUNTRY_FILE="$ROOT_DIR/ulke.html"
 COUNTRY_JS="$ROOT_DIR/js/country.js"
+APP_JS="$ROOT_DIR/js/app.js"
+DATA_FILE="$ROOT_DIR/js/data.js"
 
 issues=0
 
@@ -39,6 +41,8 @@ echo "Site tutarlilik dogrulamasi basladi..."
 require_file "$INDEX_FILE"
 require_file "$COUNTRY_FILE"
 require_file "$COUNTRY_JS"
+require_file "$APP_JS"
+require_file "$DATA_FILE"
 
 echo "1) Temel veri dogrulamasi..."
 "$ROOT_DIR/scripts/validate-data.sh" || issues=1
@@ -70,6 +74,84 @@ require_pattern "$INDEX_FILE" 'TR Hızlı Erişim' 'Ana sayfada "TR Hızlı Eri�
 require_pattern "$INDEX_FILE" 'ulke\.html\?code=TR#country-visa-breakdown' 'Ana sayfada TR hizli erisim linki dogru hedefe gitmiyor.'
 require_pattern "$COUNTRY_FILE" 'id="country-visa-breakdown"' 'ulke.html icinde country-visa-breakdown id eksik.'
 require_pattern "$COUNTRY_JS" 'Toplam Erişim \(E-Vize Dahil\)' 'country.js icinde "Toplam Erişim (E-Vize Dahil)" etiketi eksik.'
+require_pattern "$APP_JS" "stat-visa-free'\\)\\.textContent = turkiye\\.vizesiz \\+ turkiye\\.varistaSiz" 'app.js icinde TR hizli erisim formulu (vizesiz + varista) eksik.'
+require_pattern "$COUNTRY_JS" 'const totalAccess = counts\.vizesiz \+ counts\.varista \+ counts\.evize' 'country.js icinde toplam erisim formulu (vizesiz + varista + evize) eksik.'
+
+echo "4) TR metrik sayi tutarliligi..."
+if ! rg -q 'kod: "TR"' "$DATA_FILE"; then
+  echo "HATA: data.js icinde TR satiri bulunamadi."
+  issues=1
+else
+  tr_values="$(perl -ne '
+    if(/kod: "TR".*vizesiz: ([0-9]+), varistaSiz: ([0-9]+), evize: ([0-9]+), vizeGerekli: ([0-9]+), puan: ([0-9]+)/){
+      print "$1 $2 $3 $4 $5\n";
+      exit 0;
+    }
+  ' "$DATA_FILE")"
+  if [[ -z "$tr_values" ]]; then
+    echo "HATA: TR satiri parse edilemedi."
+    issues=1
+  else
+    read -r tr_vizesiz tr_varista tr_evize tr_vize tr_puan <<<"$tr_values"
+    tr_fast=$((tr_vizesiz + tr_varista))
+    tr_total=$((tr_vizesiz + tr_varista + tr_evize))
+    if [[ "$tr_puan" -ne "$tr_total" ]]; then
+      echo "HATA: TR puani toplam erisimle uyusmuyor. puan=$tr_puan toplam=$tr_total"
+      issues=1
+    fi
+    if [[ "$tr_fast" -gt "$tr_total" ]]; then
+      echo "HATA: TR hizli erisim toplam erisimden buyuk olamaz. hizli=$tr_fast toplam=$tr_total"
+      issues=1
+    fi
+    echo "OK: TR hizli=$tr_fast toplam=$tr_total puan=$tr_puan"
+  fi
+fi
+
+echo "5) Filtre davranis kurallari..."
+require_pattern "$INDEX_FILE" 'data-filter="all"' 'Ana sayfada "Tümü" filtresi bulunamadi.'
+require_pattern "$INDEX_FILE" 'data-filter="visa-free"' 'Ana sayfada "Yuksek Vizesiz" filtresi bulunamadi.'
+require_pattern "$INDEX_FILE" 'data-filter="top-20"' 'Ana sayfada "Ilk 20" filtresi bulunamadi.'
+require_pattern "$APP_JS" "passportFilterState\\.mode === 'top-20'" 'app.js icinde top-20 filtre mantigi bulunamadi.'
+require_pattern "$APP_JS" "slice\\(0, 20\\)" 'app.js top-20 limiti 20 olarak bulunamadi.'
+require_pattern "$APP_JS" "passportFilterState\\.mode === 'visa-free'" 'app.js icinde vizesiz filtre mantigi bulunamadi.'
+require_pattern "$APP_JS" 'VISA_FREE_HIGHLIGHT_THRESHOLD = [0-9]+' 'app.js icinde vizesiz esik degeri bulunamadi.'
+
+threshold="$(rg -o 'VISA_FREE_HIGHLIGHT_THRESHOLD = [0-9]+' "$APP_JS" | awk '{print $3}' | head -n1 || true)"
+if [[ -z "$threshold" ]]; then
+  echo "HATA: Vizesiz esik degeri parse edilemedi."
+  issues=1
+else
+  total_rows="$(rg -c '^\s*\{\s*kod:' "$DATA_FILE")"
+  high_rows="$(THRESHOLD="$threshold" perl -ne '
+    BEGIN{
+      $t = $ENV{THRESHOLD} || 0;
+      $c = 0;
+    }
+    if(/^\s*\{\s*kod: "[A-Z]{2}".*vizesiz: ([0-9]+),/){
+      $c++ if $1 >= $t;
+    }
+    END{
+      print "$c\n";
+    }
+  ' "$DATA_FILE")"
+  if [[ "$high_rows" -le 0 ]]; then
+    echo "HATA: Vizesiz filtresi icin esigi gecen ulke yok. esik=$threshold"
+    issues=1
+  fi
+  if [[ "$high_rows" -ge "$total_rows" ]]; then
+    echo "HATA: Vizesiz filtresi tum ulkeleri kapsiyor. esik=$threshold total=$total_rows"
+    issues=1
+  fi
+  echo "OK: Filtre sayilari total=$total_rows visa_free_threshold=$threshold high=$high_rows top20=20"
+fi
+
+echo "6) Rota ve detay baglanti dogrulamasi..."
+require_pattern "$INDEX_FILE" 'id="rota-planlayici"' 'Ana sayfada rota bolum id="rota-planlayici" eksik.'
+require_pattern "$INDEX_FILE" 'href="#rota-planlayici"' 'Ust menu Rota linki yanlis hedefe gidiyor.'
+require_pattern "$COUNTRY_JS" 'planner-links' 'country.js icinde rota kaynak linkleri bolumu eksik.'
+require_pattern "$COUNTRY_JS" 'Uçuş Ara' 'country.js icinde "Uçuş Ara" baglantisi eksik.'
+require_pattern "$COUNTRY_JS" 'Konaklama Ara' 'country.js icinde "Konaklama Ara" baglantisi eksik.'
+require_pattern "$COUNTRY_JS" 'Haritada Aç' 'country.js icinde "Haritada Aç" baglantisi eksik.'
 
 if [[ "$issues" -ne 0 ]]; then
   echo "Sonuc: Tutarlilik dogrulamasi BASARISIZ."
