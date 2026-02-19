@@ -45,7 +45,7 @@ require_file "$APP_JS"
 require_file "$DATA_FILE"
 
 echo "1) Temel veri dogrulamasi..."
-"$ROOT_DIR/scripts/validate-data.sh" || issues=1
+bash "$ROOT_DIR/scripts/validate-data.sh" || issues=1
 
 echo "2) Asset surum tutarliligi..."
 index_css_ver="$(extract_version "$INDEX_FILE" 'css/style\.css')"
