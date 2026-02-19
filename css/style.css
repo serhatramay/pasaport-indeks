@@ -988,7 +988,22 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
 
 @media (min-width: 1200px) {
     .country-knowledge-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        display: block;
+        column-count: 3;
+        column-gap: 12px;
+    }
+    .knowledge-card {
+        display: inline-block;
+        width: 100%;
+        margin: 0 0 12px;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    .knowledge-card-full {
+        column-span: all;
+        display: block;
+        width: 100%;
+        margin-top: 2px;
     }
 }
 .knowledge-card code {
