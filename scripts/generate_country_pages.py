@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import html
 import json
 import re
 from pathlib import Path
@@ -34,10 +35,29 @@ def slugify_tr(value: str) -> str:
 
 def parse_countries():
     raw = DATA_JS.read_text(encoding="utf-8")
-    pattern = re.compile(r'\{\s*kod:\s*"([A-Z]{2})",\s*ulke:\s*"([^"]+)"')
+    pattern = re.compile(
+        r'\{\s*kod:\s*"([A-Z]{2})",\s*ulke:\s*"([^"]+)",\s*bayrak:\s*"([^"]+)",\s*'
+        r'vizesiz:\s*([0-9]+),\s*varistaSiz:\s*([0-9]+),\s*evize:\s*([0-9]+),\s*'
+        r'vizeGerekli:\s*([0-9]+),\s*puan:\s*([0-9]+),\s*sira:\s*([0-9]+),\s*'
+        r'nufus:\s*"([^"]+)",\s*iso3:\s*"([A-Z]{3})"\s*\}'
+    )
     countries = []
-    for code, name in pattern.findall(raw):
-        countries.append({"code": code, "name": name, "slug": slugify_tr(name)})
+    for match in pattern.findall(raw):
+        code, name, flag, vizesiz, varista, evize, vize, puan, sira, nufus, iso3 = match
+        countries.append({
+            "code": code,
+            "name": name,
+            "flag": flag,
+            "slug": slugify_tr(name),
+            "vizesiz": int(vizesiz),
+            "varista": int(varista),
+            "evize": int(evize),
+            "vize": int(vize),
+            "puan": int(puan),
+            "sira": int(sira),
+            "nufus": nufus,
+            "iso3": iso3,
+        })
 
     uniq = {}
     for item in countries:
@@ -45,9 +65,40 @@ def parse_countries():
     return sorted(uniq.values(), key=lambda x: x["slug"])
 
 
+def build_faq_items(country: dict):
+    name = country["name"]
+    total_access = country["vizesiz"] + country["varista"] + country["evize"]
+    fast_access = country["vizesiz"] + country["varista"]
+    items = [
+        (
+            f"{name} pasaportu ile toplam kaç ülkeye erişim var?",
+            f"{name} pasaportu ile toplam {total_access} ülkeye erişim bulunur. "
+            f"Bu toplam, vizesiz + varışta vize + e-vize kategorilerinin toplamıdır.",
+        ),
+        (
+            f"{name} pasaportu ile hızlı erişim kaç ülke?",
+            f"Hızlı erişim (vizesiz + varışta vize) toplamı {fast_access} ülkedir.",
+        ),
+        (
+            f"{name} için e-vize ve klasik vize dağılımı nasıl?",
+            f"E-vize gereken ülke sayısı {country['evize']}, önceden vize gereken ülke sayısı {country['vize']}.",
+        ),
+        (
+            f"{name} pasaportunun dünya sırası kaç?",
+            f"{name} pasaportu bu veri modelinde dünya sıralamasında #{country['sira']} konumundadır.",
+        ),
+        (
+            "Bu sayfadaki pasaport puanı nasıl hesaplanıyor?",
+            "Pasaport puanı = vizesiz ülke + varışta vize ülke + e-vize ülke.",
+        ),
+    ]
+    return items
+
+
 def render_country_html(template: str, country: dict) -> str:
     code = country["code"]
     name = country["name"]
+    flag = country["flag"]
     slug = country["slug"]
     canonical = f"{BASE_URL}/ulke/{slug}/"
     title = f"{name} Pasaport, Vize ve Yaşam Rehberi 2026 | Pasaport Endeksi"
@@ -59,6 +110,24 @@ def render_country_html(template: str, country: dict) -> str:
         f"{name} pasaport, {name} vize, {name} yaşam maliyeti, {name} asgari ücret, "
         f"{name} nasıl gidilir, {name} uçak bileti"
     )
+    og_image = f"{BASE_URL}/img/og-image.svg"
+    faq_items = build_faq_items(country)
+    faq_html = "".join(
+        f'<details class="faq-item"><summary>{html.escape(question)}</summary><p>{html.escape(answer)}</p></details>'
+        for question, answer in faq_items
+    )
+    faq_jsonld = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": question,
+                "acceptedAnswer": {"@type": "Answer", "text": answer},
+            }
+            for question, answer in faq_items
+        ],
+    }
 
     out = template
     out = re.sub(r"<title>.*?</title>", f"<title>{title}</title>", out, count=1, flags=re.S)
@@ -119,6 +188,12 @@ def render_country_html(template: str, country: dict) -> str:
         count=1,
     )
     out = re.sub(
+        r'(<meta property="og:image" content=")[^"]*(">)',
+        r"\1" + og_image + r"\2",
+        out,
+        count=1,
+    )
+    out = re.sub(
         r'(<meta name="twitter:title" id="twitter-title" content=")[^"]*(">)',
         r"\1" + title + r"\2",
         out,
@@ -127,6 +202,12 @@ def render_country_html(template: str, country: dict) -> str:
     out = re.sub(
         r'(<meta name="twitter:description" id="twitter-description" content=")[^"]*(">)',
         r"\1" + description + r"\2",
+        out,
+        count=1,
+    )
+    out = re.sub(
+        r'(<meta name="twitter:image" content=")[^"]*(">)',
+        r"\1" + og_image + r"\2",
         out,
         count=1,
     )
@@ -146,8 +227,57 @@ def render_country_html(template: str, country: dict) -> str:
         count=1,
         flags=re.S,
     )
+    out = re.sub(
+        r'(<script type="application/ld\+json" id="country-faq-jsonld">\s*)(.*?)(\s*</script>)',
+        r"\1" + json.dumps(faq_jsonld, ensure_ascii=False) + r"\3",
+        out,
+        count=1,
+        flags=re.S,
+    )
 
     out = re.sub(r"<body>", f'<body data-country-code="{code}" data-country-slug="{slug}">', out, count=1)
+    out = re.sub(
+        r'(<div class="passport-country" id="passport-country">)(.*?)(</div>)',
+        r"\1" + html.escape(name.upper()) + r"\3",
+        out,
+        count=1,
+        flags=re.S,
+    )
+    out = re.sub(
+        r'(<div class="passport-code" id="passport-code">)(.*?)(</div>)',
+        r"\1" + html.escape(code) + r"\3",
+        out,
+        count=1,
+        flags=re.S,
+    )
+    out = re.sub(
+        r'(<div class="passport-stamp" id="passport-flag">)(.*?)(</div>)',
+        r"\1" + html.escape(flag) + r"\3",
+        out,
+        count=1,
+        flags=re.S,
+    )
+    out = re.sub(
+        r'(<h1 id="country-title">)(.*?)(</h1>)',
+        r"\1" + html.escape(f"{name} Pasaport, Vize ve Yaşam Rehberi") + r"\3",
+        out,
+        count=1,
+        flags=re.S,
+    )
+    out = re.sub(
+        r'(<p class="hero-subtitle" id="country-subtitle">)(.*?)(</p>)',
+        r"\1" + html.escape(f"{name} pasaportunun global erişim gücü, vize dağılımı ve seyahat profili.") + r"\3",
+        out,
+        count=1,
+        flags=re.S,
+    )
+    out = re.sub(
+        r'(<div class="country-faq-list" id="country-faq-list">)(.*?)(</div>)',
+        r"\1" + faq_html + r"\3",
+        out,
+        count=1,
+        flags=re.S,
+    )
     out = out.replace('href="css/style.css', 'href="../../css/style.css')
     out = out.replace('src="js/data.js', 'src="../../js/data.js')
     out = out.replace('src="js/country-profiles.js', 'src="../../js/country-profiles.js')
