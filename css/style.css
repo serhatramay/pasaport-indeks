@@ -1645,3 +1645,145 @@ section h2,
         font-size: 0.98rem !important;
     }
 }
+
+/* ===== HOME MODERN LAYOUT V26 ===== */
+.site-header .container {
+    height: 72px;
+}
+
+.hero {
+    padding: 130px 0 56px !important;
+}
+
+.hero .container {
+    max-width: 1040px;
+}
+
+.hero h1 {
+    font-size: clamp(2.2rem, 5.2vw, 4rem) !important;
+    margin-bottom: 14px !important;
+}
+
+.hero-subtitle {
+    max-width: 760px !important;
+    font-size: clamp(1rem, 2.2vw, 1.28rem) !important;
+    margin-bottom: 26px !important;
+}
+
+.hero-stats {
+    margin-top: 10px;
+    padding: 14px 18px;
+    border: 1px solid rgba(143,182,231,0.26);
+    border-radius: 16px;
+    background: rgba(13,26,47,0.6);
+}
+
+.passport-grid-section,
+.ranking-section,
+.trip-tool-section,
+.compare-section,
+.map-section {
+    padding-top: 44px !important;
+    padding-bottom: 44px !important;
+}
+
+.passport-grid-section .container,
+.ranking-section .container,
+.compare-section .container,
+.map-section .container {
+    max-width: 1180px;
+    border: 1px solid rgba(143,182,231,0.2);
+    border-radius: 18px;
+    background: linear-gradient(165deg, rgba(13,26,47,0.78), rgba(13,26,47,0.62));
+    padding: 26px 24px !important;
+}
+
+.trip-tool-section .container {
+    max-width: 1180px;
+    border: 1px solid rgba(64,201,162,0.36);
+    border-radius: 22px;
+    background:
+        radial-gradient(circle at 12% 15%, rgba(64,201,162,0.18), transparent 40%),
+        radial-gradient(circle at 88% 10%, rgba(111,177,255,0.16), transparent 32%),
+        linear-gradient(165deg, rgba(12,30,52,0.86), rgba(13,26,47,0.82));
+    padding: 30px 24px !important;
+}
+
+.trip-tool-section h2 {
+    text-align: left !important;
+    margin-bottom: 6px !important;
+}
+
+.trip-tool-section .section-desc {
+    text-align: left !important;
+    margin: 0 0 22px !important;
+    max-width: 860px !important;
+}
+
+.trip-tool-form {
+    grid-template-columns: 1.1fr 1.1fr 1fr auto !important;
+    gap: 12px !important;
+}
+
+.trip-tool-result {
+    margin-top: 14px !important;
+    border: 1px solid rgba(143,182,231,0.28) !important;
+}
+
+.compact-tools {
+    padding: 12px !important;
+    gap: 12px !important;
+}
+
+.passport-grid {
+    gap: 14px !important;
+}
+
+.passport-card {
+    border-radius: 14px !important;
+    padding: 14px 10px !important;
+}
+
+.ranking-table th,
+.ranking-table td {
+    padding-top: 13px !important;
+    padding-bottom: 13px !important;
+}
+
+@media (max-width: 900px) {
+    .hero {
+        padding-top: 112px !important;
+    }
+    .hero-stats {
+        padding: 10px 12px;
+        gap: 14px !important;
+    }
+    .passport-grid-section .container,
+    .ranking-section .container,
+    .trip-tool-section .container,
+    .compare-section .container,
+    .map-section .container {
+        padding: 18px 14px !important;
+        border-radius: 14px !important;
+    }
+    .trip-tool-form {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+    .hero-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .hero h1 {
+        font-size: 1.95rem !important;
+    }
+    .hero-subtitle {
+        font-size: 1rem !important;
+    }
+    .hero-stats {
+        grid-template-columns: 1fr;
+    }
+}
