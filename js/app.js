@@ -879,14 +879,20 @@ function getTripCityOptionsByCode(code) {
         return [capital];
     }
 
-    return ['Şehir verisi hazırlanıyor'];
+    return [];
 }
 
 function renderTripCityOptions(destinationCode, selectedCities) {
     const citySelect = document.getElementById('trip-city-select');
     if (!(citySelect instanceof HTMLSelectElement)) return;
     const cities = getTripCityOptionsByCode(destinationCode);
+    citySelect.disabled = !cities.length;
     const selectedSet = new Set(Array.isArray(selectedCities) ? selectedCities : []);
+    if (!cities.length) {
+        citySelect.innerHTML = '<option value="">Şehir verisi hazırlanıyor</option>';
+        syncTripCitySummary();
+        return;
+    }
     citySelect.innerHTML = cities.map(city => {
         const selected = selectedSet.size ? selectedSet.has(city) : false;
         return `<option value="${city}" ${selected ? 'selected' : ''}>${city}</option>`;
