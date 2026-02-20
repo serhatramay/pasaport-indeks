@@ -1668,3 +1668,207 @@ section h2,
 ::-webkit-scrollbar-track { background: #eaf2fb !important; }
 ::-webkit-scrollbar-thumb { background: #b2c7df !important; }
 ::-webkit-scrollbar-thumb:hover { background: #98b2cf !important; }
+
+/* ===== MODERN READABILITY PATCH (V23) ===== */
+:root {
+    --bg-page: #f3f7fc;
+    --bg-surface: #ffffff;
+    --text-main: #16283f;
+    --text-muted: #536983;
+    --text-soft: #6f839a;
+    --border-soft: #d5e1ee;
+    --brand: #1f6fd7;
+    --brand-strong: #1656ab;
+    --accent: #f2c14e;
+    --ok: #17884f;
+    --warn: #a76400;
+    --bad: #b13c33;
+}
+
+body {
+    background: var(--bg-page) !important;
+    color: var(--text-main) !important;
+}
+
+.site-header {
+    background: rgba(255,255,255,0.94) !important;
+    border-bottom: 1px solid var(--border-soft) !important;
+    backdrop-filter: blur(10px);
+}
+
+.hero,
+.trip-tool-section,
+.ranking-section,
+.compare-section,
+.map-section,
+.spotlight-section,
+.country-knowledge,
+.country-analytics,
+.country-metrics,
+.country-visa-breakdown,
+.trip-planner,
+.budget-planner,
+.country-faq {
+    background: transparent !important;
+}
+
+.hero h1,
+section h2,
+.country-hero-content h1,
+.trip-planner-head h2,
+.budget-head h2,
+.country-faq-head h2,
+.country-knowledge-head h2 {
+    color: #132a45 !important;
+}
+
+.hero-subtitle,
+.section-desc,
+.compact-meta,
+.trip-planner-head p,
+.budget-head p,
+#country-knowledge-note,
+#country-faq-note,
+.chart-hint,
+.stat-label {
+    color: var(--text-muted) !important;
+}
+
+.compact-tools,
+.trip-tool-result,
+.ranking-table-wrapper,
+.compare-card,
+.analytics-card,
+.country-metric-card,
+.visa-bar-row,
+.visa-country-list-panel,
+.knowledge-card,
+.trip-planner-result,
+.budget-result,
+.faq-item,
+.snapshot-item,
+.knowledge-stat,
+.field-meta span,
+.source-compare,
+.ranking-info {
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border-soft) !important;
+    box-shadow: 0 10px 26px rgba(17, 48, 84, 0.08) !important;
+}
+
+.ranking-info p,
+.ranking-info .ranking-note,
+.source-compare h3,
+.source-compare-table th,
+.source-compare-table td,
+.source-compare-table td a,
+.trip-result-top h3,
+.trip-tool-result p,
+.planner-checklist,
+.planner-checklist li,
+.trip-tool-result li,
+.trip-kpi span,
+.trip-kpi strong,
+.planner-status,
+.country-metric-card .label,
+.country-metric-card .value,
+.snapshot-item .label,
+.snapshot-item .value,
+.snapshot-item small,
+.visa-bar-head,
+.visa-country-list-header h3,
+.visa-country-list-header p,
+.knowledge-card h3,
+.knowledge-card p,
+.knowledge-list li,
+.knowledge-stat span,
+.knowledge-stat strong,
+.field-note,
+.faq-item summary,
+.faq-item p {
+    color: var(--text-main) !important;
+}
+
+.country-metric-card .label,
+.snapshot-item .label,
+.knowledge-stat span,
+.field-note,
+.visa-country-list-header p {
+    color: var(--text-soft) !important;
+}
+
+.trip-kpi,
+.budget-kpis div {
+    background: #f8fbff !important;
+    border: 1px solid #d8e6f5 !important;
+}
+
+.mini-btn,
+.hero-home-btn,
+.trip-city-toggle {
+    background: var(--brand) !important;
+    color: #ffffff !important;
+    border: 1px solid var(--brand-strong) !important;
+}
+.mini-btn:hover,
+.hero-home-btn:hover,
+.trip-city-toggle:hover {
+    background: var(--brand-strong) !important;
+    border-color: #12488f !important;
+}
+
+.planner-links a {
+    background: #edf5ff !important;
+    border: 1px solid #b8d3f3 !important;
+    color: #1a5db4 !important;
+}
+.planner-links a:hover {
+    background: #dfeeff !important;
+    border-color: #8cb7ea !important;
+    color: #144b93 !important;
+}
+
+.planner-status.status-vizesiz { background: #e3f8ea !important; border-color: #9edab6 !important; color: var(--ok) !important; }
+.planner-status.status-varista { background: #fff2dd !important; border-color: #f1c98f !important; color: var(--warn) !important; }
+.planner-status.status-evize { background: #e8f2ff !important; border-color: #a8c7ed !important; color: #1a5db4 !important; }
+.planner-status.status-vize { background: #fde9e8 !important; border-color: #e8b0ac !important; color: var(--bad) !important; }
+
+.ranking-table th { color: #6f5614 !important; background: #fff6dc !important; }
+.ranking-table td { color: #2a415e !important; }
+.ranking-table .score-col,
+.ranking-table .visa-free,
+.stat-number,
+.stat-number-link { color: var(--ok) !important; }
+.ranking-table .visa-arrival { color: var(--warn) !important; }
+.ranking-table .evisa { color: #1a63bf !important; }
+.ranking-table .visa-required { color: var(--bad) !important; }
+
+.country-page {
+    background:
+        radial-gradient(circle at 12% 8%, rgba(31,111,215,0.09), transparent 36%),
+        radial-gradient(circle at 84% 10%, rgba(242,193,78,0.12), transparent 28%),
+        var(--bg-page) !important;
+}
+
+@media (max-width: 768px) {
+    body { font-size: 17px; }
+    .hero h1,
+    section h2,
+    .country-hero-content h1 { letter-spacing: -0.01em; }
+    .country-metric-card .label { font-size: 0.8rem !important; }
+    .country-metric-card .value { font-size: 1.3rem !important; }
+    .snapshot-item .value { font-size: 1.45rem !important; }
+    .visa-bar-head { font-size: 0.98rem !important; }
+    .mini-btn,
+    .hero-home-btn,
+    .trip-city-toggle,
+    .trip-field input,
+    .trip-field select,
+    .planner-field input,
+    .planner-field select,
+    .budget-field input,
+    .budget-field select {
+        min-height: 46px;
+        font-size: 1rem !important;
+    }
+}
