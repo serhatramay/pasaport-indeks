@@ -789,35 +789,35 @@ function renderHomeTripPlanner(data) {
 
     resultEl.innerHTML = `
         <div class="trip-result-top">
-            <h3>${origin.bayrak} ${origin.ulke} -> ${destination.bayrak} ${destinationLabel}</h3>
+            <h3>🧭 ${origin.bayrak} ${origin.ulke} -> ${destination.bayrak} ${destinationLabel}</h3>
             <span class="planner-status ${selected.cls}">${selected.text}</span>
         </div>
         <div class="trip-kpi-row">
             <div class="trip-kpi ${scoreMeta.cls}">
-                <span>Rota Skoru</span>
+                <span>⭐ Rota Skoru</span>
                 <strong>${scoreMeta.score}/100</strong>
             </div>
             <div class="trip-kpi">
-                <span>Hazırlık Seviyesi</span>
+                <span>🧾 Hazırlık Seviyesi</span>
                 <strong>${scoreMeta.level}</strong>
             </div>
             <div class="trip-kpi">
-                <span>Seçilen Şehirler</span>
+                <span>🏙️ Seçilen Şehirler</span>
                 <strong>${cityLine}</strong>
             </div>
         </div>
         <div class="trip-detail-grid">
             <section class="trip-detail-card">
-                <h4>Gerekli Evraklar</h4>
+                <h4>📁 Gerekli Evraklar</h4>
                 <ul class="planner-checklist">${docsHtml}</ul>
             </section>
             <section class="trip-detail-card">
-                <h4>Tahmini Süreç</h4>
+                <h4>⏱️ Tahmini Süreç</h4>
                 <p class="trip-eta">${etaText}</p>
                 <ul class="planner-checklist">${checklistHtml}</ul>
             </section>
             <section class="trip-detail-card trip-detail-cost">
-                <h4>Mini Maliyet Özeti (${tripDays} gün)</h4>
+                <h4>💳 Mini Maliyet Özeti (${tripDays} gün)</h4>
                 <div class="trip-cost-line"><span>Vize ücreti (tahmini)</span><strong>$${visaFeeUsd}</strong></div>
                 <div class="trip-cost-line"><span>Günlük gider (tahmini)</span><strong>$${dailyUsd}</strong></div>
                 <div class="trip-cost-line"><span>Toplam tahmini bütçe</span><strong>$${totalUsd}</strong></div>
@@ -830,8 +830,26 @@ function renderHomeTripPlanner(data) {
             <a href="https://www.google.com/search?q=${visaQuery}" target="_blank" rel="noopener noreferrer">Vize Kaynakları</a>
             <a href="${getCountryDetailUrl(destination.kod)}" target="_blank" rel="noopener noreferrer">Ülke Detayı</a>
         </div>
-        <div class="trip-share-row"><span>Paylaşılabilir sonuç URL:</span> <a href="${shareUrl}">${shareUrl}</a></div>
+        <div class="trip-share-row">
+            <button type="button" class="trip-share-btn" id="trip-share-btn" data-url="${shareUrl}">🔗 Sonucu Kopyala</button>
+            <span class="trip-share-note">Bu buton aynı rota sonucunu başkasıyla paylaşmak içindir.</span>
+        </div>
     `;
+
+    const shareBtn = document.getElementById('trip-share-btn');
+    shareBtn?.addEventListener('click', async () => {
+        const url = shareBtn.dataset.url || '';
+        if (!url) return;
+        try {
+            await navigator.clipboard.writeText(url);
+            shareBtn.textContent = '✅ Bağlantı Kopyalandı';
+            setTimeout(() => {
+                shareBtn.textContent = '🔗 Sonucu Kopyala';
+            }, 1800);
+        } catch {
+            window.prompt('Bağlantıyı kopyalayın:', url);
+        }
+    });
 }
 
 function setupTripPlannerSelects(data) {
