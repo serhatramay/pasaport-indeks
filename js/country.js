@@ -435,9 +435,17 @@ function ensureBudgetPlannerDom() {
         </div>
     `;
 
-    const faqSection = document.getElementById('country-faq');
-    if (faqSection) main.insertBefore(section, faqSection);
-    else main.appendChild(section);
+    const metricsSection = document.querySelector('.country-metrics');
+    const visaBreakdownSection = document.getElementById('country-visa-breakdown');
+
+    if (metricsSection && metricsSection.parentNode === main) {
+        if (metricsSection.nextSibling) main.insertBefore(section, metricsSection.nextSibling);
+        else main.appendChild(section);
+    } else if (visaBreakdownSection && visaBreakdownSection.parentNode === main) {
+        main.insertBefore(section, visaBreakdownSection);
+    } else {
+        main.appendChild(section);
+    }
 }
 
 function renderBudgetPlanner(country) {
