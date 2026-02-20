@@ -2034,3 +2034,70 @@ section h2,
         font-size: 1.02rem;
     }
 }
+
+/* ===== TABLE CONTRAST FIX V29 ===== */
+.ranking-section .ranking-table-wrapper {
+    background: #0d1c33 !important;
+    border: 1px solid #213e66 !important;
+    box-shadow: 0 14px 30px rgba(8, 20, 36, 0.35) !important;
+}
+
+.ranking-section .ranking-table thead {
+    background: #122846 !important;
+}
+
+.ranking-section .ranking-table th {
+    color: #f4c84a !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.04em;
+}
+
+.ranking-section .ranking-table tbody tr {
+    background: #0d1c33 !important;
+    border-bottom: 1px solid rgba(116, 149, 194, 0.25) !important;
+}
+
+.ranking-section .ranking-table tbody tr:nth-child(even) {
+    background: #10213a !important;
+}
+
+.ranking-section .ranking-table tbody tr:hover {
+    background: #163056 !important;
+}
+
+.ranking-section .ranking-table td {
+    color: #d9e8fb !important;
+}
+
+.ranking-section .ranking-table .country-col a {
+    color: #9bc8ff !important;
+}
+
+.ranking-section .ranking-table .country-col a:hover {
+    color: #cde4ff !important;
+}
+
+.ranking-section .ranking-table .rank-col {
+    color: #f4c84a !important;
+}
+
+.ranking-section .ranking-table .visa-free {
+    color: #31c48d !important;
+}
+
+.ranking-section .ranking-table .visa-arrival {
+    color: #f7c948 !important;
+}
+
+.ranking-section .ranking-table .evisa {
+    color: #60a5fa !important;
+}
+
+.ranking-section .ranking-table .visa-required {
+    color: #f87171 !important;
+}
+
+.ranking-section .ranking-table .score-col {
+    color: #34d399 !important;
+    font-weight: 800 !important;
+}
