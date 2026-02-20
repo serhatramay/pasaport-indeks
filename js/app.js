@@ -176,6 +176,16 @@ function normalizeText(value) {
         .replace(/[\u0300-\u036f]/g, '');
 }
 
+function slugifyCountryName(value) {
+    const table = { 'ç': 'c', 'ğ': 'g', 'ı': 'i', 'ö': 'o', 'ş': 's', 'ü': 'u', 'â': 'a', 'î': 'i', 'û': 'u' };
+    return String(value || '')
+        .toLowerCase()
+        .replace(/[çğıöşüâîû]/g, ch => table[ch] || ch)
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '') || 'ulke';
+}
+
 function applyInitialSearchFromUrl() {
     const params = new URLSearchParams(window.location.search);
     const q = params.get('q');
@@ -552,7 +562,9 @@ function focusCountryForCompare(data, code) {
 }
 
 function getCountryDetailUrl(code) {
-    return 'ulke.html?code=' + encodeURIComponent(code);
+    const country = PASAPORT_DATA.find(item => item.kod === String(code || '').toUpperCase());
+    const slug = slugifyCountryName(country ? country.ulke : code);
+    return `ulke/${slug}/`;
 }
 
 function findCountryByCode(data, code) {

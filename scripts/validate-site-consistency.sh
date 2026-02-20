@@ -45,7 +45,7 @@ require_file "$APP_JS"
 require_file "$DATA_FILE"
 
 echo "1) Temel veri dogrulamasi..."
-"$ROOT_DIR/scripts/validate-data.sh" || issues=1
+bash "$ROOT_DIR/scripts/validate-data.sh" || issues=1
 
 echo "2) Asset surum tutarliligi..."
 index_css_ver="$(extract_version "$INDEX_FILE" 'css/style\.css')"
@@ -71,11 +71,13 @@ fi
 
 echo "3) Metrik etiket tutarliligi..."
 require_pattern "$INDEX_FILE" 'TR Hızlı Erişim' 'Ana sayfada "TR Hızlı Erişim" etiketi yok.'
-require_pattern "$INDEX_FILE" 'ulke\.html\?code=TR#country-visa-breakdown' 'Ana sayfada TR hizli erisim linki dogru hedefe gitmiyor.'
+require_pattern "$INDEX_FILE" 'ulke/turkiye/#country-visa-breakdown' 'Ana sayfada TR hizli erisim linki dogru hedefe gitmiyor.'
 require_pattern "$COUNTRY_FILE" 'id="country-visa-breakdown"' 'ulke.html icinde country-visa-breakdown id eksik.'
 require_pattern "$COUNTRY_JS" 'Toplam Erişim \(E-Vize Dahil\)' 'country.js icinde "Toplam Erişim (E-Vize Dahil)" etiketi eksik.'
 require_pattern "$APP_JS" "stat-visa-free'\\)\\.textContent = turkiye\\.vizesiz \\+ turkiye\\.varistaSiz" 'app.js icinde TR hizli erisim formulu (vizesiz + varista) eksik.'
 require_pattern "$COUNTRY_JS" 'const totalAccess = counts\.vizesiz \+ counts\.varista \+ counts\.evize' 'country.js icinde toplam erisim formulu (vizesiz + varista + evize) eksik.'
+require_pattern "$APP_JS" 'return `ulke/\$\{slug\}/`;' 'app.js ulke detay linkleri temiz URL yapisina gecmemis.'
+require_pattern "$COUNTRY_JS" 'function getCleanCountryPath' 'country.js temiz URL fonksiyonu eksik.'
 
 echo "4) TR metrik sayi tutarliligi..."
 if ! rg -q 'kod: "TR"' "$DATA_FILE"; then
@@ -152,6 +154,18 @@ require_pattern "$COUNTRY_JS" 'planner-links' 'country.js icinde rota kaynak lin
 require_pattern "$COUNTRY_JS" 'Uçuş Ara' 'country.js icinde "Uçuş Ara" baglantisi eksik.'
 require_pattern "$COUNTRY_JS" 'Konaklama Ara' 'country.js icinde "Konaklama Ara" baglantisi eksik.'
 require_pattern "$COUNTRY_JS" 'Haritada Aç' 'country.js icinde "Haritada Aç" baglantisi eksik.'
+
+echo "7) Temiz URL sayfalari ve sitemap..."
+require_pattern "$ROOT_DIR/sitemap.xml" '/ulke/' 'sitemap temiz URL ulke girdileri icermiyor.'
+require_pattern "$ROOT_DIR/sitemap.xml" '<loc>https://serhatramay.github.io/pasaport-indeks/ulke/turkiye/</loc>' 'sitemap icinde turkiye temiz URL kaydi yok.'
+if [[ ! -f "$ROOT_DIR/ulke/turkiye/index.html" ]]; then
+  echo "HATA: ulke/turkiye/index.html dosyasi bulunamadi."
+  issues=1
+fi
+if [[ ! -f "$ROOT_DIR/scripts/generate_country_pages.py" ]]; then
+  echo "HATA: scripts/generate_country_pages.py dosyasi bulunamadi."
+  issues=1
+fi
 
 if [[ "$issues" -ne 0 ]]; then
   echo "Sonuc: Tutarlilik dogrulamasi BASARISIZ."

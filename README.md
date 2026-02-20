@@ -23,11 +23,15 @@ python3 scripts/build_data.py
 ```bash
 ./scripts/validate-data.sh
 ```
-3. Sayfalar arası tutarlılık doğrulaması çalıştır:
+3. Temiz URL ülke sayfalarını ve sitemap'i üret:
+```bash
+python3 scripts/generate_country_pages.py
+```
+4. Sayfalar arası tutarlılık doğrulaması çalıştır:
 ```bash
 ./scripts/validate-site-consistency.sh
 ```
-4. Değişiklikleri commit/publish et.
+5. Değişiklikleri commit/publish et.
 
 ## Doğrulama Kontrolleri
 - Beyan edilen ülke sayısı vs gerçek kayıt sayısı
@@ -36,3 +40,4 @@ python3 scripts/build_data.py
 - `vizesiz + varistaSiz + evize + vizeGerekli = 198`
 - `index.html` ve `ulke.html` için asset versiyon tutarlılığı (`css/style.css`, `js/data.js`)
 - Ana/Detay etiketlerinin tutarlılığı (`TR Hızlı Erişim`, `Toplam Erişim (E-Vize Dahil)`)
+- Temiz URL üretimi (`/ulke/<slug>/`) ve sitemap kayıtları
