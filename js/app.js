@@ -603,6 +603,26 @@ function getTripChecklist(status, destinationName) {
     ];
 }
 
+function getTripScoreMeta(status) {
+    if (status === 'vizesiz') return { score: 95, level: 'Düşük Hazırlık', cls: 'trip-score-high' };
+    if (status === 'varista') return { score: 80, level: 'Orta Hazırlık', cls: 'trip-score-mid' };
+    if (status === 'evize') return { score: 65, level: 'Orta-Yüksek Hazırlık', cls: 'trip-score-mid' };
+    if (status === 'vize') return { score: 35, level: 'Yüksek Hazırlık', cls: 'trip-score-low' };
+    return { score: 50, level: 'Belirsiz', cls: 'trip-score-mid' };
+}
+
+function getSelectedTripCities() {
+    const checked = [...document.querySelectorAll('input[name="trip-city-checkbox"]:checked')];
+    return checked.map(input => input.value).filter(Boolean);
+}
+
+function syncTripCityInputFromCheckboxes() {
+    const cityInput = document.getElementById('trip-city');
+    if (!cityInput) return;
+    const selected = getSelectedTripCities();
+    cityInput.value = selected.join(', ');
+}
+
 function renderHomeTripPlanner(data) {
     const resultEl = document.getElementById('trip-result');
     const originCode = document.getElementById('trip-origin')?.value || '';
@@ -632,7 +652,10 @@ function renderHomeTripPlanner(data) {
         unknown: { text: 'Durum doğrulanamadı', cls: 'status-vize' }
     };
     const selected = statusMap[status] || statusMap.unknown;
+    const scoreMeta = getTripScoreMeta(status || 'unknown');
     const destinationLabel = city ? `${city}, ${destination.ulke}` : destination.ulke;
+    const selectedCities = getSelectedTripCities();
+    const cityLine = selectedCities.length ? selectedCities.join(', ') : 'Şehir seçimi yapılmadı';
     const checklist = getTripChecklist(status || 'unknown', destination.ulke);
     const checklistHtml = checklist.map(item => `<li>${item}</li>`).join('');
     const flightsQuery = encodeURIComponent(`${origin.ulke} ${destinationLabel} uçuş`);
@@ -640,8 +663,24 @@ function renderHomeTripPlanner(data) {
     const visaQuery = encodeURIComponent(`${origin.ulke} vatandaşları ${destination.ulke} vize şartları`);
 
     resultEl.innerHTML = `
-        <h3>${origin.bayrak} ${origin.ulke} -> ${destination.bayrak} ${destinationLabel}</h3>
-        <span class="planner-status ${selected.cls}">${selected.text}</span>
+        <div class="trip-result-top">
+            <h3>${origin.bayrak} ${origin.ulke} -> ${destination.bayrak} ${destinationLabel}</h3>
+            <span class="planner-status ${selected.cls}">${selected.text}</span>
+        </div>
+        <div class="trip-kpi-row">
+            <div class="trip-kpi ${scoreMeta.cls}">
+                <span>Rota Skoru</span>
+                <strong>${scoreMeta.score}/100</strong>
+            </div>
+            <div class="trip-kpi">
+                <span>Hazırlık Seviyesi</span>
+                <strong>${scoreMeta.level}</strong>
+            </div>
+            <div class="trip-kpi">
+                <span>Seçilen Şehirler</span>
+                <strong>${cityLine}</strong>
+            </div>
+        </div>
         <ul class="planner-checklist">${checklistHtml}</ul>
         <div class="planner-links">
             <a href="https://www.google.com/travel/flights?q=${flightsQuery}" target="_blank" rel="noopener noreferrer">Uçuş Ara</a>
@@ -678,7 +717,7 @@ function setTripCityOptionsExpanded(expanded) {
     const isExpanded = Boolean(expanded);
     optionsEl.classList.toggle('is-collapsed', !isExpanded);
     toggleEl.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
-    toggleEl.textContent = isExpanded ? 'Şehirleri Gizle' : 'Şehir Seç';
+    toggleEl.textContent = isExpanded ? 'Şehirleri Gizle' : 'Şehir Seç (çoklu)';
 }
 
 function getTripCityOptionsByCode(code) {
@@ -705,8 +744,7 @@ function renderTripCityOptions(destinationCode) {
         </label>
     `).join('');
 
-    const cityInput = document.getElementById('trip-city');
-    if (cityInput) cityInput.value = cities[0] || '';
+    syncTripCityInputFromCheckboxes();
     setTripCityOptionsExpanded(false);
 }
 
@@ -1298,15 +1336,13 @@ function initEventListeners(data) {
     document.getElementById('trip-city-options')?.addEventListener('change', e => {
         const target = e.target;
         if (!(target instanceof HTMLInputElement) || target.name !== 'trip-city-checkbox') return;
-        document.querySelectorAll('input[name="trip-city-checkbox"]').forEach(input => {
-            if (input !== target) input.checked = false;
-        });
-        if (!target.checked) {
+        const checked = getSelectedTripCities();
+        if (!checked.length) {
             target.checked = true;
+        } else if (checked.length > 3) {
+            target.checked = false;
         }
-        const cityInput = document.getElementById('trip-city');
-        if (cityInput) cityInput.value = target.value || '';
-        setTripCityOptionsExpanded(false);
+        syncTripCityInputFromCheckboxes();
         renderHomeTripPlanner(data);
     });
     document.getElementById('trip-run')?.addEventListener('click', () => {

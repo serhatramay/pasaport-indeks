@@ -155,6 +155,50 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
     color: #f4f7ff;
     font-size: 1.06rem;
 }
+.trip-result-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+.trip-kpi-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 12px;
+}
+.trip-kpi {
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 10px;
+    background: rgba(255,255,255,0.03);
+}
+.trip-kpi span {
+    display: block;
+    font-size: 0.78rem;
+    color: #8ea1bb;
+    margin-bottom: 4px;
+}
+.trip-kpi strong {
+    display: block;
+    font-size: 0.95rem;
+    color: #e9f0ff;
+    line-height: 1.35;
+}
+.trip-kpi.trip-score-high {
+    border-color: rgba(46,204,113,0.45);
+    background: rgba(46,204,113,0.12);
+}
+.trip-kpi.trip-score-mid {
+    border-color: rgba(243,156,18,0.42);
+    background: rgba(243,156,18,0.11);
+}
+.trip-kpi.trip-score-low {
+    border-color: rgba(231,76,60,0.4);
+    background: rgba(231,76,60,0.1);
+}
 
 /* Large sections render lazily for faster initial paint */
 .ranking-section,
@@ -1330,6 +1374,7 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
     .passport-hero-card { max-width: 360px; }
     .trip-planner-form { grid-template-columns: 1fr 1fr; }
     .trip-tool-form { grid-template-columns: 1fr 1fr; }
+    .trip-kpi-row { grid-template-columns: 1fr 1fr; }
     .budget-grid { grid-template-columns: 1fr 1fr 1fr; }
     .budget-kpis { grid-template-columns: 1fr 1fr; }
 }
@@ -1349,6 +1394,9 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
         grid-template-columns: 1fr;
     }
     .trip-tool-form {
+        grid-template-columns: 1fr;
+    }
+    .trip-kpi-row {
         grid-template-columns: 1fr;
     }
     .budget-grid {
@@ -1420,6 +1468,37 @@ section h2,
 .chart-hint,
 .trip-planner-head p,
 .budget-head p { color: #5b7190 !important; }
+
+.ranking-info p,
+.ranking-info .ranking-note,
+.source-compare-table th,
+.source-compare-table td,
+.source-compare h3,
+.source-compare-table td a,
+.trip-result-top h3,
+.trip-tool-result p,
+.planner-checklist,
+.planner-checklist li,
+.trip-tool-result li,
+.trip-kpi span,
+.trip-kpi strong,
+.planner-status {
+    color: #1f3550 !important;
+}
+
+.ranking-info strong,
+.source-compare-table th {
+    color: #17324f !important;
+}
+
+.source-compare {
+    background: #ffffff !important;
+    border-color: #d5e3f2 !important;
+}
+
+.source-compare-table tbody tr:hover {
+    background: #edf5ff !important;
+}
 
 .trip-tool-section,
 .ranking-section,
@@ -1540,6 +1619,30 @@ section h2,
     background: #e8f3ff !important;
     border-color: #7da9dc !important;
     color: #1a3e66 !important;
+}
+
+.planner-status.status-vizesiz {
+    background: #dff6e8 !important;
+    border-color: #95d5ae !important;
+    color: #146c43 !important;
+}
+
+.planner-status.status-varista {
+    background: #fff2dc !important;
+    border-color: #f1c27c !important;
+    color: #9a5a00 !important;
+}
+
+.planner-status.status-evize {
+    background: #e7f1ff !important;
+    border-color: #9bbfe8 !important;
+    color: #1456a3 !important;
+}
+
+.planner-status.status-vize {
+    background: #fde6e5 !important;
+    border-color: #e8a3a0 !important;
+    color: #9f2f29 !important;
 }
 
 .world-map {
