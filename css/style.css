@@ -1365,3 +1365,203 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
     .country-select-wrap select { width: 100%; min-width: 0; }
     .passport-hero-card { min-height: 220px; }
 }
+
+/* ===== LIGHT THEME OVERRIDES ===== */
+body {
+    background: #f7fbff !important;
+    color: #1c2a3a !important;
+}
+a { color: #1263c6 !important; }
+a:hover { color: #0b4d9b !important; }
+
+.site-header {
+    background: rgba(255, 255, 255, 0.92) !important;
+    border-bottom: 1px solid #dce8f5 !important;
+}
+.logo { color: #1a2740 !important; }
+.nav-link { color: #4c607a !important; }
+.nav-link:hover,
+.nav-link.active {
+    color: #0f2f55 !important;
+    background: #e9f3ff !important;
+}
+.mobile-menu-btn span { background: #213553 !important; }
+.main-nav {
+    background: rgba(255, 255, 255, 0.98) !important;
+    border-bottom-color: #dce8f5 !important;
+}
+
+.search-box input {
+    background: #ffffff !important;
+    border: 1px solid #c9d9ed !important;
+    color: #1d2d43 !important;
+}
+.search-box input::placeholder { color: #7a8ea7 !important; }
+.search-box input:focus {
+    background: #ffffff !important;
+    border-color: #6ca2e3 !important;
+}
+
+.hero {
+    background: linear-gradient(180deg, #f5faff 0%, #edf6ff 55%, #f7fbff 100%) !important;
+}
+.hero h1,
+section h2,
+.country-hero-content h1,
+.country-faq-head h2,
+.trip-planner-head h2,
+.budget-head h2 { color: #13263f !important; }
+.hero-subtitle,
+.section-desc,
+.stat-label,
+.compact-meta,
+#country-knowledge-note,
+#country-faq-note,
+.chart-hint,
+.trip-planner-head p,
+.budget-head p { color: #5b7190 !important; }
+
+.trip-tool-section,
+.ranking-section,
+.compare-section,
+.map-section,
+.spotlight-section,
+.country-knowledge,
+.country-analytics,
+.country-metrics,
+.country-visa-breakdown,
+.trip-planner,
+.budget-planner,
+.country-faq {
+    background: transparent !important;
+}
+
+.compact-tools,
+.trip-tool-result,
+.ranking-table-wrapper,
+.compare-card,
+.analytics-card,
+.country-metric-card,
+.visa-bar-row,
+.visa-country-list-panel,
+.knowledge-card,
+.trip-planner-result,
+.budget-result,
+.faq-item,
+.snapshot-item,
+.knowledge-stat,
+.field-meta span {
+    background: #ffffff !important;
+    border-color: #d5e3f2 !important;
+    color: #1b2b40 !important;
+    box-shadow: 0 6px 20px rgba(24, 64, 110, 0.08);
+}
+
+.passport-card {
+    background: #ffffff !important;
+    border-color: #d5e3f2 !important;
+}
+.passport-card .country-name,
+.ranking-table td,
+.legend-item,
+.snapshot-item .label,
+.knowledge-list li,
+.field-note,
+.faq-item p { color: #2f4765 !important; }
+.ranking-table th { color: #6f5614 !important; }
+.ranking-table thead { background: #fff6dc !important; }
+.ranking-table tbody tr:hover { background: #f1f7ff !important; }
+.ranking-table .score-col,
+.ranking-table .visa-free,
+.stat-number,
+.stat-number-link { color: #14824b !important; }
+.ranking-table .visa-arrival { color: #b36a00 !important; }
+.ranking-table .evisa { color: #0b66c3 !important; }
+.ranking-table .visa-required { color: #c53d30 !important; }
+
+.compare-vs,
+.logo-text strong,
+.filter-btn.active,
+.mini-btn,
+.hero-home-btn,
+.trip-city-toggle,
+.budget-target-currency,
+.faq-item summary::before {
+    background: #ffe8a8 !important;
+    color: #6a5006 !important;
+    border-color: #ecc767 !important;
+}
+.mini-btn,
+.hero-home-btn {
+    border: 1px solid #ecc767 !important;
+}
+
+.filter-btn {
+    border-color: #c9d9ed !important;
+    color: #39526e !important;
+}
+.filter-btn:hover {
+    background: #edf6ff !important;
+    border-color: #8fb7e4 !important;
+    color: #17395f !important;
+}
+
+.trip-field input,
+.trip-field select,
+.compact-tools input,
+.compact-tools select,
+.compare-tools input,
+.compare-tools select,
+.compare-card select,
+.map-controls select,
+.visa-list-controls input,
+.visa-list-controls select,
+.country-select-wrap select,
+.planner-field input,
+.planner-field select,
+.budget-field input,
+.budget-field select {
+    background: #ffffff !important;
+    border: 1px solid #c9d9ed !important;
+    color: #1b2b40 !important;
+}
+
+.trip-field input::placeholder,
+.compact-tools input::placeholder,
+.compare-tools input::placeholder,
+.planner-field input::placeholder { color: #7a8ea7 !important; }
+
+.trip-city-pill span {
+    background: #f4f8ff !important;
+    border-color: #c9d9ed !important;
+    color: #2f4765 !important;
+}
+.trip-city-pill input:checked + span {
+    background: #e8f3ff !important;
+    border-color: #7da9dc !important;
+    color: #1a3e66 !important;
+}
+
+.world-map {
+    background: #eef5fb !important;
+    border-color: #d5e3f2 !important;
+}
+
+.site-footer {
+    background: #eef5fb !important;
+    border-top: 1px solid #d5e3f2 !important;
+}
+.footer-brand p,
+.footer-links ul li a,
+.footer-bottom { color: #5f7390 !important; }
+.footer-links h3 { color: #1b2b40 !important; }
+
+.search-results {
+    background: #ffffff !important;
+    border-color: #c9d9ed !important;
+}
+.search-result-item:hover { background: #edf6ff !important; }
+
+::-webkit-scrollbar-track { background: #eaf2fb !important; }
+::-webkit-scrollbar-thumb { background: #b2c7df !important; }
+::-webkit-scrollbar-thumb:hover { background: #98b2cf !important; }
