@@ -417,8 +417,8 @@ function ensureBudgetPlannerDom() {
                     <select id="budget-from-currency" aria-label="Kaynak para birimi"></select>
                 </div>
                 <div class="budget-field">
-                    <label for="budget-to-currency">Hedef Para</label>
-                    <select id="budget-to-currency" aria-label="Hedef para birimi"></select>
+                    <label>Hedef Para Birimi</label>
+                    <div class="budget-target-currency" id="budget-target-currency">-</div>
                 </div>
                 <div class="budget-field">
                     <label for="budget-days">Seyahat Günü</label>
@@ -445,28 +445,27 @@ function renderBudgetPlanner(country) {
 
     const destinationSelect = document.getElementById('budget-destination-country');
     const fromSelect = document.getElementById('budget-from-currency');
-    const toSelect = document.getElementById('budget-to-currency');
+    const targetCurrencyEl = document.getElementById('budget-target-currency');
     const amountInput = document.getElementById('budget-amount');
     const daysInput = document.getElementById('budget-days');
-    if (!destinationSelect || !fromSelect || !toSelect || !amountInput || !daysInput) return;
+    if (!destinationSelect || !fromSelect || !targetCurrencyEl || !amountInput || !daysInput) return;
 
     const countries = [...PASAPORT_DATA].sort((a, b) => a.ulke.localeCompare(b.ulke, 'tr'));
     destinationSelect.innerHTML = countries.map(item => `
-        <option value="${item.kod}">${item.bayrak} ${item.ulke}</option>
+        <option value="${item.kod}">${item.bayrak} ${item.ulke} (${getCurrencyCodeForCountry(item.kod)})</option>
     `).join('');
 
     const currencies = getAvailableCurrencies();
     const currencyOptions = currencies.map(code => `<option value="${code}">${code}</option>`).join('');
     fromSelect.innerHTML = currencyOptions;
-    toSelect.innerHTML = currencyOptions;
 
     if (!budgetDestinationCode) budgetDestinationCode = country.kod;
     if (!budgetFromCurrency) budgetFromCurrency = detectUserPreferredCurrency();
-    if (!budgetToCurrency) budgetToCurrency = getCurrencyCodeForCountry(budgetDestinationCode);
+    budgetToCurrency = getCurrencyCodeForCountry(budgetDestinationCode);
 
     destinationSelect.value = budgetDestinationCode;
     fromSelect.value = currencies.includes(budgetFromCurrency) ? budgetFromCurrency : 'USD';
-    toSelect.value = currencies.includes(budgetToCurrency) ? budgetToCurrency : getCurrencyCodeForCountry(budgetDestinationCode);
+    targetCurrencyEl.textContent = `${budgetToCurrency} (Hedef ülke para birimi)`;
     amountInput.value = String(budgetAmount);
     daysInput.value = String(budgetDays);
 }
@@ -1593,15 +1592,6 @@ function bindInteractiveHandlers() {
             renderBudgetOutput();
         });
         budgetFromEl.dataset.bound = '1';
-    }
-
-    const budgetToEl = document.getElementById('budget-to-currency');
-    if (budgetToEl && !budgetToEl.dataset.bound) {
-        budgetToEl.addEventListener('change', event => {
-            budgetToCurrency = event.target.value || 'USD';
-            renderBudgetOutput();
-        });
-        budgetToEl.dataset.bound = '1';
     }
 
     const budgetDaysEl = document.getElementById('budget-days');
