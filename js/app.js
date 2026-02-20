@@ -123,6 +123,27 @@ const TRIP_CITY_OPTIONS = {
     SV: ['San Salvador', 'Santa Ana', 'San Miguel', 'La Libertad', 'Sonsonate', 'Suchitoto'],
     NI: ['Managua', 'Granada', 'Leon', 'San Juan del Sur', 'Masaya', 'Esteli']
 };
+const TRIP_DAILY_ESTIMATE_USD = {
+    TR: 70, DE: 145, FR: 150, ES: 125, IT: 135, GB: 170, US: 190, CA: 170, JP: 165,
+    TH: 75, AE: 145, SG: 170, NL: 155, CH: 220, AT: 150, BE: 150, DK: 180, FI: 170,
+    NO: 185, SE: 175, PT: 110, GR: 105, CZ: 95, PL: 90, HU: 85, RO: 75, BG: 70,
+    HR: 95, RS: 70, RU: 95, UA: 65, CN: 100, IN: 60, ID: 65, MY: 75, VN: 60,
+    KR: 145, HK: 180, AU: 185, NZ: 175, MX: 85, BR: 80, AR: 75, ZA: 70, EG: 60
+};
+const TRIP_VISA_FEE_USD = {
+    vizesiz: 0,
+    varista: 45,
+    evize: 35,
+    vize: 95,
+    unknown: 50
+};
+const TRIP_PROCESS_ETA = {
+    vizesiz: 'Aynı gün giriş',
+    varista: 'Aynı gün (sınır/havalimanı)',
+    evize: '1-3 iş günü',
+    vize: '7-21 iş günü',
+    unknown: 'Resmi kaynaktan kontrol edilmeli'
+};
 let map, geoLayer, geoData = null;
 let visaMatrixByPassportIso3 = null;
 let visaLoadState = 'idle';
@@ -615,6 +636,27 @@ function getTripChecklist(status, destinationName) {
     ];
 }
 
+function getTripRequiredDocs(status, destinationName) {
+    if (status === 'vizesiz') {
+        return ['Pasaport (en az 6 ay)', 'Dönüş bileti', 'Konaklama rezervasyonu', 'Seyahat sigortası (önerilir)'];
+    }
+    if (status === 'varista') {
+        return ['Pasaport (en az 6 ay)', 'Varışta vize ücreti için ödeme aracı', 'Dönüş bileti', 'Konaklama belgesi'];
+    }
+    if (status === 'evize') {
+        return ['Pasaport', 'E-vize onay belgesi (QR/PDF)', 'Dönüş bileti', 'Konaklama kanıtı'];
+    }
+    if (status === 'vize') {
+        return [
+            `${destinationName} vize başvuru formu`,
+            'Pasaport + biyometrik fotoğraf',
+            'Seyahat sağlık sigortası',
+            'Maddi yeterlilik ve rezervasyon belgeleri'
+        ];
+    }
+    return ['Pasaport', 'Resmi vize şartları çıktısı', 'Konaklama + dönüş bileti'];
+}
+
 function getTripScoreMeta(status) {
     if (status === 'vizesiz') return { score: 95, level: 'Düşük Hazırlık', cls: 'trip-score-high' };
     if (status === 'varista') return { score: 80, level: 'Orta Hazırlık', cls: 'trip-score-mid' };
@@ -623,24 +665,87 @@ function getTripScoreMeta(status) {
     return { score: 50, level: 'Belirsiz', cls: 'trip-score-mid' };
 }
 
-function getSelectedTripCities() {
-    const checked = [...document.querySelectorAll('input[name="trip-city-checkbox"]:checked')];
-    return checked.map(input => input.value).filter(Boolean);
+function getTripDailyEstimateUsd(destinationCode) {
+    return TRIP_DAILY_ESTIMATE_USD[String(destinationCode || '').toUpperCase()] || 95;
 }
 
-function syncTripCityInputFromCheckboxes() {
-    const cityInput = document.getElementById('trip-city');
-    if (!cityInput) return;
+function getTripProcessEta(status) {
+    return TRIP_PROCESS_ETA[status] || TRIP_PROCESS_ETA.unknown;
+}
+
+function getTripVisaFeeUsd(status) {
+    return TRIP_VISA_FEE_USD[status] ?? TRIP_VISA_FEE_USD.unknown;
+}
+
+function getTripSelectedDays() {
+    const daysInput = document.getElementById('trip-days');
+    const raw = Number(daysInput?.value || 5);
+    const safeDays = Number.isFinite(raw) ? Math.max(1, Math.min(60, Math.round(raw))) : 5;
+    if (daysInput) daysInput.value = String(safeDays);
+    return safeDays;
+}
+
+function getSelectedTripCities() {
+    const citySelect = document.getElementById('trip-city-select');
+    if (!(citySelect instanceof HTMLSelectElement)) return [];
+    return [...citySelect.selectedOptions].map(option => option.value).filter(Boolean);
+}
+
+function syncTripCitySummary() {
+    const citySummary = document.getElementById('trip-city-summary');
+    if (!citySummary) return;
     const selected = getSelectedTripCities();
-    cityInput.value = selected.join(', ');
+    citySummary.textContent = selected.length ? `Seçilen: ${selected.join(', ')}` : 'Seçilen: yok';
+}
+
+function updateTripShareableUrl(originCode, destinationCode, selectedCities, days) {
+    const params = new URLSearchParams(window.location.search);
+    if (originCode) params.set('from', originCode);
+    else params.delete('from');
+
+    if (destinationCode) params.set('to', destinationCode);
+    else params.delete('to');
+
+    if (selectedCities.length) params.set('city', selectedCities.join(','));
+    else params.delete('city');
+
+    params.set('days', String(days));
+    const next = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState({}, '', next);
+}
+
+function applyTripParamsFromUrl(data) {
+    const params = new URLSearchParams(window.location.search);
+    const from = String(params.get('from') || '').toUpperCase();
+    const to = String(params.get('to') || '').toUpperCase();
+    const cityParam = params.get('city') || '';
+    const daysParam = Number(params.get('days') || '');
+    const selectedCities = cityParam.split(',').map(item => item.trim()).filter(Boolean);
+
+    const origin = findCountryByCode(data, from);
+    const destination = findCountryByCode(data, to);
+    const originEl = document.getElementById('trip-origin');
+    const destinationEl = document.getElementById('trip-destination');
+
+    if (origin && originEl) originEl.value = origin.kod;
+    if (destination && destinationEl) destinationEl.value = destination.kod;
+
+    const targetDestinationCode = destination?.kod || destinationEl?.value || 'DE';
+    renderTripCityOptions(targetDestinationCode, selectedCities);
+
+    const daysInput = document.getElementById('trip-days');
+    if (daysInput && Number.isFinite(daysParam) && daysParam >= 1 && daysParam <= 60) {
+        daysInput.value = String(Math.round(daysParam));
+    }
 }
 
 function renderHomeTripPlanner(data) {
     const resultEl = document.getElementById('trip-result');
     const originCode = document.getElementById('trip-origin')?.value || '';
     const destinationCode = document.getElementById('trip-destination')?.value || '';
-    const cityRaw = document.getElementById('trip-city')?.value || '';
-    const city = cityRaw.trim();
+    const selectedCities = getSelectedTripCities();
+    const primaryCity = selectedCities[0] || '';
+    const tripDays = getTripSelectedDays();
 
     if (!resultEl) return;
     const origin = findCountryByCode(data, originCode);
@@ -665,14 +770,22 @@ function renderHomeTripPlanner(data) {
     };
     const selected = statusMap[status] || statusMap.unknown;
     const scoreMeta = getTripScoreMeta(status || 'unknown');
-    const destinationLabel = city ? `${city}, ${destination.ulke}` : destination.ulke;
-    const selectedCities = getSelectedTripCities();
+    const destinationLabel = primaryCity ? `${primaryCity}, ${destination.ulke}` : destination.ulke;
     const cityLine = selectedCities.length ? selectedCities.join(', ') : 'Şehir seçimi yapılmadı';
     const checklist = getTripChecklist(status || 'unknown', destination.ulke);
+    const requiredDocs = getTripRequiredDocs(status || 'unknown', destination.ulke);
     const checklistHtml = checklist.map(item => `<li>${item}</li>`).join('');
+    const docsHtml = requiredDocs.map(item => `<li>${item}</li>`).join('');
+    const etaText = getTripProcessEta(status || 'unknown');
+    const visaFeeUsd = getTripVisaFeeUsd(status || 'unknown');
+    const dailyUsd = getTripDailyEstimateUsd(destination.kod);
+    const totalUsd = visaFeeUsd + dailyUsd * tripDays;
     const flightsQuery = encodeURIComponent(`${origin.ulke} ${destinationLabel} uçuş`);
     const hotelQuery = encodeURIComponent(destinationLabel);
     const visaQuery = encodeURIComponent(`${origin.ulke} vatandaşları ${destination.ulke} vize şartları`);
+
+    updateTripShareableUrl(origin.kod, destination.kod, selectedCities, tripDays);
+    const shareUrl = window.location.href;
 
     resultEl.innerHTML = `
         <div class="trip-result-top">
@@ -693,13 +806,31 @@ function renderHomeTripPlanner(data) {
                 <strong>${cityLine}</strong>
             </div>
         </div>
-        <ul class="planner-checklist">${checklistHtml}</ul>
+        <div class="trip-detail-grid">
+            <section class="trip-detail-card">
+                <h4>Gerekli Evraklar</h4>
+                <ul class="planner-checklist">${docsHtml}</ul>
+            </section>
+            <section class="trip-detail-card">
+                <h4>Tahmini Süreç</h4>
+                <p class="trip-eta">${etaText}</p>
+                <ul class="planner-checklist">${checklistHtml}</ul>
+            </section>
+            <section class="trip-detail-card trip-detail-cost">
+                <h4>Mini Maliyet Özeti (${tripDays} gün)</h4>
+                <div class="trip-cost-line"><span>Vize ücreti (tahmini)</span><strong>$${visaFeeUsd}</strong></div>
+                <div class="trip-cost-line"><span>Günlük gider (tahmini)</span><strong>$${dailyUsd}</strong></div>
+                <div class="trip-cost-line"><span>Toplam tahmini bütçe</span><strong>$${totalUsd}</strong></div>
+                <p class="trip-cost-note">Not: Değerler şehir/seyahat tarzına göre değişebilir.</p>
+            </section>
+        </div>
         <div class="planner-links">
             <a href="https://www.google.com/travel/flights?q=${flightsQuery}" target="_blank" rel="noopener noreferrer">Uçuş Ara</a>
             <a href="https://www.booking.com/searchresults.tr.html?ss=${hotelQuery}" target="_blank" rel="noopener noreferrer">Konaklama Ara</a>
             <a href="https://www.google.com/search?q=${visaQuery}" target="_blank" rel="noopener noreferrer">Vize Kaynakları</a>
             <a href="${getCountryDetailUrl(destination.kod)}" target="_blank" rel="noopener noreferrer">Ülke Detayı</a>
         </div>
+        <div class="trip-share-row"><span>Paylaşılabilir sonuç URL:</span> <a href="${shareUrl}">${shareUrl}</a></div>
     `;
 }
 
@@ -718,18 +849,7 @@ function setupTripPlannerSelects(data) {
     originEl.value = 'TR';
     destinationEl.value = 'DE';
     tripPlannerSetupDone = true;
-    renderTripCityOptions('DE');
-}
-
-function setTripCityOptionsExpanded(expanded) {
-    const optionsEl = document.getElementById('trip-city-options');
-    const toggleEl = document.getElementById('trip-city-toggle');
-    if (!optionsEl || !toggleEl) return;
-
-    const isExpanded = Boolean(expanded);
-    optionsEl.classList.toggle('is-collapsed', !isExpanded);
-    toggleEl.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
-    toggleEl.textContent = isExpanded ? 'Şehirleri Gizle' : 'Şehir Seç (çoklu)';
+    renderTripCityOptions('DE', []);
 }
 
 function getTripCityOptionsByCode(code) {
@@ -744,30 +864,31 @@ function getTripCityOptionsByCode(code) {
     return ['Şehir verisi hazırlanıyor'];
 }
 
-function renderTripCityOptions(destinationCode) {
-    const optionsEl = document.getElementById('trip-city-options');
-    if (!optionsEl) return;
-
+function renderTripCityOptions(destinationCode, selectedCities) {
+    const citySelect = document.getElementById('trip-city-select');
+    if (!(citySelect instanceof HTMLSelectElement)) return;
     const cities = getTripCityOptionsByCode(destinationCode);
-    optionsEl.innerHTML = cities.map((city, index) => `
-        <label class="trip-city-pill">
-            <input type="checkbox" name="trip-city-checkbox" value="${city}" ${index === 0 ? 'checked' : ''}>
-            <span>${city}</span>
-        </label>
-    `).join('');
-
-    syncTripCityInputFromCheckboxes();
-    setTripCityOptionsExpanded(false);
+    const selectedSet = new Set(Array.isArray(selectedCities) ? selectedCities : []);
+    citySelect.innerHTML = cities.map(city => {
+        const selected = selectedSet.size ? selectedSet.has(city) : false;
+        return `<option value="${city}" ${selected ? 'selected' : ''}>${city}</option>`;
+    }).join('');
+    const selectedCount = [...citySelect.options].filter(option => option.selected).length;
+    if ((selectedCount === 0) && citySelect.options.length) {
+        citySelect.options[0].selected = true;
+    }
+    syncTripCitySummary();
 }
 
 function setupLazyTripPlanner(data) {
     const section = document.getElementById('rota-planlayici');
     const trigger = () => {
         setupTripPlannerSelects(data);
+        applyTripParamsFromUrl(data);
         renderHomeTripPlanner(data);
         preloadCountryMeta().then(() => {
             const destinationCode = document.getElementById('trip-destination')?.value || '';
-            if (destinationCode) renderTripCityOptions(destinationCode);
+            if (destinationCode) renderTripCityOptions(destinationCode, getSelectedTripCities());
         });
         if (visaLoadState === 'idle') {
             preloadVisaDataset(data).then(() => renderHomeTripPlanner(data));
@@ -1338,23 +1459,14 @@ function initEventListeners(data) {
     });
     document.getElementById('trip-destination')?.addEventListener('change', () => {
         const destinationCode = document.getElementById('trip-destination')?.value || '';
-        renderTripCityOptions(destinationCode);
+        renderTripCityOptions(destinationCode, []);
         renderHomeTripPlanner(data);
     });
-    document.getElementById('trip-city-toggle')?.addEventListener('click', () => {
-        const expanded = document.getElementById('trip-city-toggle')?.getAttribute('aria-expanded') === 'true';
-        setTripCityOptionsExpanded(!expanded);
+    document.getElementById('trip-city-select')?.addEventListener('change', () => {
+        syncTripCitySummary();
+        renderHomeTripPlanner(data);
     });
-    document.getElementById('trip-city-options')?.addEventListener('change', e => {
-        const target = e.target;
-        if (!(target instanceof HTMLInputElement) || target.name !== 'trip-city-checkbox') return;
-        const checked = getSelectedTripCities();
-        if (!checked.length) {
-            target.checked = true;
-        } else if (checked.length > 3) {
-            target.checked = false;
-        }
-        syncTripCityInputFromCheckboxes();
+    document.getElementById('trip-days')?.addEventListener('input', () => {
         renderHomeTripPlanner(data);
     });
     document.getElementById('trip-run')?.addEventListener('click', () => {

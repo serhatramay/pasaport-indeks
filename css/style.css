@@ -1787,3 +1787,130 @@ section h2,
         grid-template-columns: 1fr;
     }
 }
+
+/* ===== ROUTE + READABILITY V27 ===== */
+#trip-city-select {
+    min-height: 122px;
+    height: auto !important;
+    padding: 8px 10px !important;
+}
+
+#trip-city-select option {
+    padding: 7px 8px;
+    border-radius: 6px;
+    margin: 2px 0;
+}
+
+.trip-city-summary {
+    margin-top: 4px;
+    color: #5c6d84 !important;
+    font-size: 0.84rem;
+}
+
+.trip-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.trip-detail-card {
+    border: 1px solid #d8e2ef;
+    border-radius: 12px;
+    background: #f8fbff;
+    padding: 12px;
+}
+
+.trip-detail-card h4 {
+    margin: 0 0 8px;
+    font-size: 0.95rem;
+    color: #193150;
+}
+
+.trip-detail-card .planner-checklist {
+    margin: 0;
+}
+
+.trip-eta {
+    margin: 0 0 8px;
+    color: #1f3655;
+    font-weight: 700;
+}
+
+.trip-cost-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 0;
+    border-bottom: 1px dashed #d0dae8;
+}
+
+.trip-cost-line span {
+    color: #54677f !important;
+    font-size: 0.86rem;
+}
+
+.trip-cost-line strong {
+    color: #1c3150 !important;
+    font-size: 0.92rem;
+}
+
+.trip-cost-note {
+    margin: 8px 0 0;
+    color: #6a7c94 !important;
+    font-size: 0.8rem;
+}
+
+.trip-share-row {
+    margin-top: 8px;
+    font-size: 0.82rem;
+    color: #5f728b;
+    word-break: break-all;
+}
+
+.trip-share-row a {
+    color: #2a6cb4 !important;
+    text-decoration: underline;
+}
+
+.trip-tool-result,
+.trip-planner-result,
+.budget-result,
+.country-metric-card,
+.snapshot-item,
+.knowledge-card,
+.faq-item,
+.ranking-info,
+.source-compare {
+    background: #ffffff !important;
+    border: 1px solid #d8e3ef !important;
+    box-shadow: 0 8px 24px rgba(25, 43, 68, 0.08) !important;
+    color: #1a2c45 !important;
+}
+
+.trip-tool-result h3,
+.trip-planner-result h3,
+.budget-head h2,
+.trip-planner-head h2,
+.country-metric-card .value,
+.snapshot-item .value,
+.knowledge-card h3 {
+    color: #132a46 !important;
+}
+
+.trip-tool-result p,
+.trip-planner-result p,
+.planner-checklist li,
+.budget-note,
+.field-note,
+.trip-kpi span,
+.country-metric-card .label,
+.snapshot-item .label {
+    color: #54667f !important;
+}
+
+@media (max-width: 900px) {
+    .trip-detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
