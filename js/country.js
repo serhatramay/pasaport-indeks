@@ -30,12 +30,57 @@ let visaListVisibleCount = 80;
 let plannerOriginCode = '';
 let plannerDestinationCode = '';
 let plannerDestinationCity = '';
+let budgetDestinationCode = '';
+let budgetFromCurrency = '';
+let budgetToCurrency = '';
+let budgetAmount = 2000;
+let budgetDays = 5;
+let fxRatesMap = null;
+let fxRatesUpdatedAt = '';
+let fxRatesSource = 'fallback';
+let fxRatesLoading = false;
 
 const COUNTRY_BY_ISO3 = {};
 PASAPORT_DATA.forEach(item => {
     COUNTRY_BY_ISO3[item.iso3] = item;
 });
 const VALID_ISO3 = new Set(PASAPORT_DATA.map(item => item.iso3));
+const FX_FALLBACK_RATES_USD = {
+    USD: 1,
+    EUR: 0.92,
+    TRY: 36.4,
+    GBP: 0.78,
+    CHF: 0.88,
+    AED: 3.67,
+    SAR: 3.75,
+    CAD: 1.35,
+    AUD: 1.52,
+    NZD: 1.66,
+    JPY: 151.0,
+    CNY: 7.2,
+    KRW: 1330,
+    SGD: 1.35,
+    INR: 83.0,
+    THB: 35.8,
+    MYR: 4.7,
+    RUB: 92.0,
+    BRL: 5.0,
+    MXN: 17.0,
+    ZAR: 18.7
+};
+
+const DEFAULT_CURRENCY_BY_COUNTRY = {
+    TR: 'TRY', DE: 'EUR', FR: 'EUR', IT: 'EUR', ES: 'EUR', PT: 'EUR', NL: 'EUR', BE: 'EUR', AT: 'EUR', FI: 'EUR', IE: 'EUR', GR: 'EUR',
+    US: 'USD', CA: 'CAD', AU: 'AUD', NZ: 'NZD', JP: 'JPY', KR: 'KRW', CN: 'CNY', IN: 'INR', SG: 'SGD', TH: 'THB', MY: 'MYR',
+    AE: 'AED', SA: 'SAR', CH: 'CHF', GB: 'GBP', BR: 'BRL', MX: 'MXN', ZA: 'ZAR', RU: 'RUB'
+};
+
+const DAILY_COST_USD = {
+    high: { accommodation: 140, food: 60, transport: 30, misc: 35 },
+    midHigh: { accommodation: 95, food: 42, transport: 22, misc: 24 },
+    mid: { accommodation: 65, food: 28, transport: 14, misc: 18 },
+    low: { accommodation: 38, food: 16, transport: 8, misc: 10 }
+};
 
 function getCountryByCode(code) {
     if (!code) return null;
@@ -230,6 +275,250 @@ function getCountryContinentCode(kod) {
     if (!kod || !countryMetaByIso2) return null;
     const meta = countryMetaByIso2[kod.toUpperCase()];
     return meta?.continent || null;
+}
+
+function detectUserPreferredCurrency() {
+    const lang = (navigator.language || '').toLowerCase();
+    if (lang.startsWith('tr')) return 'TRY';
+    return 'USD';
+}
+
+function extractCurrencyCodeFromText(text) {
+    const match = String(text || '').toUpperCase().match(/\b[A-Z]{3}\b/);
+    return match ? match[0] : '';
+}
+
+function normalizeCurrencyCode(code) {
+    const value = String(code || '').toUpperCase().trim();
+    return /^[A-Z]{3}$/.test(value) ? value : '';
+}
+
+function getCurrencyCodeFromMeta(kod) {
+    const meta = countryMetaByIso2?.[String(kod || '').toUpperCase()];
+    if (!meta) return '';
+
+    const tryCode = value => normalizeCurrencyCode(value);
+    if (meta.currency) return tryCode(meta.currency);
+    if (Array.isArray(meta.currencies) && meta.currencies.length) {
+        const first = meta.currencies[0];
+        if (typeof first === 'string') return tryCode(first);
+        if (first?.code) return tryCode(first.code);
+    }
+    if (meta.currencies && typeof meta.currencies === 'object') {
+        const keys = Object.keys(meta.currencies);
+        if (keys.length) return tryCode(keys[0]);
+    }
+    return '';
+}
+
+function getCurrencyCodeForCountry(kod) {
+    const code = String(kod || '').toUpperCase();
+    const profile = typeof COUNTRY_PROFILES !== 'undefined' ? COUNTRY_PROFILES[code] : null;
+    const fromField = extractCurrencyCodeFromText(profile?.fields?.currency?.value);
+    if (fromField) return fromField;
+    const fromProfile = extractCurrencyCodeFromText(profile?.currency);
+    if (fromProfile) return fromProfile;
+    const fromMeta = getCurrencyCodeFromMeta(code);
+    if (fromMeta) return fromMeta;
+    return DEFAULT_CURRENCY_BY_COUNTRY[code] || 'USD';
+}
+
+function getAvailableCurrencies() {
+    const set = new Set(['USD', 'EUR', 'TRY']);
+    PASAPORT_DATA.forEach(item => {
+        const code = getCurrencyCodeForCountry(item.kod);
+        if (code) set.add(code);
+    });
+    return [...set].sort((a, b) => a.localeCompare(b));
+}
+
+async function preloadExchangeRates() {
+    if (fxRatesMap || fxRatesLoading) return;
+    fxRatesLoading = true;
+    try {
+        const response = await fetch('https://open.er-api.com/v6/latest/USD', { cache: 'no-store' });
+        if (!response.ok) throw new Error('Kur servisi yanıt vermedi: ' + response.status);
+        const payload = await response.json();
+        if (!payload?.rates || typeof payload.rates !== 'object') throw new Error('Kur verisi eksik');
+        fxRatesMap = payload.rates;
+        fxRatesUpdatedAt = payload.time_last_update_utc || new Date().toISOString();
+        fxRatesSource = 'live';
+    } catch (err) {
+        fxRatesMap = { ...FX_FALLBACK_RATES_USD };
+        fxRatesUpdatedAt = 'fallback';
+        fxRatesSource = 'fallback';
+        console.warn('Canlı kur verisi alınamadı, fallback kullanılıyor:', err);
+    } finally {
+        fxRatesLoading = false;
+    }
+}
+
+function convertByUsdBase(amount, fromCode, toCode) {
+    const rates = fxRatesMap || FX_FALLBACK_RATES_USD;
+    const fromRate = rates[fromCode];
+    const toRate = rates[toCode];
+    if (!fromRate || !toRate) return null;
+    const usd = amount / fromRate;
+    return usd * toRate;
+}
+
+function formatMoney(value, currency) {
+    const safe = Number(value || 0);
+    try {
+        return new Intl.NumberFormat('tr-TR', {
+            style: 'currency',
+            currency: currency || 'USD',
+            maximumFractionDigits: safe > 1000 ? 0 : 2
+        }).format(safe);
+    } catch (_) {
+        return `${safe.toFixed(2)} ${currency || ''}`.trim();
+    }
+}
+
+function getDailyCostTier(kod) {
+    const code = String(kod || '').toUpperCase();
+    if (['CH', 'NO', 'SG', 'AE', 'US', 'GB'].includes(code)) return 'high';
+    if (['DE', 'FR', 'NL', 'AT', 'AU', 'CA', 'JP', 'KR', 'IT', 'ES'].includes(code)) return 'midHigh';
+    if (['TR', 'BR', 'MX', 'TH', 'MY', 'CN', 'PT', 'GR', 'PL'].includes(code)) return 'mid';
+    if (['IN', 'PK', 'BD', 'NP', 'KE', 'UG', 'TZ', 'EG', 'MA', 'VN'].includes(code)) return 'low';
+
+    const continent = getCountryContinentCode(code);
+    if (continent === 'EU' || continent === 'NA' || continent === 'OC') return 'midHigh';
+    if (continent === 'AS' || continent === 'SA') return 'mid';
+    if (continent === 'AF') return 'low';
+    return 'mid';
+}
+
+function ensureBudgetPlannerDom() {
+    if (document.getElementById('budget-planner-section')) return;
+    const main = document.querySelector('.country-page');
+    if (!main) return;
+
+    const section = document.createElement('section');
+    section.className = 'budget-planner';
+    section.id = 'budget-planner-section';
+    section.innerHTML = `
+        <div class="container">
+            <div class="budget-head">
+                <h2>Bütçe ve Para Birimi Çevirici</h2>
+                <p>Kaynak ülke, hedef ülke ve tutar seçin. Günlük tahmini masrafı ve yaklaşık kur karşılığını görün.</p>
+            </div>
+            <div class="budget-grid">
+                <div class="budget-field">
+                    <label for="budget-destination-country">Hedef Ülke</label>
+                    <select id="budget-destination-country" aria-label="Hedef ülke"></select>
+                </div>
+                <div class="budget-field">
+                    <label for="budget-amount">Tutar</label>
+                    <input id="budget-amount" type="number" min="0" step="1" value="2000" aria-label="Tutar">
+                </div>
+                <div class="budget-field">
+                    <label for="budget-from-currency">Kaynak Para</label>
+                    <select id="budget-from-currency" aria-label="Kaynak para birimi"></select>
+                </div>
+                <div class="budget-field">
+                    <label for="budget-to-currency">Hedef Para</label>
+                    <select id="budget-to-currency" aria-label="Hedef para birimi"></select>
+                </div>
+                <div class="budget-field">
+                    <label for="budget-days">Seyahat Günü</label>
+                    <input id="budget-days" type="number" min="1" max="60" step="1" value="5" aria-label="Seyahat günü">
+                </div>
+                <div class="budget-field budget-action">
+                    <button type="button" class="mini-btn" id="budget-refresh">Kuru Yenile</button>
+                </div>
+            </div>
+            <article class="budget-result" id="budget-result" aria-live="polite">
+                <h3>Bütçe Özeti</h3>
+                <p>Hedef ülke ve tutar seçin.</p>
+            </article>
+        </div>
+    `;
+
+    const faqSection = document.getElementById('country-faq');
+    if (faqSection) main.insertBefore(section, faqSection);
+    else main.appendChild(section);
+}
+
+function renderBudgetPlanner(country) {
+    ensureBudgetPlannerDom();
+
+    const destinationSelect = document.getElementById('budget-destination-country');
+    const fromSelect = document.getElementById('budget-from-currency');
+    const toSelect = document.getElementById('budget-to-currency');
+    const amountInput = document.getElementById('budget-amount');
+    const daysInput = document.getElementById('budget-days');
+    if (!destinationSelect || !fromSelect || !toSelect || !amountInput || !daysInput) return;
+
+    const countries = [...PASAPORT_DATA].sort((a, b) => a.ulke.localeCompare(b.ulke, 'tr'));
+    destinationSelect.innerHTML = countries.map(item => `
+        <option value="${item.kod}">${item.bayrak} ${item.ulke}</option>
+    `).join('');
+
+    const currencies = getAvailableCurrencies();
+    const currencyOptions = currencies.map(code => `<option value="${code}">${code}</option>`).join('');
+    fromSelect.innerHTML = currencyOptions;
+    toSelect.innerHTML = currencyOptions;
+
+    if (!budgetDestinationCode) budgetDestinationCode = country.kod;
+    if (!budgetFromCurrency) budgetFromCurrency = detectUserPreferredCurrency();
+    if (!budgetToCurrency) budgetToCurrency = getCurrencyCodeForCountry(budgetDestinationCode);
+
+    destinationSelect.value = budgetDestinationCode;
+    fromSelect.value = currencies.includes(budgetFromCurrency) ? budgetFromCurrency : 'USD';
+    toSelect.value = currencies.includes(budgetToCurrency) ? budgetToCurrency : getCurrencyCodeForCountry(budgetDestinationCode);
+    amountInput.value = String(budgetAmount);
+    daysInput.value = String(budgetDays);
+}
+
+async function renderBudgetOutput() {
+    const result = document.getElementById('budget-result');
+    if (!result) return;
+    const destination = getCountryByCode(budgetDestinationCode);
+    if (!destination) {
+        result.innerHTML = '<h3>Bütçe Özeti</h3><p>Hedef ülke seçin.</p>';
+        return;
+    }
+
+    await preloadExchangeRates();
+
+    const from = normalizeCurrencyCode(budgetFromCurrency) || 'USD';
+    const to = normalizeCurrencyCode(budgetToCurrency) || getCurrencyCodeForCountry(destination.kod);
+    const amount = Math.max(0, Number(budgetAmount || 0));
+    const days = Math.max(1, Number(budgetDays || 1));
+
+    const converted = convertByUsdBase(amount, from, to);
+    if (converted == null) {
+        result.innerHTML = '<h3>Bütçe Özeti</h3><p>Kur dönüşümü şu an yapılamadı. Lütfen para birimlerini değiştirin.</p>';
+        return;
+    }
+
+    const tier = getDailyCostTier(destination.kod);
+    const model = DAILY_COST_USD[tier];
+    const dailyUsd = model.accommodation + model.food + model.transport + model.misc;
+    const totalUsd = dailyUsd * days;
+    const totalLocal = convertByUsdBase(totalUsd, 'USD', to);
+    const dailyLocal = convertByUsdBase(dailyUsd, 'USD', to);
+    const note = fxRatesSource === 'live'
+        ? 'Kur kaynağı: canlı'
+        : 'Kur kaynağı: fallback (yaklaşık)';
+
+    result.innerHTML = `
+        <h3>${destination.bayrak} ${destination.ulke} için Bütçe Özeti</h3>
+        <p><strong>${formatMoney(amount, from)}</strong> ≈ <strong>${formatMoney(converted, to)}</strong></p>
+        <div class="budget-kpis">
+            <div><span>Günlük Tahmini</span><strong>${formatMoney(dailyLocal, to)}</strong></div>
+            <div><span>${days} Gün Tahmini</span><strong>${formatMoney(totalLocal, to)}</strong></div>
+            <div><span>Yaklaşık USD</span><strong>${formatMoney(totalUsd, 'USD')}</strong></div>
+        </div>
+        <ul class="budget-breakdown">
+            <li>Konaklama: ${formatMoney(convertByUsdBase(model.accommodation, 'USD', to), to)} / gün</li>
+            <li>Yeme-içme: ${formatMoney(convertByUsdBase(model.food, 'USD', to), to)} / gün</li>
+            <li>Ulaşım: ${formatMoney(convertByUsdBase(model.transport, 'USD', to), to)} / gün</li>
+            <li>Diğer: ${formatMoney(convertByUsdBase(model.misc, 'USD', to), to)} / gün</li>
+        </ul>
+        <p class="budget-note">${note}. Son güncelleme: ${fxRatesUpdatedAt || '-'}</p>
+    `;
 }
 
 function setCountryMeta(country) {
@@ -484,6 +773,124 @@ function getProfileField(profile, fieldName) {
     };
 }
 
+function buildAutoCountryProfile(country) {
+    const updatedAt = DATA_INFO?.generatedAt || '2026-02-20';
+    const countryName = country.ulke;
+    const wikiQuery = encodeURIComponent(countryName);
+    const wikiUniversityCategory = `https://www.google.com/search?q=${encodeURIComponent(countryName + ' üniversiteleri')}`;
+    const wikivoyage = `https://tr.wikivoyage.org/wiki/${wikiQuery}`;
+    const operatorSearch = `https://www.google.com/search?q=${encodeURIComponent(countryName + ' mobile operators')}`;
+    const peopleSearch = `https://www.google.com/search?q=${encodeURIComponent(countryName + ' famous people')}`;
+
+    return {
+        updatedAt,
+        editorial_status: 'auto',
+        next_review_at: 'Planlanacak',
+        schools: [
+            { name: `${countryName} Üniversite Rehberi`, url: wikiUniversityCategory },
+            { name: 'QS Dünya Üniversite Sıralamaları', url: 'https://www.topuniversities.com/world-university-rankings' },
+            { name: 'Times Higher Education', url: 'https://www.timeshighereducation.com/world-university-rankings' },
+            { name: 'Webometrics Üniversite Endeksi', url: 'https://www.webometrics.info/en' },
+            { name: 'UNESCO Institute for Statistics', url: 'https://uis.unesco.org/' }
+        ],
+        places: [
+            `${countryName} için şehir ve gezi rehberi`,
+            `${countryName} kültürel noktalar`,
+            `${countryName} doğa ve açık hava rotaları`,
+            `${countryName} müze ve tarih rotaları`,
+            `${countryName} yeme-içme bölgeleri`
+        ],
+        operators: [
+            { name: `${countryName} Operatör Araması`, url: operatorSearch },
+            { name: 'GSMA Mobile Coverage Maps', url: 'https://www.gsma.com/coverage/' },
+            { name: 'OpenSignal', url: 'https://www.opensignal.com/' }
+        ],
+        fields: {
+            currency: {
+                value: 'Resmi kaynakla doğrulanmalıdır.',
+                source_url: `https://www.google.com/search?q=${encodeURIComponent(countryName + ' currency')}`,
+                source_name: `${countryName} para birimi araması`,
+                checked_at: updatedAt,
+                trust_score: 60,
+                note: 'Düzenli güncelleme için resmi merkez bankası/istatistik kaynağı önerilir.'
+            },
+            minimumWage: {
+                value: 'Dönemsel olarak güncellenir; resmi kaynakla teyit edilmelidir.',
+                source_url: `https://www.google.com/search?q=${encodeURIComponent(countryName + ' minimum wage official')}`,
+                source_name: `${countryName} asgari ücret araması`,
+                checked_at: updatedAt,
+                trust_score: 58,
+                note: 'Asgari ücret bilgisi mevzuatla değişebilir.'
+            },
+            livingCost: {
+                value: 'Şehir bazında farklılık gösterir; güncel saha verisiyle kontrol önerilir.',
+                source_url: 'https://www.numbeo.com/cost-of-living/',
+                source_name: 'Numbeo',
+                checked_at: updatedAt,
+                trust_score: 62,
+                note: 'Yaşam maliyeti hesaplarında kira ve kur etkisi yüksektir.'
+            },
+            inflation: {
+                value: 'Yıllık oran dönemsel değişir; resmi istatistikle güncel kontrol önerilir.',
+                source_url: 'https://www.imf.org/en/Publications/WEO',
+                source_name: 'IMF WEO',
+                checked_at: updatedAt,
+                trust_score: 64,
+                note: 'Kısa vadeli dalgalanmalar için ulusal istatistik kurumu takip edilmelidir.'
+            },
+            government: {
+                value: 'Yönetim biçimi resmi kamu kaynaklarından doğrulanmalıdır.',
+                source_url: `https://www.google.com/search?q=${encodeURIComponent(countryName + ' government type')}`,
+                source_name: `${countryName} yönetim biçimi araması`,
+                checked_at: updatedAt,
+                trust_score: 65,
+                note: ''
+            },
+            foodCulture: {
+                value: 'Yerel mutfak ve yeme-içme kültürü bölgesel farklılıklar gösterir.',
+                source_url: wikivoyage,
+                source_name: 'Wikivoyage',
+                checked_at: updatedAt,
+                trust_score: 60,
+                note: ''
+            }
+        },
+        famousPeople: [
+            `${countryName} için ünlü kişiler listesi`,
+            'Editoryal kaynak doğrulaması planlanıyor',
+            'Kültür, spor ve bilim alanları ayrı sınıflandırılacak',
+            'Yerel doğrulama sonrası isim bazlı yayınlanır',
+            'Güncelleme planı: kademeli'
+        ],
+        source_registry: {
+            schools: {
+                source_name: 'QS / THE / UNESCO',
+                source_url: 'https://www.topuniversities.com/world-university-rankings',
+                checked_at: updatedAt,
+                trust_score: 62
+            },
+            places: {
+                source_name: 'Wikivoyage',
+                source_url: wikivoyage,
+                checked_at: updatedAt,
+                trust_score: 58
+            },
+            operators: {
+                source_name: 'GSMA Coverage',
+                source_url: 'https://www.gsma.com/coverage/',
+                checked_at: updatedAt,
+                trust_score: 62
+            },
+            famousPeople: {
+                source_name: `${countryName} famous people araması`,
+                source_url: peopleSearch,
+                checked_at: updatedAt,
+                trust_score: 50
+            }
+        }
+    };
+}
+
 function renderFieldMeta(field) {
     const sourceLink = field.source_url
         ? `<a href="${field.source_url}" target="_blank" rel="noopener noreferrer">${field.source_name || 'Kaynak'}</a>`
@@ -508,23 +915,18 @@ function renderKnowledgeSection(country) {
     const note = document.getElementById('country-knowledge-note');
     if (!grid) return;
 
-    const profile = typeof COUNTRY_PROFILES !== 'undefined' ? COUNTRY_PROFILES[country.kod] : null;
-    if (!profile) {
-        if (note) note.textContent = `${country.ulke} için detaylı yaşam bilgileri hazırlık aşamasında.`;
-        grid.innerHTML = `
-            <article class="knowledge-card">
-                <h3>Veri Durumu</h3>
-                <p>Bu ülke için geniş bilgi kartları henüz eklenmedi. Yakında okullar, operatörler, yaşam maliyeti ve kültürel içerikler yayınlanacak.</p>
-            </article>
-        `;
-        return;
-    }
+    const profileBase = typeof COUNTRY_PROFILES !== 'undefined' ? COUNTRY_PROFILES[country.kod] : null;
+    const profile = profileBase || buildAutoCountryProfile(country);
 
     const statusLabel = profile.editorial_status === 'gold'
         ? 'Gold'
-        : (profile.editorial_status === 'standard' ? 'Standard' : 'Draft');
+        : (profile.editorial_status === 'standard' ? 'Standard' : (profile.editorial_status === 'auto' ? 'Auto' : 'Draft'));
     const nextReview = profile.next_review_at || '-';
-    if (note) note.textContent = `Son editoryal güncelleme: ${profile.updatedAt} | Durum: ${statusLabel} | Sonraki planlı yenileme: ${nextReview}`;
+    if (note) {
+        note.textContent = profileBase
+            ? `Son editoryal güncelleme: ${profile.updatedAt} | Durum: ${statusLabel} | Sonraki planlı yenileme: ${nextReview}`
+            : `Son güncelleme: ${profile.updatedAt} | Durum: ${statusLabel} | Bu ülke için otomatik temel rehber aktif.`;
+    }
 
     const currencyField = getProfileField(profile, 'currency');
     const minimumWageField = getProfileField(profile, 'minimumWage');
@@ -1163,6 +1565,62 @@ function bindInteractiveHandlers() {
         });
         plannerRun.dataset.bound = '1';
     }
+
+    const budgetDestination = document.getElementById('budget-destination-country');
+    if (budgetDestination && !budgetDestination.dataset.bound) {
+        budgetDestination.addEventListener('change', event => {
+            budgetDestinationCode = event.target.value || '';
+            budgetToCurrency = getCurrencyCodeForCountry(budgetDestinationCode);
+            renderBudgetPlanner(getCountryByCode(parseCountryCodeFromUrl()) || currentCountry || PASAPORT_DATA[0]);
+            renderBudgetOutput();
+        });
+        budgetDestination.dataset.bound = '1';
+    }
+
+    const budgetAmountEl = document.getElementById('budget-amount');
+    if (budgetAmountEl && !budgetAmountEl.dataset.bound) {
+        budgetAmountEl.addEventListener('input', event => {
+            budgetAmount = Number(event.target.value || 0);
+            renderBudgetOutput();
+        });
+        budgetAmountEl.dataset.bound = '1';
+    }
+
+    const budgetFromEl = document.getElementById('budget-from-currency');
+    if (budgetFromEl && !budgetFromEl.dataset.bound) {
+        budgetFromEl.addEventListener('change', event => {
+            budgetFromCurrency = event.target.value || 'USD';
+            renderBudgetOutput();
+        });
+        budgetFromEl.dataset.bound = '1';
+    }
+
+    const budgetToEl = document.getElementById('budget-to-currency');
+    if (budgetToEl && !budgetToEl.dataset.bound) {
+        budgetToEl.addEventListener('change', event => {
+            budgetToCurrency = event.target.value || 'USD';
+            renderBudgetOutput();
+        });
+        budgetToEl.dataset.bound = '1';
+    }
+
+    const budgetDaysEl = document.getElementById('budget-days');
+    if (budgetDaysEl && !budgetDaysEl.dataset.bound) {
+        budgetDaysEl.addEventListener('input', event => {
+            budgetDays = Number(event.target.value || 1);
+            renderBudgetOutput();
+        });
+        budgetDaysEl.dataset.bound = '1';
+    }
+
+    const budgetRefresh = document.getElementById('budget-refresh');
+    if (budgetRefresh && !budgetRefresh.dataset.bound) {
+        budgetRefresh.addEventListener('click', async () => {
+            fxRatesMap = null;
+            await renderBudgetOutput();
+        });
+        budgetRefresh.dataset.bound = '1';
+    }
 }
 
 function renderCountryPage(country) {
@@ -1188,6 +1646,9 @@ function renderCountryPage(country) {
     }
     fillTripPlannerSelects(plannerOriginCode, plannerDestinationCode);
     renderTripPlanner();
+    renderBudgetPlanner(country);
+    renderBudgetOutput();
+    bindInteractiveHandlers();
 
     updateActiveSelectionUI();
     if (currentCountry) renderVisaCountryList(currentCountry, activeVisaStatus, false);
