@@ -1882,10 +1882,10 @@ section h2,
 .faq-item,
 .ranking-info,
 .source-compare {
-    background: #ffffff !important;
-    border: 1px solid #d8e3ef !important;
-    box-shadow: 0 8px 24px rgba(25, 43, 68, 0.08) !important;
-    color: #1a2c45 !important;
+    background: linear-gradient(165deg, rgba(15, 30, 54, 0.96), rgba(10, 22, 42, 0.94)) !important;
+    border: 1px solid rgba(120, 156, 206, 0.3) !important;
+    box-shadow: 0 10px 28px rgba(6, 14, 27, 0.45) !important;
+    color: #e5efff !important;
 }
 
 .trip-tool-result h3,
@@ -1895,7 +1895,7 @@ section h2,
 .country-metric-card .value,
 .snapshot-item .value,
 .knowledge-card h3 {
-    color: #132a46 !important;
+    color: #f4f8ff !important;
 }
 
 .trip-tool-result p,
@@ -1906,7 +1906,7 @@ section h2,
 .trip-kpi span,
 .country-metric-card .label,
 .snapshot-item .label {
-    color: #54667f !important;
+    color: #a9bdd8 !important;
 }
 
 @media (max-width: 900px) {
@@ -1921,7 +1921,7 @@ section h2,
 .ranking-section .container,
 .compare-section .container,
 .map-section .container {
-    color: #152b45 !important;
+    color: #dce8f8 !important;
 }
 
 .ranking-info,
@@ -1929,10 +1929,10 @@ section h2,
 .trip-tool-result,
 .trip-detail-card,
 .ranking-table-wrapper {
-    background: #ffffff !important;
-    color: #182f49 !important;
-    border: 1px solid #d7e1ec !important;
-    box-shadow: 0 10px 28px rgba(17, 32, 53, 0.08) !important;
+    background: linear-gradient(165deg, rgba(16, 32, 58, 0.96), rgba(12, 23, 43, 0.95)) !important;
+    color: #e5efff !important;
+    border: 1px solid rgba(120, 156, 206, 0.3) !important;
+    box-shadow: 0 14px 30px rgba(2, 8, 19, 0.45) !important;
 }
 
 .ranking-info p,
@@ -1946,7 +1946,7 @@ section h2,
 .trip-city-summary,
 .field-note,
 .compact-meta {
-    color: #4d6079 !important;
+    color: #abc0db !important;
 }
 
 .trip-result-top h3,
@@ -1957,15 +1957,16 @@ section h2,
 .ranking-table td,
 .ranking-table th,
 .source-compare h3 {
-    color: #1a2f4a !important;
+    color: #f3f8ff !important;
 }
 
 .trip-kpi {
-    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%) !important;
+    background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%) !important;
+    border-color: rgba(129, 162, 206, 0.34) !important;
 }
 
 .trip-kpi span {
-    color: #60748f !important;
+    color: #a8bdd8 !important;
 }
 
 .planner-links a {
@@ -1974,16 +1975,16 @@ section h2,
     justify-content: center;
     border-radius: 999px;
     padding: 8px 14px;
-    background: #edf4ff !important;
-    border: 1px solid #c5d7ef !important;
-    color: #1f5fa4 !important;
+    background: rgba(111,177,255,0.14) !important;
+    border: 1px solid rgba(111,177,255,0.44) !important;
+    color: #cbe4ff !important;
     font-weight: 700;
 }
 
 .planner-links a:hover {
-    background: #deedff !important;
-    border-color: #9fc1e7 !important;
-    color: #174f89 !important;
+    background: rgba(111,177,255,0.24) !important;
+    border-color: rgba(158,201,255,0.75) !important;
+    color: #e8f3ff !important;
 }
 
 .trip-share-row {
@@ -1995,9 +1996,9 @@ section h2,
 }
 
 .trip-share-btn {
-    border: 1px solid #b7cbe6;
-    background: #f0f6ff;
-    color: #1e568f;
+    border: 1px solid rgba(129, 162, 206, 0.45);
+    background: rgba(111,177,255,0.14);
+    color: #cbe4ff;
     border-radius: 10px;
     font-weight: 700;
     padding: 8px 12px;
@@ -2005,22 +2006,22 @@ section h2,
 }
 
 .trip-share-btn:hover {
-    background: #e3efff;
+    background: rgba(111,177,255,0.24);
 }
 
 .trip-share-note {
-    color: #667d99 !important;
+    color: #9db4d1 !important;
     font-size: 0.82rem;
 }
 
 #trip-city-select {
-    background: #f8fbff !important;
-    color: #203954 !important;
+    background: rgba(255,255,255,0.06) !important;
+    color: #e5efff !important;
 }
 
 #trip-city-select option {
-    color: #203954;
-    background: #ffffff;
+    color: #e5efff;
+    background: #132743;
 }
 
 @media (max-width: 768px) {
