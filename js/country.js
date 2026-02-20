@@ -31,6 +31,7 @@ let plannerOriginCode = '';
 let plannerDestinationCode = '';
 let plannerDestinationCity = '';
 let budgetDestinationCode = '';
+let budgetOriginCode = '';
 let budgetFromCurrency = '';
 let budgetToCurrency = '';
 let budgetAmount = 2000;
@@ -405,8 +406,8 @@ function ensureBudgetPlannerDom() {
             </div>
             <div class="budget-grid">
                 <div class="budget-field">
-                    <label for="budget-destination-country">Hedef Ülke</label>
-                    <select id="budget-destination-country" aria-label="Hedef ülke"></select>
+                    <label for="budget-origin-country">Bulunduğum Ülke</label>
+                    <select id="budget-origin-country" aria-label="Bulunduğum ülke"></select>
                 </div>
                 <div class="budget-field">
                     <label for="budget-amount">Tutar</label>
@@ -415,6 +416,10 @@ function ensureBudgetPlannerDom() {
                 <div class="budget-field">
                     <label for="budget-from-currency">Kaynak Para</label>
                     <select id="budget-from-currency" aria-label="Kaynak para birimi"></select>
+                </div>
+                <div class="budget-field">
+                    <label for="budget-destination-country">Hedef Ülke</label>
+                    <select id="budget-destination-country" aria-label="Hedef ülke"></select>
                 </div>
                 <div class="budget-field">
                     <label>Hedef Para Birimi</label>
@@ -451,26 +456,34 @@ function ensureBudgetPlannerDom() {
 function renderBudgetPlanner(country) {
     ensureBudgetPlannerDom();
 
+    const originSelect = document.getElementById('budget-origin-country');
     const destinationSelect = document.getElementById('budget-destination-country');
     const fromSelect = document.getElementById('budget-from-currency');
     const targetCurrencyEl = document.getElementById('budget-target-currency');
     const amountInput = document.getElementById('budget-amount');
     const daysInput = document.getElementById('budget-days');
-    if (!destinationSelect || !fromSelect || !targetCurrencyEl || !amountInput || !daysInput) return;
+    if (!originSelect || !destinationSelect || !fromSelect || !targetCurrencyEl || !amountInput || !daysInput) return;
 
     const countries = [...PASAPORT_DATA].sort((a, b) => a.ulke.localeCompare(b.ulke, 'tr'));
-    destinationSelect.innerHTML = countries.map(item => `
+    const countryOptions = countries.map(item => `
         <option value="${item.kod}">${item.bayrak} ${item.ulke} (${getCurrencyCodeForCountry(item.kod)})</option>
     `).join('');
+    originSelect.innerHTML = countryOptions;
+    destinationSelect.innerHTML = countryOptions;
 
     const currencies = getAvailableCurrencies();
     const currencyOptions = currencies.map(code => `<option value="${code}">${code}</option>`).join('');
     fromSelect.innerHTML = currencyOptions;
 
+    if (!budgetOriginCode) budgetOriginCode = country.kod;
     if (!budgetDestinationCode) budgetDestinationCode = country.kod;
-    if (!budgetFromCurrency) budgetFromCurrency = detectUserPreferredCurrency();
+    if (!budgetFromCurrency) {
+        const preferred = detectUserPreferredCurrency();
+        budgetFromCurrency = preferred === 'TRY' ? 'TRY' : getCurrencyCodeForCountry(budgetOriginCode);
+    }
     budgetToCurrency = getCurrencyCodeForCountry(budgetDestinationCode);
 
+    originSelect.value = budgetOriginCode;
     destinationSelect.value = budgetDestinationCode;
     fromSelect.value = currencies.includes(budgetFromCurrency) ? budgetFromCurrency : 'USD';
     targetCurrencyEl.textContent = `${budgetToCurrency} (Hedef ülke para birimi)`;
@@ -1573,6 +1586,17 @@ function bindInteractiveHandlers() {
         plannerRun.dataset.bound = '1';
     }
 
+    const budgetOrigin = document.getElementById('budget-origin-country');
+    if (budgetOrigin && !budgetOrigin.dataset.bound) {
+        budgetOrigin.addEventListener('change', event => {
+            budgetOriginCode = event.target.value || '';
+            budgetFromCurrency = getCurrencyCodeForCountry(budgetOriginCode);
+            renderBudgetPlanner(getCountryByCode(parseCountryCodeFromUrl()) || currentCountry || PASAPORT_DATA[0]);
+            renderBudgetOutput();
+        });
+        budgetOrigin.dataset.bound = '1';
+    }
+
     const budgetDestination = document.getElementById('budget-destination-country');
     if (budgetDestination && !budgetDestination.dataset.bound) {
         budgetDestination.addEventListener('change', event => {
@@ -1644,6 +1668,8 @@ function renderCountryPage(country) {
     }
     fillTripPlannerSelects(plannerOriginCode, plannerDestinationCode);
     renderTripPlanner();
+    if (!budgetOriginCode) budgetOriginCode = country.kod;
+    if (!budgetFromCurrency) budgetFromCurrency = getCurrencyCodeForCountry(budgetOriginCode);
     renderBudgetPlanner(country);
     renderBudgetOutput();
     bindInteractiveHandlers();
