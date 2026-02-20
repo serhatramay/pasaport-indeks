@@ -453,8 +453,47 @@ function ensureBudgetPlannerDom() {
     }
 }
 
+function getBudgetPlannerGridHtml() {
+    return `
+        <div class="budget-field">
+            <label for="budget-origin-country">Bulunduğum Ülke</label>
+            <select id="budget-origin-country" aria-label="Bulunduğum ülke"></select>
+        </div>
+        <div class="budget-field">
+            <label for="budget-amount">Tutar</label>
+            <input id="budget-amount" type="number" min="0" step="1" value="2000" aria-label="Tutar">
+        </div>
+        <div class="budget-field">
+            <label for="budget-from-currency">Kaynak Para</label>
+            <select id="budget-from-currency" aria-label="Kaynak para birimi"></select>
+        </div>
+        <div class="budget-field">
+            <label for="budget-destination-country">Hedef Ülke</label>
+            <select id="budget-destination-country" aria-label="Hedef ülke"></select>
+        </div>
+        <div class="budget-field">
+            <label>Hedef Para Birimi</label>
+            <div class="budget-target-currency" id="budget-target-currency">-</div>
+        </div>
+        <div class="budget-field">
+            <label for="budget-days">Seyahat Günü</label>
+            <input id="budget-days" type="number" min="1" max="60" step="1" value="5" aria-label="Seyahat günü">
+        </div>
+        <div class="budget-field budget-action">
+            <button type="button" class="mini-btn" id="budget-refresh">Kuru Yenile</button>
+        </div>
+    `;
+}
+
 function renderBudgetPlanner(country) {
     ensureBudgetPlannerDom();
+
+    const budgetSection = document.getElementById('budget-planner-section');
+    const budgetGrid = budgetSection?.querySelector('.budget-grid');
+    if (budgetGrid) {
+        // Eski DOM/cached yerleşim kalsa bile her seferinde doğru alan sırasını zorla.
+        budgetGrid.innerHTML = getBudgetPlannerGridHtml();
+    }
 
     const originSelect = document.getElementById('budget-origin-country');
     const destinationSelect = document.getElementById('budget-destination-country');
