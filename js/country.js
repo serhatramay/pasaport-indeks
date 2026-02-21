@@ -9,6 +9,47 @@ const CONTINENT_LABELS_TR = {
     OC: 'Okyanusya'
 };
 
+const COUNTRY_NAME_OVERRIDES = {
+    TR: 'Türkiye',
+    ES: 'İspanya',
+    IT: 'İtalya',
+    SE: 'İsveç',
+    CH: 'İsviçre',
+    IE: 'İrlanda',
+    IL: 'İsrail',
+    CN: 'Çin',
+    CZ: 'Çekya',
+    BE: 'Belçika',
+    NO: 'Norveç',
+    GE: 'Gürcistan',
+    UZ: 'Özbekistan',
+    GB: 'Birleşik Krallık',
+    CI: 'Fildişi Sahili',
+    EG: 'Mısır',
+    KR: 'Güney Kore',
+    ZA: 'Güney Afrika',
+    SS: 'Güney Sudan'
+};
+
+const POPULAR_FOODS_BY_CODE = {
+    TR: ['Kebap', 'Mantı', 'Baklava'],
+    ES: ['Tapas', 'Paella', 'Tortilla'],
+    IT: ['Pizza', 'Pasta', 'Risotto'],
+    FR: ['Croissant', 'Ratatouille', 'Crème brûlée'],
+    DE: ['Bratwurst', 'Pretzel', 'Schnitzel'],
+    GB: ['Fish & Chips', 'Sunday Roast', 'Pie'],
+    US: ['Burger', 'Barbekü', 'Pancake'],
+    JP: ['Sushi', 'Ramen', 'Tempura'],
+    KR: ['Kimchi', 'Bibimbap', 'Bulgogi'],
+    CN: ['Dumpling', 'Pekin ördeği', 'Noodle'],
+    IN: ['Biryani', 'Curry', 'Naan'],
+    TH: ['Pad Thai', 'Tom Yum', 'Som Tam'],
+    GR: ['Moussaka', 'Souvlaki', 'Tzatziki'],
+    PT: ['Bacalhau', 'Caldo Verde', 'Pastel de Nata'],
+    NL: ['Stroopwafel', 'Bitterballen', 'Haring'],
+    CH: ['Fondü', 'Röşti', 'Çikolata']
+};
+
 const VISA_STATUS_META = {
     vizesiz: { label: 'Vizesiz', color: '#2ecc71', index: 0 },
     varista: { label: 'Varışta Vize', color: '#f39c12', index: 1 },
@@ -182,6 +223,68 @@ function normalizeText(value) {
         .replace(/ı/g, 'i')
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '');
+}
+
+function normalizeCountryNameTr(value) {
+    let output = String(value || '');
+    const replacements = [
+        ['Birlesik Krallik', 'Birleşik Krallık'],
+        ['Fildisi Sahili', 'Fildişi Sahili'],
+        ['Turkiye', 'Türkiye'],
+        ['Ispanya', 'İspanya'],
+        ['Italya', 'İtalya'],
+        ['Isvec', 'İsveç'],
+        ['Isvicre', 'İsviçre'],
+        ['Irlanda', 'İrlanda'],
+        ['Israil', 'İsrail'],
+        ['Cekya', 'Çekya'],
+        ['Belcika', 'Belçika'],
+        ['Norvec', 'Norveç'],
+        ['Gurcistan', 'Gürcistan'],
+        ['Ozbekistan', 'Özbekistan'],
+        ['Misir', 'Mısır'],
+        ['Guney', 'Güney'],
+        ['Cin', 'Çin']
+    ];
+    replacements.forEach(([from, to]) => {
+        output = output.replaceAll(from, to);
+    });
+    return output;
+}
+
+function getCountryDisplayName(country) {
+    if (!country) return '';
+    const code = String(country.kod || '').toUpperCase();
+    if (COUNTRY_NAME_OVERRIDES[code]) return COUNTRY_NAME_OVERRIDES[code];
+    return normalizeCountryNameTr(country.ulke);
+}
+
+function getCountryFoodSummary(country) {
+    const code = String(country?.kod || '').toUpperCase();
+    const mapped = POPULAR_FOODS_BY_CODE[code];
+    if (mapped?.length) return mapped.join(', ');
+
+    const profile = typeof COUNTRY_PROFILES !== 'undefined' ? COUNTRY_PROFILES[code] : null;
+    const raw = String(profile?.foodCulture || '').trim();
+    if (!raw) return 'Yerel mutfak öne çıkıyor.';
+
+    const firstSentence = raw.split('.').map(s => s.trim()).filter(Boolean)[0] || raw;
+    const chunks = firstSentence.split(',').map(s => s.trim()).filter(Boolean);
+    if (chunks.length >= 2) return chunks.slice(0, 3).join(', ');
+    return firstSentence;
+}
+
+function getCountryCurrencySummary(country) {
+    const code = String(country?.kod || '').toUpperCase();
+    const profile = typeof COUNTRY_PROFILES !== 'undefined' ? COUNTRY_PROFILES[code] : null;
+    const fromFields = String(profile?.fields?.currency?.value || '').trim();
+    if (fromFields) return fromFields;
+
+    const fromProfile = String(profile?.currency || '').trim();
+    if (fromProfile) return fromProfile;
+
+    const currencyCode = getCountryCurrencyCode(country);
+    return currencyCode || 'Resmi para birimi bilgisi güncelleniyor';
 }
 
 function getVisaCounts(country) {
@@ -582,9 +685,10 @@ async function renderBudgetOutput() {
 
 function setCountryMeta(country) {
     if (!country) return;
-    const pageTitle = `${country.ulke} Pasaport, Vize ve Yaşam Rehberi 2026 | Pasaport Endeksi`;
-    const pageDescription = `${country.ulke} için pasaport gücü, vize dağılımı, yaşam maliyeti, asgari ücret, uçuş ve seyahat planlama rehberi.`;
-    const pageKeywords = `${country.ulke} pasaport, ${country.ulke} vize, ${country.ulke} yaşam maliyeti, ${country.ulke} asgari ücret, ${country.ulke} nasıl gidilir, ${country.ulke} uçak bileti`;
+    const countryName = getCountryDisplayName(country);
+    const pageTitle = `${countryName} Pasaport, Vize ve Yaşam Rehberi 2026 | Pasaport Endeksi`;
+    const pageDescription = `${countryName} için pasaport gücü, vize dağılımı, yaşam maliyeti, asgari ücret, uçuş ve seyahat planlama rehberi.`;
+    const pageKeywords = `${countryName} pasaport, ${countryName} vize, ${countryName} yaşam maliyeti, ${countryName} asgari ücret, ${countryName} nasıl gidilir, ${countryName} uçak bileti`;
     const canonicalUrl = getCanonicalCountryUrl(country.kod);
 
     document.title = pageTitle;
@@ -616,7 +720,7 @@ function setCountryMeta(country) {
             inLanguage: 'tr',
             about: {
                 '@type': 'Place',
-                name: country.ulke
+                name: countryName
             }
         };
         jsonldScript.textContent = JSON.stringify(payload);
@@ -626,36 +730,48 @@ function setCountryMeta(country) {
     const subtitle = document.getElementById('country-subtitle');
     const flag = document.getElementById('passport-flag');
     const passportCountry = document.getElementById('passport-country');
+    const passportPopulation = document.getElementById('passport-population');
+    const passportCurrency = document.getElementById('passport-currency');
+    const passportFoods = document.getElementById('passport-foods');
     const passportCode = document.getElementById('passport-code');
+    const breadcrumbCountryLink = document.getElementById('breadcrumb-country-link');
 
-    if (heading) heading.textContent = `${country.bayrak} ${country.ulke}`;
-    if (subtitle) subtitle.textContent = `${country.ulke} pasaportunun global erişim gücü, vize dağılımı ve seyahat profili.`;
+    if (heading) heading.textContent = `${country.bayrak} ${countryName}`;
+    if (subtitle) subtitle.textContent = `${countryName} pasaportunun global erişim gücü, vize dağılımı ve seyahat profili.`;
     if (flag) flag.textContent = country.bayrak;
-    if (passportCountry) passportCountry.textContent = country.ulke.toUpperCase();
+    if (passportCountry) passportCountry.textContent = countryName.toLocaleUpperCase('tr-TR');
+    if (passportPopulation) passportPopulation.textContent = formatNumberTr(country.nufus);
+    if (passportCurrency) passportCurrency.textContent = getCountryCurrencySummary(country);
+    if (passportFoods) passportFoods.textContent = getCountryFoodSummary(country);
     if (passportCode) passportCode.textContent = country.kod;
+    if (breadcrumbCountryLink) {
+        breadcrumbCountryLink.textContent = countryName;
+        breadcrumbCountryLink.href = canonicalUrl;
+    }
 }
 
 function buildCountryFaqItems(country) {
+    const countryName = getCountryDisplayName(country);
     const counts = getVisaCounts(country);
     const totalAccess = counts.vizesiz + counts.varista + counts.evize;
     const fastAccess = counts.vizesiz + counts.varista;
 
     return [
         {
-            question: `${country.ulke} pasaportu ile toplam kaç ülkeye erişim var?`,
-            answer: `${country.ulke} pasaportu ile toplam ${totalAccess} ülkeye erişim bulunur. Bu toplam, vizesiz + varışta vize + e-vize kategorilerinin toplamıdır.`
+            question: `${countryName} pasaportu ile toplam kaç ülkeye erişim var?`,
+            answer: `${countryName} pasaportu ile toplam ${totalAccess} ülkeye erişim bulunur. Bu toplam, vizesiz + varışta vize + e-vize kategorilerinin toplamıdır.`
         },
         {
-            question: `${country.ulke} pasaportu ile hızlı erişim kaç ülke?`,
+            question: `${countryName} pasaportu ile hızlı erişim kaç ülke?`,
             answer: `Hızlı erişim (vizesiz + varışta vize) toplamı ${fastAccess} ülkedir.`
         },
         {
-            question: `${country.ulke} için e-vize ve klasik vize dağılımı nasıl?`,
+            question: `${countryName} için e-vize ve klasik vize dağılımı nasıl?`,
             answer: `E-vize gereken ülke sayısı ${counts.evize}, önceden vize gereken ülke sayısı ${counts.vize}.`
         },
         {
-            question: `${country.ulke} pasaportunun dünya sırası kaç?`,
-            answer: `${country.ulke} pasaportu bu veri modelinde dünya sıralamasında #${country.sira} konumundadır.`
+            question: `${countryName} pasaportunun dünya sırası kaç?`,
+            answer: `${countryName} pasaportu bu veri modelinde dünya sıralamasında #${country.sira} konumundadır.`
         },
         {
             question: 'Bu sayfadaki pasaport puanı nasıl hesaplanıyor?',
@@ -678,7 +794,7 @@ function renderCountryFaq(country) {
     `).join('');
 
     if (faqNote) {
-        faqNote.textContent = `${country.ulke} için bu sorular veriye bağlı olarak otomatik güncellenir.`;
+        faqNote.textContent = `${getCountryDisplayName(country)} için bu sorular veriye bağlı olarak otomatik güncellenir.`;
     }
 
     const faqJsonldScript = document.getElementById('country-faq-jsonld');
@@ -1133,9 +1249,9 @@ function fillCountrySelect(selectedCode) {
     const select = document.getElementById('country-select');
     if (!select) return;
 
-    const sorted = [...PASAPORT_DATA].sort((a, b) => a.ulke.localeCompare(b.ulke, 'tr'));
+    const sorted = [...PASAPORT_DATA].sort((a, b) => getCountryDisplayName(a).localeCompare(getCountryDisplayName(b), 'tr'));
     select.innerHTML = '<option value="">Seçiniz</option>' + sorted.map(item => `
-        <option value="${item.kod}">${item.bayrak} ${item.ulke}</option>
+        <option value="${item.kod}">${item.bayrak} ${getCountryDisplayName(item)}</option>
     `).join('');
 
     if (selectedCode) select.value = selectedCode;
@@ -1146,9 +1262,9 @@ function fillTripPlannerSelects(selectedOrigin, selectedDestination) {
     const destinationEl = document.getElementById('planner-destination');
     if (!originEl || !destinationEl) return;
 
-    const sorted = [...PASAPORT_DATA].sort((a, b) => a.ulke.localeCompare(b.ulke, 'tr'));
+    const sorted = [...PASAPORT_DATA].sort((a, b) => getCountryDisplayName(a).localeCompare(getCountryDisplayName(b), 'tr'));
     const options = '<option value="">Seçiniz</option>' + sorted.map(item => `
-        <option value="${item.kod}">${item.bayrak} ${item.ulke}</option>
+        <option value="${item.kod}">${item.bayrak} ${getCountryDisplayName(item)}</option>
     `).join('');
 
     originEl.innerHTML = options;
@@ -1169,7 +1285,7 @@ function getPairVisaStatus(originCountry, destinationCountry) {
 }
 
 function buildPlannerChecklist(status, destinationCountry) {
-    const countryName = destinationCountry?.ulke || 'hedef ülke';
+    const countryName = destinationCountry ? getCountryDisplayName(destinationCountry) : 'hedef ülke';
     if (status === 'vizesiz') {
         return [
             `Pasaport geçerlilik süresini ${countryName} için kontrol edin.`,
@@ -1228,7 +1344,9 @@ function renderTripPlanner() {
     }
 
     const city = plannerDestinationCity ? plannerDestinationCity.trim() : '';
-    const targetLabel = city ? `${city}, ${destination.ulke}` : destination.ulke;
+    const destinationName = getCountryDisplayName(destination);
+    const originName = getCountryDisplayName(origin);
+    const targetLabel = city ? `${city}, ${destinationName}` : destinationName;
     const status = getPairVisaStatus(origin, destination);
 
     const statusMeta = {
@@ -1243,13 +1361,13 @@ function renderTripPlanner() {
     const checklist = buildPlannerChecklist(status || 'unknown', destination);
     const listHtml = checklist.map(item => `<li>${item}</li>`).join('');
 
-    const flightsQuery = encodeURIComponent(`${origin.ulke} ${targetLabel} uçuş`);
+    const flightsQuery = encodeURIComponent(`${originName} ${targetLabel} uçuş`);
     const hotelQuery = encodeURIComponent(targetLabel);
-    const visaQuery = encodeURIComponent(`${origin.ulke} vatandaşları ${destination.ulke} vize şartları`);
+    const visaQuery = encodeURIComponent(`${originName} vatandaşları ${destinationName} vize şartları`);
     const mapsQuery = encodeURIComponent(targetLabel);
 
     resultEl.innerHTML = `
-        <h3>${origin.bayrak} ${origin.ulke} → ${destination.bayrak} ${targetLabel}</h3>
+        <h3>${origin.bayrak} ${originName} → ${destination.bayrak} ${targetLabel}</h3>
         <span class="planner-status ${mappedStatus.className}">${mappedStatus.text}</span>
         <ul class="planner-checklist">${listHtml}</ul>
         <div class="planner-links">

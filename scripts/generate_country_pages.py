@@ -12,6 +12,25 @@ OUT_DIR = ROOT / "ulke"
 SITEMAP = ROOT / "sitemap.xml"
 BASE_URL = "https://serhatramay.github.io/pasaport-indeks"
 LASTMOD = "2026-02-20"
+NAME_REPLACEMENTS = {
+    "Birlesik Krallik": "Birleşik Krallık",
+    "Fildisi Sahili": "Fildişi Sahili",
+    "Turkiye": "Türkiye",
+    "Ispanya": "İspanya",
+    "Italya": "İtalya",
+    "Isvec": "İsveç",
+    "Isvicre": "İsviçre",
+    "Irlanda": "İrlanda",
+    "Israil": "İsrail",
+    "Cekya": "Çekya",
+    "Belcika": "Belçika",
+    "Norvec": "Norveç",
+    "Gurcistan": "Gürcistan",
+    "Ozbekistan": "Özbekistan",
+    "Misir": "Mısır",
+    "Guney": "Güney",
+    "Cin": "Çin",
+}
 
 
 def slugify_tr(value: str) -> str:
@@ -44,9 +63,13 @@ def parse_countries():
     countries = []
     for match in pattern.findall(raw):
         code, name, flag, vizesiz, varista, evize, vize, puan, sira, nufus, iso3 = match
+        display_name = name
+        for src, dest in NAME_REPLACEMENTS.items():
+            display_name = display_name.replace(src, dest)
         countries.append({
             "code": code,
             "name": name,
+            "display_name": display_name,
             "flag": flag,
             "slug": slugify_tr(name),
             "vizesiz": int(vizesiz),
@@ -66,7 +89,7 @@ def parse_countries():
 
 
 def build_faq_items(country: dict):
-    name = country["name"]
+    name = country.get("display_name", country["name"])
     total_access = country["vizesiz"] + country["varista"] + country["evize"]
     fast_access = country["vizesiz"] + country["varista"]
     items = [
@@ -98,17 +121,18 @@ def build_faq_items(country: dict):
 def render_country_html(template: str, country: dict) -> str:
     code = country["code"]
     name = country["name"]
+    display_name = country.get("display_name", name)
     flag = country["flag"]
     slug = country["slug"]
     canonical = f"{BASE_URL}/ulke/{slug}/"
-    title = f"{name} Pasaport, Vize ve Yaşam Rehberi 2026 | Pasaport Endeksi"
+    title = f"{display_name} Pasaport, Vize ve Yaşam Rehberi 2026 | Pasaport Endeksi"
     description = (
-        f"{name} için pasaport gücü, vize dağılımı, yaşam maliyeti, asgari ücret, "
+        f"{display_name} için pasaport gücü, vize dağılımı, yaşam maliyeti, asgari ücret, "
         f"uçuş ve seyahat planlama rehberi."
     )
     keywords = (
-        f"{name} pasaport, {name} vize, {name} yaşam maliyeti, {name} asgari ücret, "
-        f"{name} nasıl gidilir, {name} uçak bileti"
+        f"{display_name} pasaport, {display_name} vize, {display_name} yaşam maliyeti, {display_name} asgari ücret, "
+        f"{display_name} nasıl gidilir, {display_name} uçak bileti"
     )
     og_image = f"{BASE_URL}/img/og-image.svg"
     faq_items = build_faq_items(country)
@@ -218,7 +242,7 @@ def render_country_html(template: str, country: dict) -> str:
         "name": title,
         "url": canonical,
         "inLanguage": "tr",
-        "about": {"@type": "Place", "name": name},
+        "about": {"@type": "Place", "name": display_name},
     }
     breadcrumb_jsonld = {
         "@context": "https://schema.org",
@@ -239,7 +263,7 @@ def render_country_html(template: str, country: dict) -> str:
             {
                 "@type": "ListItem",
                 "position": 3,
-                "name": name,
+                "name": display_name,
                 "item": canonical,
             },
             {
@@ -275,7 +299,7 @@ def render_country_html(template: str, country: dict) -> str:
     out = re.sub(r"<body>", f'<body data-country-code="{code}" data-country-slug="{slug}">', out, count=1)
     out = re.sub(
         r'(<div class="passport-country" id="passport-country">)(.*?)(</div>)',
-        r"\1" + html.escape(name.upper()) + r"\3",
+        r"\1" + html.escape(display_name.upper()) + r"\3",
         out,
         count=1,
         flags=re.S,
@@ -296,25 +320,33 @@ def render_country_html(template: str, country: dict) -> str:
     )
     out = re.sub(
         r'(<h1 id="country-title">)(.*?)(</h1>)',
-        r"\1" + html.escape(f"{name} Pasaport, Vize ve Yaşam Rehberi") + r"\3",
+        r"\1" + html.escape(f"{display_name} Pasaport, Vize ve Yaşam Rehberi") + r"\3",
         out,
         count=1,
         flags=re.S,
     )
     out = re.sub(
         r'(<a id="breadcrumb-country-link" href=")([^"]*)(">\s*)(.*?)(\s*</a>)',
-        r"\1" + canonical + r"\3" + html.escape(name) + r"\5",
+        r"\1" + canonical + r"\3" + html.escape(display_name) + r"\5",
         out,
         count=1,
         flags=re.S,
     )
     out = re.sub(
         r'(<p class="hero-subtitle" id="country-subtitle">)(.*?)(</p>)',
-        r"\1" + html.escape(f"{name} pasaportunun global erişim gücü, vize dağılımı ve seyahat profili.") + r"\3",
+        r"\1" + html.escape(f"{display_name} pasaportunun global erişim gücü, vize dağılımı ve seyahat profili.") + r"\3",
         out,
         count=1,
         flags=re.S,
     )
+    if 'id="passport-population"' not in out:
+        out = re.sub(
+            r'(<div class="passport-country" id="passport-country">.*?</div>\s*)(<div class="passport-code" id="passport-code">)',
+            r'\1<div class="passport-meta"><div class="passport-meta-row"><span class="meta-label">Nüfus</span><span class="meta-value" id="passport-population">-</span></div><div class="passport-meta-row"><span class="meta-label">Popüler Lezzetler</span><span class="meta-value" id="passport-foods">-</span></div></div>\n                        \2',
+            out,
+            count=1,
+            flags=re.S,
+        )
     out = re.sub(
         r'(<div class="country-faq-list" id="country-faq-list">)(.*?)(</div>)',
         r"\1" + faq_html + r"\3",
