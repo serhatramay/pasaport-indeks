@@ -302,6 +302,13 @@ def render_country_html(template: str, country: dict) -> str:
         flags=re.S,
     )
     out = re.sub(
+        r'(<a id="breadcrumb-country-link" href=")([^"]*)(">\s*)(.*?)(\s*</a>)',
+        r"\1" + canonical + r"\3" + html.escape(name) + r"\5",
+        out,
+        count=1,
+        flags=re.S,
+    )
+    out = re.sub(
         r'(<p class="hero-subtitle" id="country-subtitle">)(.*?)(</p>)',
         r"\1" + html.escape(f"{name} pasaportunun global erişim gücü, vize dağılımı ve seyahat profili.") + r"\3",
         out,

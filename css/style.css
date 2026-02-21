@@ -644,6 +644,30 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
 }
 .country-hero { padding: 56px 0 30px; }
 .back-link { color: #9ac7ff; font-size: 0.9rem; display: inline-block; margin-bottom: 12px; }
+.country-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(7,14,28,0.65);
+}
+.country-breadcrumb a {
+    color: #d5e4ff;
+    font-size: 0.84rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+.country-breadcrumb a:hover {
+    color: #f5c518;
+}
+.country-breadcrumb .crumb-sep {
+    color: #7f93b2;
+    font-size: 0.82rem;
+}
 .country-hero-top-panel { display: flex; justify-content: space-between; gap: 12px; align-items: end; flex-wrap: wrap; }
 .hero-home-btn {
     padding: 10px 14px;
@@ -1412,6 +1436,13 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
     .hero-home-btn { text-align: center; }
     .country-select-wrap select { width: 100%; min-width: 0; }
     .passport-hero-card { min-height: 220px; }
+    .country-breadcrumb {
+        gap: 6px;
+        padding: 8px 10px;
+    }
+    .country-breadcrumb a {
+        font-size: 0.8rem;
+    }
 }
 
 /* ===== DESIGN SYSTEM V3 (FULL RETHEME) ===== */
