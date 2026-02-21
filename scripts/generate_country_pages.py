@@ -220,9 +220,46 @@ def render_country_html(template: str, country: dict) -> str:
         "inLanguage": "tr",
         "about": {"@type": "Place", "name": name},
     }
+    breadcrumb_jsonld = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Pasaport Endeksi",
+                "item": f"{BASE_URL}/",
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Ülkeler",
+                "item": f"{BASE_URL}/#siralama",
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": name,
+                "item": canonical,
+            },
+            {
+                "@type": "ListItem",
+                "position": 4,
+                "name": "Vize Durumu",
+                "item": f"{canonical}#country-visa-breakdown",
+            },
+        ],
+    }
     out = re.sub(
         r'(<script type="application/ld\+json" id="country-jsonld">\s*)(.*?)(\s*</script>)',
         r"\1" + json.dumps(jsonld, ensure_ascii=False) + r"\3",
+        out,
+        count=1,
+        flags=re.S,
+    )
+    out = re.sub(
+        r'(<script type="application/ld\+json" id="country-breadcrumb-jsonld">\s*)(.*?)(\s*</script>)',
+        r"\1" + json.dumps(breadcrumb_jsonld, ensure_ascii=False) + r"\3",
         out,
         count=1,
         flags=re.S,
