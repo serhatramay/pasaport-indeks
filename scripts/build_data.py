@@ -18,7 +18,7 @@ ROW_RE = re.compile(
 )
 
 TURKIYE_GECMIS_RE = re.compile(
-    r"(// Turkiye pasaportu yillik puan gecmisi\s*const TURKIYE_GECMIS = \[[\s\S]*?\];)",
+    r"(// T(?:u|ü)rkiye pasaportu y(?:i|ı)ll(?:i|ı)k puan ge(?:c|ç)mi(?:s|ş)i\s*const TURKIYE_GECMIS = \[[\s\S]*?\];)",
     re.MULTILINE,
 )
 
