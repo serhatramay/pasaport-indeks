@@ -177,6 +177,17 @@ if [[ ! -f "$ROOT_DIR/scripts/generate_country_pages.py" ]]; then
   issues=1
 fi
 
+echo "8) Detay sayfa icerik kalite ve UI tutarliligi..."
+require_pattern "$COUNTRY_FILE" 'id="country-knowledge-grid"' 'ulke.html icinde knowledge grid alani eksik.'
+require_pattern "$COUNTRY_JS" 'İçerik Kalitesi Özeti' 'country.js icinde icerik kalite ozeti karti eksik.'
+require_pattern "$COUNTRY_JS" 'grid\.dataset\.editorialStatus' 'country.js icinde editorial status dataset isaretleme eksik.'
+require_pattern "$COUNTRY_JS" 'knowledge-card-economy' 'country.js icinde ekonomi kart sinifi eksik.'
+require_pattern "$COUNTRY_JS" 'knowledge-card-policy' 'country.js icinde politika kart sinifi eksik.'
+require_pattern "$COUNTRY_FILE" 'id="breadcrumb-continent-link"' 'ulke.html icinde breadcrumb kitasal link eksik.'
+require_pattern "$COUNTRY_JS" 'breadcrumbContinentLink' 'country.js icinde breadcrumb kitasal link guncellemesi eksik.'
+require_pattern "$ROOT_DIR/css/style.css" 'knowledge-card-quality' 'style.css icinde kalite karti stili eksik.'
+require_pattern "$ROOT_DIR/css/style.css" 'quality-pill' 'style.css icinde kalite rozet stili eksik.'
+
 if [[ "$issues" -ne 0 ]]; then
   echo "Sonuc: Tutarlilik dogrulamasi BASARISIZ."
   exit 1

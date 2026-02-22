@@ -1056,22 +1056,22 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
 
 @media (min-width: 1200px) {
     .country-knowledge-grid {
-        display: block;
-        column-count: 3;
-        column-gap: 12px;
+        display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 12px;
+        align-items: start;
+        grid-auto-flow: row dense;
     }
     .knowledge-card {
-        display: inline-block;
-        width: 100%;
-        margin: 0 0 12px;
-        break-inside: avoid;
-        page-break-inside: avoid;
+        grid-column: span 4;
+        margin: 0;
     }
+    .knowledge-card-quality { grid-column: span 12; }
+    .knowledge-card-economy { grid-column: span 6; }
+    .knowledge-card-policy { grid-column: span 12; }
     .knowledge-card-full {
-        column-span: all;
-        display: block;
-        width: 100%;
-        margin-top: 2px;
+        grid-column: 1 / -1;
+        margin-top: 0;
     }
 }
 .knowledge-card code {
@@ -1095,6 +1095,49 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
     background: rgba(255,255,255,0.05);
     color: #dce7f8;
     font-size: 0.82rem;
+}
+
+.knowledge-quality-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.quality-pill {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 6px 10px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.05);
+    color: #d9e6f8;
+    font-size: 0.8rem;
+    line-height: 1.1;
+}
+
+.quality-pill.status-gold {
+    border-color: rgba(245,197,24,0.35);
+    color: #f4d978;
+    background: rgba(245,197,24,0.08);
+}
+
+.quality-pill.status-standard {
+    border-color: rgba(96,165,250,0.35);
+    color: #b6d7ff;
+    background: rgba(96,165,250,0.08);
+}
+
+.quality-pill.status-auto {
+    border-color: rgba(148,163,184,0.35);
+    color: #c7d3e8;
+    background: rgba(148,163,184,0.08);
+}
+
+.knowledge-quality-note {
+    margin: 0;
+    color: #a9bdd9;
+    font-size: 0.86rem;
 }
 
 .trip-planner {
