@@ -809,6 +809,241 @@ const COUNTRY_PROFILES = {
     inflation: 'National Bank of Georgia ve Geostat verileriyle güncel takip önerilir.',
     foodCulture: 'Haçapuri, hinkali ve şarap kültürü ülke mutfağının temel unsurlarıdır.',
     famousPeople: ['Şota Rustaveli', 'Nino Katamadze', 'Katie Melua', 'Mikheil Saakashvili', 'Zurab Tsereteli', 'Kakha Kaladze', 'Khvicha Kvaratskhelia', 'Merab Dvalishvili', 'Nino Haratişvili', 'Salome Zurabishvili']
+  },
+  EG: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'Cairo University', url: 'https://cu.edu.eg/Home' },
+      { name: 'Ain Shams University', url: 'https://www.asu.edu.eg/' },
+      { name: 'Alexandria University', url: 'https://www.alexu.edu.eg/' },
+      { name: 'The American University in Cairo', url: 'https://www.aucegypt.edu/' },
+      { name: 'Mansoura University', url: 'https://www.mans.edu.eg/en' }
+    ],
+    places: ['Gize Piramitleri', 'Kahire Mısır Müzesi', 'Luksor Tapınakları', 'Asvan / Nil hattı', 'Şarm El-Şeyh'],
+    operators: [
+      { name: 'Vodafone Egypt', url: 'https://web.vodafone.com.eg/' },
+      { name: 'Orange Egypt', url: 'https://www.orange.eg/en/' },
+      { name: 'Etisalat by e& Egypt', url: 'https://www.etisalat.eg/' },
+      { name: 'WE', url: 'https://te.eg/wps/portal/te/Personal' }
+    ],
+    currency: 'Mısır Lirası (EGP)',
+    minimumWage: 'Kamu/özel sektör uygulamaları ve resmi düzenlemeler dönemsel değişebildiği için güncel resmi kaynak teyidi gerekir.',
+    livingCost: 'Kahire ve turistik kıyı bölgelerinde maliyet yükselir; şehir içi semt farkları belirgindir.',
+    government: 'Yarı başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle düzenli takip edilmelidir.',
+    foodCulture: 'Ful medames, koshari ve ızgara ağırlıklı Arap-Akdeniz etkili mutfak yaygındır.',
+    famousPeople: ['Kleopatra', 'Muhammed Salah', 'Necib Mahfuz', 'Ömer Şerif', 'Maged El Kedwany', 'Amr Diab', 'Youssef Chahine', 'Ahmed Zewail', 'Naguib Sawiris', 'Taha Hussein']
+  },
+  AZ: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'Baku State University', url: 'http://bsu.edu.az/en/' },
+      { name: 'ADA University', url: 'https://www.ada.edu.az/en' },
+      { name: 'Azerbaijan State Oil and Industry University', url: 'https://asoiu.edu.az/en' },
+      { name: 'Khazar University', url: 'https://www.khazar.org/en/' },
+      { name: 'Azerbaijan University of Languages', url: 'https://adu.edu.az/' }
+    ],
+    places: ['Bakü İçerişehir', 'Ateşgah ve Yanardağ', 'Gobustan', 'Şeki Han Sarayı', 'Qəbələ doğa rotaları'],
+    operators: [
+      { name: 'Azercell', url: 'https://www.azercell.com/' },
+      { name: 'Bakcell', url: 'https://www.bakcell.com/' },
+      { name: 'Nar', url: 'https://www.nar.az/' }
+    ],
+    currency: 'Azerbaycan Manatı (AZN)',
+    minimumWage: 'Ulusal asgari ücret resmi kararlarla güncellenir; güncel tutar için resmi kaynak kontrol edilmelidir.',
+    livingCost: 'Bakü’de konut ve hizmet maliyeti ülke ortalamasının üzerindedir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik komitesi verileriyle takip edilmelidir.',
+    foodCulture: 'Pilav, kebap, dolma ve Kafkas mutfağı etkileri belirgindir.',
+    famousPeople: ['Haydar Aliyev', 'İlham Aliyev', 'Nizami Gencevi', 'Üzeyir Hacıbeyli', 'Rəşid Behbudov', 'Gara Garayev', 'Kasparov (Bakü doğumlu)', 'Şahriyar Memmedyarov', 'Togrul Asgarov', 'Aygün Kazımova']
+  },
+  SA: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'King Saud University', url: 'https://ksu.edu.sa/' },
+      { name: 'King Abdulaziz University', url: 'https://www.kau.edu.sa/' },
+      { name: 'King Fahd University of Petroleum and Minerals', url: 'https://www.kfupm.edu.sa/' },
+      { name: 'Princess Nourah bint Abdulrahman University', url: 'https://www.pnu.edu.sa/' },
+      { name: 'Imam Abdulrahman Bin Faisal University', url: 'https://www.iau.edu.sa/en' }
+    ],
+    places: ['Riyad Boulevard / Diriyah', 'Cidde tarihi bölge (Al-Balad)', 'AlUla', 'Mekke çevresi (ziyaret kurallı)', 'Medine çevresi (ziyaret kurallı)'],
+    operators: [
+      { name: 'STC', url: 'https://www.stc.com.sa/' },
+      { name: 'Mobily', url: 'https://www.mobily.com.sa/' },
+      { name: 'Zain KSA', url: 'https://sa.zain.com/' }
+    ],
+    currency: 'Suudi Arabistan Riyali (SAR)',
+    minimumWage: 'Vatandaş/çalışma statüsüne göre uygulama farkları olabilir; resmi çalışma otoritesi kaynakları takip edilmelidir.',
+    livingCost: 'Riyad ve Cidde’de kira ve yaşam maliyeti daha yüksektir; bölgelere göre değişir.',
+    government: 'Mutlak monarşi',
+    inflation: 'Saudi Central Bank ve resmi istatistik verileriyle dönemsel takip gerekir.',
+    foodCulture: 'Arap mutfağı, pirinç-et yemekleri ve hurma/kahve kültürü öne çıkar.',
+    famousPeople: ['Muhammed bin Selman', 'Kral Selman', 'Turki Alalshikh', 'Yasser Al-Qahtani', 'Salem Al-Dawsari', 'Tarek Hamedi', 'Reema bint Bandar', 'Abdullah Al-Sadhan', 'Fahad Albutairi', 'Nasser Al-Qasabi']
+  },
+  RU: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'Lomonosov Moscow State University', url: 'https://www.msu.ru/en/' },
+      { name: 'Saint Petersburg State University', url: 'https://english.spbu.ru/' },
+      { name: 'HSE University', url: 'https://www.hse.ru/en/' },
+      { name: 'MIPT', url: 'https://mipt.ru/english/' },
+      { name: 'ITMO University', url: 'https://en.itmo.ru/' }
+    ],
+    places: ['Moskova Kızıl Meydan', 'St. Petersburg Hermitage', 'Kazan', 'Baikal Gölü', 'Soçi'],
+    operators: [
+      { name: 'MTS', url: 'https://moskva.mts.ru/' },
+      { name: 'MegaFon', url: 'https://megafon.ru/' },
+      { name: 'Beeline', url: 'https://beeline.ru/' },
+      { name: 'Tele2 Russia', url: 'https://tele2.ru/' }
+    ],
+    currency: 'Rus Rublesi (RUB)',
+    minimumWage: 'Ulusal taban ücret vardır; bölgesel ve sektörel farklılıklar görülebilir.',
+    livingCost: 'Moskova ve St. Petersburg daha pahalı; şehirler arası fark yüksektir.',
+    government: 'Federal yarı başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle güncel takip önerilir.',
+    foodCulture: 'Çorba, hamur işi ve et ağırlıklı Slav mutfağı ile bölgesel çeşitlilik öne çıkar.',
+    famousPeople: ['Vladimir Putin', 'Lev Tolstoy', 'Fyodor Dostoyevski', 'Pyotr Tchaikovsky', 'Yuri Gagarin', 'Maria Sharapova', 'Anna Netrebko', 'Roman Abramovich', 'Andrey Rublev', 'Daniil Medvedev']
+  },
+  UA: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'Taras Shevchenko National University of Kyiv', url: 'https://knu.ua/en/' },
+      { name: 'National Technical University of Ukraine (Igor Sikorsky KPI)', url: 'https://kpi.ua/en' },
+      { name: 'Lviv Polytechnic National University', url: 'https://lpnu.ua/en' },
+      { name: 'V.N. Karazin Kharkiv National University', url: 'https://karazin.ua/en/' },
+      { name: 'Odesa I.I. Mechnikov National University', url: 'https://onu.edu.ua/en/' }
+    ],
+    places: ['Kyiv tarihi merkez', 'Lviv Eski Şehir', 'Odesa sahil hattı', 'Karpat rotaları', 'Kamyanets-Podilskyi'],
+    operators: [
+      { name: 'Kyivstar', url: 'https://kyivstar.ua/' },
+      { name: 'Vodafone Ukraine', url: 'https://www.vodafone.ua/' },
+      { name: 'lifecell', url: 'https://www.lifecell.ua/' }
+    ],
+    currency: 'Ukrayna Grivnası (UAH)',
+    minimumWage: 'Ulusal asgari ücret resmi duyurularla güncellenir; güncel koşullar ayrıca kontrol edilmelidir.',
+    livingCost: 'Güvenlik ve bölgesel koşullar nedeniyle maliyet ve erişilebilirlik şehir bazında ciddi farklılık gösterebilir.',
+    government: 'Yarı başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle dönemsel takip edilmelidir.',
+    foodCulture: 'Borscht, varenyky ve Doğu Avrupa mutfak etkileri yaygındır.',
+    famousPeople: ['Taras Shevchenko', 'Volodimir Zelenski', 'Andriy Shevchenko', 'Serhiy Bubka', 'Mila Kunis', 'Loboda', 'Jamala', 'Valeriy Lobanovskyi', 'Ruslana', 'Vitali Klitschko']
+  },
+  ID: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'Universitas Indonesia', url: 'https://www.ui.ac.id/en/' },
+      { name: 'Gadjah Mada University', url: 'https://ugm.ac.id/en/' },
+      { name: 'Bandung Institute of Technology', url: 'https://www.itb.ac.id/?lang=en' },
+      { name: 'Airlangga University', url: 'https://www.unair.ac.id/en/' },
+      { name: 'Binus University', url: 'https://binus.ac.id/' }
+    ],
+    places: ['Bali (Ubud / Seminyak)', 'Jakarta eski şehir ve modern merkez', 'Yogyakarta / Borobudur', 'Komodo National Park', 'Lombok / Gili rotaları'],
+    operators: [
+      { name: 'Telkomsel', url: 'https://www.telkomsel.com/en' },
+      { name: 'Indosat Ooredoo Hutchison', url: 'https://indosatooredoo.com/' },
+      { name: 'XL Axiata', url: 'https://www.xl.co.id/' },
+      { name: 'Smartfren', url: 'https://www.smartfren.com/' }
+    ],
+    currency: 'Endonezya Rupiahı (IDR)',
+    minimumWage: 'Asgari ücret il/provins düzeyinde farklılaşır; yerel resmi kaynak teyidi önemlidir.',
+    livingCost: 'Bali turistik bölgeler ve Jakarta merkezde maliyet yükselebilir; ada/şehir bazında fark büyüktür.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Bank Indonesia ve resmi istatistik kurumu verileriyle takip edilmelidir.',
+    foodCulture: 'Nasi goreng, satay, rendang ve bölgesel ada mutfaklarıyla çok çeşitlidir.',
+    famousPeople: ['Joko Widodo', 'Prabowo Subianto', 'Anggun', 'Joe Taslim', 'Iko Uwais', 'Rich Brian', 'Agnez Mo', 'Raden Saleh', 'B.J. Habibie', 'Sri Mulyani Indrawati']
+  },
+  HK: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'The University of Hong Kong', url: 'https://www.hku.hk/' },
+      { name: 'The Chinese University of Hong Kong', url: 'https://www.cuhk.edu.hk/english/' },
+      { name: 'The Hong Kong University of Science and Technology', url: 'https://hkust.edu.hk/' },
+      { name: 'City University of Hong Kong', url: 'https://www.cityu.edu.hk/' },
+      { name: 'Hong Kong Polytechnic University', url: 'https://www.polyu.edu.hk/' }
+    ],
+    places: ['Victoria Peak', 'Tsim Sha Tsui', 'Lantau / Tian Tan Buddha', 'Central & Soho', 'Hong Kong Disneyland çevresi'],
+    operators: [
+      { name: 'CSL', url: 'https://www.hkcsl.com/en/' },
+      { name: 'SmarTone', url: 'https://www.smartone.com/' },
+      { name: '3 Hong Kong', url: 'https://www.three.com.hk/' },
+      { name: 'China Mobile Hong Kong', url: 'https://www.hk.chinamobile.com/en/' }
+    ],
+    currency: 'Hong Kong Doları (HKD)',
+    minimumWage: 'Yasal saatlik asgari ücret düzenli aralıklarla revize edilir; resmi duyuru kontrol edilmelidir.',
+    livingCost: 'Kira ve yaşam maliyeti çok yüksektir; bölgeye göre ciddi fark görülebilir.',
+    government: 'Özel İdari Bölge (Çin’e bağlı idari yapı)',
+    inflation: 'Resmi istatistik ve para otoritesi verileriyle dönemsel izleme önerilir.',
+    foodCulture: 'Kanton mutfağı, dim sum ve yoğun şehir içi yeme-içme kültürü öne çıkar.',
+    famousPeople: ['Bruce Lee', 'Jackie Chan', 'Donnie Yen', 'Maggie Cheung', 'Tony Leung', 'Andy Lau', 'Stephen Chow', 'Eason Chan', 'Michelle Yeoh', 'Wong Kar-wai']
+  },
+  TW: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'National Taiwan University', url: 'https://www.ntu.edu.tw/english/' },
+      { name: 'National Tsing Hua University', url: 'https://www.nthu.edu.tw/en/' },
+      { name: 'National Yang Ming Chiao Tung University', url: 'https://www.nycu.edu.tw/nycu/en/' },
+      { name: 'National Cheng Kung University', url: 'https://en.ncku.edu.tw/' },
+      { name: 'National Taiwan Normal University', url: 'https://en.ntnu.edu.tw/' }
+    ],
+    places: ['Taipei 101 ve Xinyi', 'Jiufen', 'Taroko (erişim durumu kontrolü)', 'Kaohsiung liman bölgesi', 'Sun Moon Lake'],
+    operators: [
+      { name: 'Chunghwa Telecom', url: 'https://www.cht.com.tw/en/home/cht' },
+      { name: 'Taiwan Mobile', url: 'https://www.taiwanmobile.com/' },
+      { name: 'Far EasTone', url: 'https://www.fetnet.net/' }
+    ],
+    currency: 'Yeni Tayvan Doları (TWD)',
+    minimumWage: 'Ulusal asgari ücret resmi kararlarla güncellenir; iş türüne göre farklı uygulamalar olabilir.',
+    livingCost: 'Taipei diğer şehirlere göre daha pahalıdır; ulaşım altyapısı bütçe planında avantaj sağlar.',
+    government: 'Yarı başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle izlenmelidir.',
+    foodCulture: 'Gece pazarları, noodle, deniz ürünleri ve çay kültürü belirgindir.',
+    famousPeople: ['Tsai Ing-wen', 'Ang Lee', 'Jay Chou', 'A-mei', 'Jeremy Lin', 'Hou Hsiao-hsien', 'Tzuyu', 'Yani Tseng', 'Stan Shih', 'Cher Wang']
+  },
+  IL: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'Hebrew University of Jerusalem', url: 'https://new.huji.ac.il/en' },
+      { name: 'Tel Aviv University', url: 'https://english.tau.ac.il/' },
+      { name: 'Technion - Israel Institute of Technology', url: 'https://www.technion.ac.il/en/home-2/' },
+      { name: 'Weizmann Institute of Science', url: 'https://www.weizmann.ac.il/pages/' },
+      { name: 'Ben-Gurion University of the Negev', url: 'https://in.bgu.ac.il/en/' }
+    ],
+    places: ['Kudüs Eski Şehir (erişim koşulu kontrolü)', 'Tel Aviv sahil hattı', 'Hayfa ve Bahai Bahçeleri', 'Masada / Ölü Deniz', 'Akka'],
+    operators: [
+      { name: 'Cellcom', url: 'https://www.cellcom.co.il/' },
+      { name: 'Partner', url: 'https://www.partner.co.il/' },
+      { name: 'Pelephone', url: 'https://www.pelephone.co.il/' },
+      { name: 'HOT Mobile', url: 'https://www.hotmobile.co.il/' }
+    ],
+    currency: 'İsrail Şekeli (ILS)',
+    minimumWage: 'Ulusal asgari ücret resmi kararlarla güncellenir; güncel rakam teyidi önerilir.',
+    livingCost: 'Tel Aviv ve Kudüs yüksek maliyetlidir; konut ve yeme-içme giderleri yükselebilir.',
+    government: 'Parlamenter demokrasi',
+    inflation: 'Merkez bankası ve resmi istatistik bürosu verileriyle takip edilmelidir.',
+    foodCulture: 'Akdeniz-Ortadoğu etkili mutfak; humus, falafel, sabich ve modern füzyon öne çıkar.',
+    famousPeople: ['David Ben-Gurion', 'Golda Meir', 'Natalie Portman', 'Gal Gadot', 'Yuval Noah Harari', 'Noa Kirel', 'Ofra Haza', 'Amos Oz', 'A.B. Yehoshua', 'Itzhak Perlman']
+  },
+  BH: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'University of Bahrain', url: 'https://www.uob.edu.bh/' },
+      { name: 'Arab Open University - Bahrain', url: 'https://www.aou.org.bh/' },
+      { name: 'Royal University for Women', url: 'https://www.ruw.edu.bh/' },
+      { name: 'Bahrain Polytechnic', url: 'https://www.polytechnic.bh/' },
+      { name: 'Ahlia University', url: 'https://www.ahlia.edu.bh/' }
+    ],
+    places: ['Manama şehir merkezi', 'Bahrain National Museum', 'Al Fateh Grand Mosque', 'Muharraq', 'Bahrain Fort (Qal’at al-Bahrain)'],
+    operators: [
+      { name: 'Batelco', url: 'https://www.batelco.com/' },
+      { name: 'stc Bahrain', url: 'https://www.stc.com.bh/' },
+      { name: 'Zain Bahrain', url: 'https://www.bh.zain.com/' }
+    ],
+    currency: 'Bahreyn Dinarı (BHD)',
+    minimumWage: 'Çalışma statüsü ve sektör bazlı koşullar farklılık gösterebilir; resmi kaynak teyidi gerekir.',
+    livingCost: 'Manama ve iş merkezlerine yakın bölgelerde konaklama maliyeti yükselebilir.',
+    government: 'Anayasal monarşi',
+    inflation: 'Resmi istatistik ve merkez bankası verileriyle dönemsel takip önerilir.',
+    foodCulture: 'Körfez mutfağı, deniz ürünleri, pirinç yemekleri ve Arap kahvesi kültürü öne çıkar.',
+    famousPeople: ['Kral Hamad bin Isa Al Khalifa', 'Veliaht Salman bin Hamad Al Khalifa', 'Maya Al Khalifa', 'Mariam bint Hassan Al Khalifa', 'Hamad Al Fardan', 'Mahmood Al Yousif', 'Alaa Hubail', 'Hakeem Al Araibi', 'Rashed Al Mannai', 'Aisha bint Rashid Al Khalifa']
   }
 };
 
