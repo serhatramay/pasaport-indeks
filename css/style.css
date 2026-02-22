@@ -2408,3 +2408,55 @@ section h2,
         font-size: 1rem;
     }
 }
+
+/* ===== TRIP CITY LAYOUT ALIGN FIX V33 ===== */
+#rota-planlayici .trip-tool-form {
+    align-items: start !important;
+}
+
+#rota-planlayici .trip-field {
+    position: relative;
+}
+
+#rota-planlayici .trip-action {
+    align-self: end;
+}
+
+#rota-planlayici .field-note {
+    min-height: 2.4em;
+}
+
+#rota-planlayici .trip-city-summary {
+    min-height: 1.2em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (min-width: 901px) {
+    #rota-planlayici .trip-city-dropdown {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 76px;
+        z-index: 40;
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 900px) {
+    #rota-planlayici .trip-city-dropdown {
+        position: static;
+        z-index: auto;
+    }
+
+    #rota-planlayici .field-note {
+        min-height: 0;
+    }
+
+    #rota-planlayici .trip-city-summary {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+    }
+}
