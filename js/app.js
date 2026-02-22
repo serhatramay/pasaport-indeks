@@ -225,6 +225,38 @@ function slugifyCountryName(value) {
         .replace(/^-|-$/g, '') || 'ulke';
 }
 
+const COUNTRY_DISPLAY_NAME_OVERRIDES = {
+    TR: 'Türkiye',
+    ES: 'İspanya',
+    IT: 'İtalya',
+    SE: 'İsveç',
+    CH: 'İsviçre',
+    IE: 'İrlanda',
+    IL: 'İsrail',
+    EG: 'Mısır',
+    CN: 'Çin',
+    CZ: 'Çekya',
+    BE: 'Belçika',
+    NO: 'Norveç',
+    GE: 'Gürcistan',
+    UZ: 'Özbekistan',
+    KR: 'Güney Kore',
+    ZA: 'Güney Afrika',
+    SS: 'Güney Sudan',
+    GB: 'Birleşik Krallık',
+    CI: 'Fildişi Sahili',
+    DO: 'Dominik Cum.',
+    AE: 'BAE',
+    US: 'ABD'
+};
+
+function getCountryDisplayName(country) {
+    if (!country) return '';
+    const code = typeof country === 'object' ? country.kod : '';
+    const rawName = typeof country === 'object' ? (country.ulke || '') : String(country || '');
+    return (code && COUNTRY_DISPLAY_NAME_OVERRIDES[code]) || rawName;
+}
+
 function applyInitialSearchFromUrl() {
     const params = new URLSearchParams(window.location.search);
     const q = params.get('q');
@@ -564,7 +596,7 @@ function fillSingleCompareSelect(selectId, list) {
 
     const previous = el.value;
     el.innerHTML = '<option value="">Ülke Seçin</option>' + list.map(d => `
-        <option value="${d.kod}">${d.bayrak} ${d.ulke}</option>
+        <option value="${d.kod}">${d.bayrak} ${getCountryDisplayName(d)}</option>
     `).join('');
 
     if (previous && list.some(item => item.kod === previous)) {
@@ -920,20 +952,22 @@ function renderHomeTripPlanner(data) {
     };
     const selected = statusMap[status] || statusMap.unknown;
     const scoreMeta = getTripScoreMeta(status || 'unknown');
-    const destinationLabel = primaryCity ? `${primaryCity}, ${destination.ulke}` : destination.ulke;
+    const originName = getCountryDisplayName(origin);
+    const destinationName = getCountryDisplayName(destination);
+    const destinationLabel = primaryCity ? `${primaryCity}, ${destinationName}` : destinationName;
     const cityLine = selectedCities.length ? selectedCities.join(', ') : 'Şehir seçimi yapılmadı';
     const cityCountLabel = selectedCities.length ? `${selectedCities.length} şehir` : 'Şehir seçilmedi';
-    const checklist = getTripChecklist(status || 'unknown', destination.ulke);
-    const requiredDocs = getTripRequiredDocs(status || 'unknown', destination.ulke);
+    const checklist = getTripChecklist(status || 'unknown', destinationName);
+    const requiredDocs = getTripRequiredDocs(status || 'unknown', destinationName);
     const checklistHtml = checklist.map(item => `<li>${item}</li>`).join('');
     const docsHtml = requiredDocs.map(item => `<li>${item}</li>`).join('');
     const etaText = getTripProcessEta(status || 'unknown');
     const visaFeeUsd = getTripVisaFeeUsd(status || 'unknown');
     const dailyUsd = getTripDailyEstimateUsd(destination.kod);
     const totalUsd = visaFeeUsd + dailyUsd * tripDays;
-    const flightsQuery = encodeURIComponent(`${origin.ulke} ${destinationLabel} uçuş`);
+    const flightsQuery = encodeURIComponent(`${originName} ${destinationLabel} uçuş`);
     const hotelQuery = encodeURIComponent(destinationLabel);
-    const visaQuery = encodeURIComponent(`${origin.ulke} vatandaşları ${destination.ulke} vize şartları`);
+    const visaQuery = encodeURIComponent(`${originName} vatandaşları ${destinationName} vize şartları`);
 
     updateTripShareableUrl(origin.kod, destination.kod, selectedCities, tripDays);
     const shareUrl = window.location.href;
@@ -942,8 +976,8 @@ function renderHomeTripPlanner(data) {
         <div class="trip-result-top">
             <div class="trip-result-heading">
                 <p class="trip-result-eyebrow">Rota Sonucu</p>
-                <h3>🧭 ${origin.bayrak} ${origin.ulke} -> ${destination.bayrak} ${destinationLabel}</h3>
-                <p class="trip-result-subtitle">${origin.ulke} çıkışlı seyahat için vize, evrak ve maliyet özetini tek kartta gör.</p>
+                <h3>🧭 ${origin.bayrak} ${originName} -> ${destination.bayrak} ${destinationLabel}</h3>
+                <p class="trip-result-subtitle">${originName} çıkışlı seyahat için vize, evrak ve maliyet özetini tek kartta gör.</p>
             </div>
             <span class="planner-status ${selected.cls}">${selected.text}</span>
         </div>
@@ -1016,7 +1050,7 @@ function setupTripPlannerSelects(data) {
 
     const sorted = [...data].sort((a, b) => a.ulke.localeCompare(b.ulke, 'tr'));
     const options = '<option value="">Ülke seçin</option>' + sorted.map(item => `
-        <option value="${item.kod}">${item.bayrak} ${item.ulke}</option>
+        <option value="${item.kod}">${item.bayrak} ${getCountryDisplayName(item)}</option>
     `).join('');
     originEl.innerHTML = options;
     destinationEl.innerHTML = options;
@@ -1112,12 +1146,12 @@ function renderPassportGrid(data) {
         const slice = data.slice(index, index + chunkSize);
         if (!slice.length) return;
         grid.insertAdjacentHTML('beforeend', slice.map(d => `
-            <article class="passport-card" data-code="${d.kod}" tabindex="0" aria-label="${d.ulke} pasaportu, puan: ${d.puan}">
+            <article class="passport-card" data-code="${d.kod}" tabindex="0" aria-label="${getCountryDisplayName(d)} pasaportu, puan: ${d.puan}">
                 <span class="rank-badge">#${d.sira}</span>
                 <span class="flag">${d.bayrak}</span>
-                <span class="country-name">${d.ulke}</span>
+                <span class="country-name">${getCountryDisplayName(d)}</span>
                 <span class="score">${d.puan}</span>
-                <a class="country-detail-link" href="${getCountryDetailUrl(d.kod)}" aria-label="${d.ulke} detay sayfasini ac">Detay</a>
+                <a class="country-detail-link" href="${getCountryDetailUrl(d.kod)}" aria-label="${getCountryDisplayName(d)} detay sayfasını aç">Detay</a>
             </article>
         `).join(''));
         index += chunkSize;
@@ -1140,12 +1174,12 @@ function renderRankingTable(data) {
         const slice = data.slice(index, index + chunkSize);
         if (!slice.length) return;
         tbody.insertAdjacentHTML('beforeend', slice.map(d => `
-        <tr class="ranking-row" data-code="${d.kod}" tabindex="0" aria-label="${d.ulke} satirina git, karsilastirmada ac">
+        <tr class="ranking-row" data-code="${d.kod}" tabindex="0" aria-label="${getCountryDisplayName(d)} satırına git, karşılaştırmada aç">
             <td class="rank-col">${d.sira}</td>
             <td>
                 <div class="country-col">
                     <span class="flag">${d.bayrak}</span>
-                    <a class="country-detail-link" href="${getCountryDetailUrl(d.kod)}" aria-label="${d.ulke} detay sayfasini ac">${d.ulke}</a>
+                    <a class="country-detail-link" href="${getCountryDetailUrl(d.kod)}" aria-label="${getCountryDisplayName(d)} detay sayfasını aç">${getCountryDisplayName(d)}</a>
                 </div>
             </td>
             <td class="visa-free">${d.vizesiz}</td>
@@ -1169,7 +1203,7 @@ function fillSelects(data) {
             data.forEach(d => {
                 const opt = document.createElement('option');
                 opt.value = d.kod;
-                opt.textContent = d.bayrak + ' ' + d.ulke;
+                opt.textContent = d.bayrak + ' ' + getCountryDisplayName(d);
                 mapSelect.appendChild(opt);
             });
             mapSelect.value = 'TR';
@@ -1184,7 +1218,7 @@ function renderCompare(id, country) {
     const total = country.vizesiz + country.varistaSiz + country.evize;
     el.innerHTML = `
         <span class="compare-flag">${country.bayrak}</span>
-        <div class="compare-country-name">${country.ulke}</div>
+        <div class="compare-country-name">${getCountryDisplayName(country)}</div>
         <div class="compare-stat"><span class="compare-stat-label">Pasaport G\u00fcc\u00fc</span><span class="compare-stat-value">${country.puan}</span></div>
         <div class="compare-stat"><span class="compare-stat-label">D\u00fcnya S\u0131ras\u0131</span><span class="compare-stat-value">#${country.sira}</span></div>
         <div class="compare-stat"><span class="compare-stat-label">Vizesiz</span><span class="compare-stat-value" style="color:#2ecc71">${country.vizesiz}</span></div>
@@ -1680,7 +1714,7 @@ function initEventListeners(data) {
             if (results.length === 0) { resultsDiv.classList.remove('active'); return; }
             resultsDiv.innerHTML = results.map(d => `
                 <div class="search-result-item" data-code="${d.kod}">
-                    <span class="flag">${d.bayrak}</span> ${d.ulke}
+                    <span class="flag">${d.bayrak}</span> ${getCountryDisplayName(d)}
                     <span style="color:#f5c518;margin-left:auto">${d.puan}</span>
                 </div>
             `).join('');
