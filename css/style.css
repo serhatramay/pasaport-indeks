@@ -1096,6 +1096,43 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
     color: #dce7f8;
     font-size: 0.82rem;
 }
+.knowledge-card-actions {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.knowledge-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(245,197,24,0.28);
+    background: rgba(245,197,24,0.08);
+    color: #f4d978;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.18s ease, border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+}
+.knowledge-action-btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(245,197,24,0.45);
+    background: rgba(245,197,24,0.14);
+    color: #ffe796;
+}
+.knowledge-action-btn.is-ghost {
+    border-color: rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.03);
+    color: #cfe0f8;
+}
+.knowledge-action-btn.is-ghost:hover {
+    border-color: rgba(157,208,255,0.35);
+    background: rgba(157,208,255,0.08);
+    color: #e9f4ff;
+}
 
 .knowledge-quality-summary {
     display: flex;
@@ -1138,6 +1175,17 @@ section h2 { font-size: 2rem; font-weight: 700; color: #fff; text-align: center;
     margin: 0;
     color: #a9bdd9;
     font-size: 0.86rem;
+}
+@media (max-width: 768px) {
+    .knowledge-card-actions {
+        gap: 6px;
+    }
+    .knowledge-action-btn {
+        flex: 1 1 calc(50% - 6px);
+        min-width: 0;
+        padding: 8px 10px;
+        font-size: 0.8rem;
+    }
 }
 
 .trip-planner {

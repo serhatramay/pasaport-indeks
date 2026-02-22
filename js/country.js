@@ -1179,6 +1179,32 @@ function renderKnowledgeSection(country) {
     ));
     grid.dataset.editorialStatus = String(profile.editorial_status || 'auto');
     const sourceRegistry = profile.source_registry || {};
+    const routePlannerHref = '#trip-planner';
+    const budgetPlannerHref = '#budget-planner-section';
+    const faqHref = '#country-faq';
+    const mapsSearchHref = `https://www.google.com/maps/search/${encodeURIComponent(getCountryDisplayName(country) + ' gezilecek yerler')}`;
+    const schoolSourceHref = sourceRegistry.schools?.source_url || `https://www.google.com/search?q=${encodeURIComponent(getCountryDisplayName(country) + ' en iyi üniversiteler')}`;
+    const placeSourceHref = sourceRegistry.places?.source_url || mapsSearchHref;
+    const operatorSourceHref = sourceRegistry.operators?.source_url || `https://www.google.com/search?q=${encodeURIComponent(getCountryDisplayName(country) + ' mobil operatörler')}`;
+    const famousSourceHref = sourceRegistry.famousPeople?.source_url || `https://www.google.com/search?q=${encodeURIComponent(getCountryDisplayName(country) + ' ünlü kişiler')}`;
+
+    const renderKnowledgeActions = (actions) => {
+        if (!Array.isArray(actions) || !actions.length) return '';
+        return `
+            <div class="knowledge-card-actions">
+                ${actions.map(action => {
+                    const safeLabel = action.label || 'Aç';
+                    const safeHref = action.href || '#';
+                    const attrs = action.external
+                        ? ' target="_blank" rel="noopener noreferrer"'
+                        : '';
+                    const cls = action.ghost ? 'knowledge-action-btn is-ghost' : 'knowledge-action-btn';
+                    return `<a class="${cls}" href="${safeHref}"${attrs}>${safeLabel}</a>`;
+                }).join('')}
+            </div>
+        `;
+    };
+
     const sourceRows = Object.entries(sourceRegistry).map(([key, item]) => {
         const labelMap = {
             schools: 'Okullar',
@@ -1213,14 +1239,26 @@ function renderKnowledgeSection(country) {
         <article class="knowledge-card">
             <h3>En İyi Okullar</h3>
             <ul class="knowledge-list">${schoolItems}</ul>
+            ${renderKnowledgeActions([
+                { label: 'Kaynakları Aç', href: schoolSourceHref, external: true },
+                { label: 'Rota Planla', href: routePlannerHref, ghost: true }
+            ])}
         </article>
         <article class="knowledge-card">
             <h3>Gezilecek Yerler</h3>
             <ul class="knowledge-list">${placeItems}</ul>
+            ${renderKnowledgeActions([
+                { label: 'Haritada Aç', href: mapsSearchHref, external: true },
+                { label: 'Gezi Kaynağı', href: placeSourceHref, external: true, ghost: true }
+            ])}
         </article>
         <article class="knowledge-card">
             <h3>İnternet ve Operatörler</h3>
             <ul class="knowledge-list">${operatorItems}</ul>
+            ${renderKnowledgeActions([
+                { label: 'Operatör Kaynağı', href: operatorSourceHref, external: true },
+                { label: 'Bütçe Çevirici', href: budgetPlannerHref, ghost: true }
+            ])}
         </article>
         <article class="knowledge-card knowledge-card-economy">
             <h3>Ekonomi Özeti</h3>
@@ -1246,6 +1284,10 @@ function renderKnowledgeSection(country) {
                     ${renderFieldMeta(inflationField)}
                 </div>
             </div>
+            ${renderKnowledgeActions([
+                { label: 'Bütçe Çeviriciye Git', href: budgetPlannerHref },
+                { label: 'Rota Planla', href: routePlannerHref, ghost: true }
+            ])}
         </article>
         <article class="knowledge-card">
             <h3>Yönetim ve Yaşam Tarzı</h3>
@@ -1253,10 +1295,18 @@ function renderKnowledgeSection(country) {
             ${renderFieldMeta(governmentField)}
             <p><strong>Yeme-İçme Alışkanlıkları:</strong> ${foodCultureField.value}</p>
             ${renderFieldMeta(foodCultureField)}
+            ${renderKnowledgeActions([
+                { label: 'Sık Sorulara Git', href: faqHref },
+                { label: 'Rota Planla', href: routePlannerHref, ghost: true }
+            ])}
         </article>
         <article class="knowledge-card">
             <h3>En Ünlü 10 Kişi</h3>
             <div class="knowledge-tags">${famousItems}</div>
+            ${renderKnowledgeActions([
+                { label: 'Biyografi Kaynağı', href: famousSourceHref, external: true },
+                { label: 'Ülke Özeti', href: '#ulke-ozet', ghost: true }
+            ])}
         </article>
         <article class="knowledge-card knowledge-card-full knowledge-card-policy">
             <h3>Veri Güven ve Yenileme Politikası</h3>
@@ -1267,6 +1317,10 @@ function renderKnowledgeSection(country) {
                 <li><strong>Okul / gezi / kültür:</strong> 180 gün</li>
             </ul>
             ${sourceRows ? `<ul class="knowledge-list source-list">${sourceRows}</ul>` : ''}
+            ${renderKnowledgeActions([
+                { label: 'Sık Sorulara Git', href: faqHref },
+                { label: 'Rota Planla', href: routePlannerHref, ghost: true }
+            ])}
         </article>
     `;
 }

@@ -183,10 +183,13 @@ require_pattern "$COUNTRY_JS" 'İçerik Kalitesi Özeti' 'country.js icinde icer
 require_pattern "$COUNTRY_JS" 'grid\.dataset\.editorialStatus' 'country.js icinde editorial status dataset isaretleme eksik.'
 require_pattern "$COUNTRY_JS" 'knowledge-card-economy' 'country.js icinde ekonomi kart sinifi eksik.'
 require_pattern "$COUNTRY_JS" 'knowledge-card-policy' 'country.js icinde politika kart sinifi eksik.'
+require_pattern "$COUNTRY_JS" 'knowledge-card-actions' 'country.js icinde rehber kart aksiyonlari eksik.'
+require_pattern "$COUNTRY_JS" 'Bütçe Çeviriciye Git' 'country.js icinde butce cevirici aksiyon baglantisi eksik.'
 require_pattern "$COUNTRY_FILE" 'id="breadcrumb-continent-link"' 'ulke.html icinde breadcrumb kitasal link eksik.'
 require_pattern "$COUNTRY_JS" 'breadcrumbContinentLink' 'country.js icinde breadcrumb kitasal link guncellemesi eksik.'
 require_pattern "$ROOT_DIR/css/style.css" 'knowledge-card-quality' 'style.css icinde kalite karti stili eksik.'
 require_pattern "$ROOT_DIR/css/style.css" 'quality-pill' 'style.css icinde kalite rozet stili eksik.'
+require_pattern "$ROOT_DIR/css/style.css" 'knowledge-action-btn' 'style.css icinde rehber aksiyon buton stili eksik.'
 
 if [[ "$issues" -ne 0 ]]; then
   echo "Sonuc: Tutarlilik dogrulamasi BASARISIZ."
