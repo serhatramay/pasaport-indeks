@@ -735,6 +735,7 @@ function setCountryMeta(country) {
     const passportFoods = document.getElementById('passport-foods');
     const passportCode = document.getElementById('passport-code');
     const breadcrumbCountryLink = document.getElementById('breadcrumb-country-link');
+    const breadcrumbContinentLink = document.getElementById('breadcrumb-continent-link');
 
     if (heading) heading.textContent = `${country.bayrak} ${countryName}`;
     if (subtitle) subtitle.textContent = `${countryName} pasaportunun global erişim gücü, vize dağılımı ve seyahat profili.`;
@@ -747,6 +748,28 @@ function setCountryMeta(country) {
     if (breadcrumbCountryLink) {
         breadcrumbCountryLink.textContent = countryName;
         breadcrumbCountryLink.href = canonicalUrl;
+    }
+    const continentCode = getCountryContinentCode(country.kod);
+    const continentLabel = CONTINENT_LABELS_TR[continentCode] || 'Bölge';
+    if (breadcrumbContinentLink) {
+        breadcrumbContinentLink.textContent = continentLabel;
+        breadcrumbContinentLink.href = `./#siralama`;
+    }
+
+    const breadcrumbJsonldScript = document.getElementById('country-breadcrumb-jsonld');
+    if (breadcrumbJsonldScript) {
+        const payload = {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+                { '@type': 'ListItem', position: 1, name: 'Pasaport Endeksi', item: 'https://serhatramay.github.io/pasaport-indeks/' },
+                { '@type': 'ListItem', position: 2, name: 'Ülkeler', item: 'https://serhatramay.github.io/pasaport-indeks/#siralama' },
+                { '@type': 'ListItem', position: 3, name: continentLabel, item: 'https://serhatramay.github.io/pasaport-indeks/#siralama' },
+                { '@type': 'ListItem', position: 4, name: countryName, item: canonicalUrl },
+                { '@type': 'ListItem', position: 5, name: 'Vize Durumu', item: `${canonicalUrl}#country-visa-breakdown` }
+            ]
+        };
+        breadcrumbJsonldScript.textContent = JSON.stringify(payload);
     }
 }
 

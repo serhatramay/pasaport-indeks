@@ -5,6 +5,14 @@ const COUNTRIES_META_URL = 'https://raw.githubusercontent.com/annexare/Countries
 const LEAFLET_JS_URL = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
 const CHART_JS_URL = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
 const VISA_FREE_HIGHLIGHT_THRESHOLD = 150;
+const REGIONAL_CITY_FALLBACKS = {
+    EU: ['Başkent', 'Merkez', 'Eski Şehir', 'Havalimanı Bölgesi', 'Finans Merkezi', 'Sahil Bölgesi'],
+    AS: ['Başkent', 'Merkez', 'İş Bölgesi', 'Eski Şehir', 'Sahil Bölgesi', 'Havalimanı Bölgesi'],
+    AF: ['Başkent', 'Merkez', 'İş Bölgesi', 'Sahil Bölgesi', 'Tarihi Bölge', 'Havalimanı Bölgesi'],
+    NA: ['Başkent', 'Downtown', 'Airport Area', 'Old Town', 'Business District', 'Coastal Area'],
+    SA: ['Başkent', 'Centro', 'Sahil Bölgesi', 'Tarihi Bölge', 'İş Bölgesi', 'Havalimanı Bölgesi'],
+    OC: ['Başkent', 'CBD', 'Coastal Area', 'Airport Area', 'City Center', 'Harbour Area']
+};
 const TRIP_CITY_OPTIONS = {
     TR: [
         'Adana', 'Adıyaman', 'Afyonkarahisar', 'Ağrı', 'Aksaray', 'Amasya', 'Ankara', 'Antalya', 'Ardahan', 'Artvin',
@@ -900,6 +908,7 @@ function renderHomeTripPlanner(data) {
     const scoreMeta = getTripScoreMeta(status || 'unknown');
     const destinationLabel = primaryCity ? `${primaryCity}, ${destination.ulke}` : destination.ulke;
     const cityLine = selectedCities.length ? selectedCities.join(', ') : 'Şehir seçimi yapılmadı';
+    const cityCountLabel = selectedCities.length ? `${selectedCities.length} şehir` : 'Şehir seçilmedi';
     const checklist = getTripChecklist(status || 'unknown', destination.ulke);
     const requiredDocs = getTripRequiredDocs(status || 'unknown', destination.ulke);
     const checklistHtml = checklist.map(item => `<li>${item}</li>`).join('');
@@ -917,7 +926,11 @@ function renderHomeTripPlanner(data) {
 
     resultEl.innerHTML = `
         <div class="trip-result-top">
-            <h3>🧭 ${origin.bayrak} ${origin.ulke} -> ${destination.bayrak} ${destinationLabel}</h3>
+            <div class="trip-result-heading">
+                <p class="trip-result-eyebrow">Rota Sonucu</p>
+                <h3>🧭 ${origin.bayrak} ${origin.ulke} -> ${destination.bayrak} ${destinationLabel}</h3>
+                <p class="trip-result-subtitle">${origin.ulke} çıkışlı seyahat için vize, evrak ve maliyet özetini tek kartta gör.</p>
+            </div>
             <span class="planner-status ${selected.cls}">${selected.text}</span>
         </div>
         <div class="trip-kpi-row">
@@ -931,7 +944,8 @@ function renderHomeTripPlanner(data) {
             </div>
             <div class="trip-kpi">
                 <span>🏙️ Seçilen Şehirler</span>
-                <strong>${cityLine}</strong>
+                <strong>${cityCountLabel}</strong>
+                <small>${cityLine}</small>
             </div>
         </div>
         <div class="trip-detail-grid">
@@ -1002,13 +1016,15 @@ function setupTripPlannerSelects(data) {
 function getTripCityOptionsByCode(code) {
     const key = String(code || '').toUpperCase();
     if (TRIP_CITY_OPTIONS[key]) return TRIP_CITY_OPTIONS[key];
-
-    const capital = countryMetaByIso2?.[key]?.capital;
-    if (capital) {
-        return [capital];
-    }
-
-    return [];
+    const meta = countryMetaByIso2?.[key];
+    const capital = meta?.capital;
+    const continent = meta?.continent;
+    const regionalFallbacks = REGIONAL_CITY_FALLBACKS[continent] || ['Başkent', 'Merkez', 'Havalimanı Bölgesi'];
+    const merged = [capital, ...regionalFallbacks]
+        .filter(Boolean)
+        .map(item => String(item).trim())
+        .filter(Boolean);
+    return [...new Set(merged)];
 }
 
 function renderTripCityOptions(destinationCode, selectedCities) {

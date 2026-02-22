@@ -52,6 +52,7 @@ index_css_ver="$(extract_version "$INDEX_FILE" 'css/style\.css')"
 country_css_ver="$(extract_version "$COUNTRY_FILE" 'css/style\.css')"
 index_data_ver="$(extract_version "$INDEX_FILE" 'js/data\.js')"
 country_data_ver="$(extract_version "$COUNTRY_FILE" 'js/data\.js')"
+index_app_ver="$(extract_version "$INDEX_FILE" 'js/app\.js')"
 
 if [[ -z "$index_css_ver" || -z "$country_css_ver" ]]; then
   echo "HATA: CSS versiyonu bir dosyada bulunamadi."
@@ -66,6 +67,11 @@ if [[ -z "$index_data_ver" || -z "$country_data_ver" ]]; then
   issues=1
 elif [[ "$index_data_ver" != "$country_data_ver" ]]; then
   echo "HATA: data.js versiyonlari farkli. index=$index_data_ver ulke=$country_data_ver"
+  issues=1
+fi
+
+if [[ -z "$index_app_ver" ]]; then
+  echo "HATA: index.html icinde app.js versiyonu bulunamadi."
   issues=1
 fi
 
@@ -150,6 +156,10 @@ fi
 echo "6) Rota ve detay baglanti dogrulamasi..."
 require_pattern "$INDEX_FILE" 'id="rota-planlayici"' 'Ana sayfada rota bolum id="rota-planlayici" eksik.'
 require_pattern "$INDEX_FILE" 'href="#rota-planlayici"' 'Ust menu Rota linki yanlis hedefe gidiyor.'
+if rg -q 'trip-city-summary|Birden fazla şehir seçebilirsin' "$INDEX_FILE"; then
+  echo "HATA: Rota bolumunde kaldirilmasi gereken sehir aciklama/ozet metni hala var."
+  issues=1
+fi
 require_pattern "$COUNTRY_JS" 'planner-links' 'country.js icinde rota kaynak linkleri bolumu eksik.'
 require_pattern "$COUNTRY_JS" 'Uçuş Ara' 'country.js icinde "Uçuş Ara" baglantisi eksik.'
 require_pattern "$COUNTRY_JS" 'Konaklama Ara' 'country.js icinde "Konaklama Ara" baglantisi eksik.'

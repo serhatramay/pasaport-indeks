@@ -2460,3 +2460,101 @@ section h2,
         text-overflow: clip;
     }
 }
+
+/* ===== ROUTE PREMIUM CARD + FLOW REFINEMENTS V35 ===== */
+#rota-planlayici .field-note,
+#rota-planlayici .trip-city-summary {
+    display: none !important;
+}
+
+#rota-planlayici .trip-result-top {
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+#rota-planlayici .trip-result-heading {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+}
+
+#rota-planlayici .trip-result-eyebrow {
+    margin: 0;
+    color: #9ec9ff !important;
+    font-size: 0.76rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+#rota-planlayici .trip-result-subtitle {
+    margin: 0;
+    color: #9fb5d1 !important;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+#rota-planlayici .trip-kpi {
+    border-radius: 12px !important;
+    background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.02)) !important;
+}
+
+#rota-planlayici .trip-kpi small {
+    display: block;
+    margin-top: 6px;
+    color: #9fb5d1;
+    line-height: 1.35;
+    font-size: 0.78rem;
+}
+
+#rota-planlayici .trip-detail-card {
+    border-radius: 14px !important;
+    padding: 14px !important;
+    background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.02)) !important;
+    border-color: rgba(120, 156, 206, 0.24) !important;
+}
+
+#rota-planlayici .trip-detail-card h4 {
+    margin-bottom: 10px;
+}
+
+#rota-planlayici .trip-share-row {
+    margin-top: 12px !important;
+    padding-top: 12px;
+    border-top: 1px solid rgba(120, 156, 206, 0.18);
+}
+
+#rota-planlayici .trip-share-btn {
+    transition: background .2s ease, border-color .2s ease, transform .2s ease;
+}
+
+#rota-planlayici .trip-share-btn:hover {
+    transform: translateY(-1px);
+}
+
+#rota-planlayici .trip-share-note {
+    color: #9fb5d1 !important;
+}
+
+.ranking-section .container {
+    border-color: rgba(111, 177, 255, 0.28) !important;
+}
+
+.passport-grid-section .container {
+    border-color: rgba(143,182,231,0.14) !important;
+    background: linear-gradient(165deg, rgba(12,24,42,0.58), rgba(10,20,36,0.48)) !important;
+}
+
+.passport-grid-section h2::after {
+    content: " (Keşif listesi)";
+    font-size: 0.52em;
+    color: #9fb5d1;
+    font-weight: 600;
+    margin-left: 8px;
+}
+
+@media (max-width: 768px) {
+    #rota-planlayici .trip-result-subtitle { font-size: 0.84rem; }
+    #rota-planlayici .trip-kpi small { font-size: 0.74rem; }
+}
