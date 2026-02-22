@@ -822,10 +822,7 @@ function setupTripCityPickerUi() {
 }
 
 function syncTripCitySummary() {
-    const citySummary = document.getElementById('trip-city-summary');
-    if (!citySummary) return;
-    const selected = getSelectedTripCities();
-    citySummary.textContent = selected.length ? `Seçilen: ${selected.join(', ')}` : 'Seçilen: yok';
+    // Summary satiri kaldirildi; tek kaynak olarak toggle etiketini guncel tut.
     updateTripCityToggleLabel();
 }
 
