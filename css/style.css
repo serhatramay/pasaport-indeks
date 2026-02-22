@@ -2306,3 +2306,105 @@ section h2,
         width: 100% !important;
     }
 }
+
+/* ===== TRIP CITY CHECKBOX DROPDOWN FIX V32 ===== */
+#trip-city-select[hidden] {
+    display: none !important;
+}
+
+.trip-city-dropdown {
+    margin-top: 8px;
+    border-radius: 12px;
+    border: 1px solid rgba(143, 182, 231, 0.28);
+    background: rgba(11, 23, 43, 0.94);
+    padding: 10px;
+    box-shadow: 0 14px 28px rgba(3, 10, 20, 0.35);
+}
+
+.trip-city-dropdown.is-collapsed {
+    display: none;
+}
+
+#trip-city-search {
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid rgba(143, 182, 231, 0.24);
+    background: rgba(255,255,255,0.04);
+    color: #eaf2ff;
+    padding: 0 12px;
+    font-family: inherit;
+    margin-bottom: 10px;
+}
+
+#trip-city-search::placeholder {
+    color: #93a8c7;
+}
+
+#trip-city-search:focus {
+    outline: 2px solid rgba(245,197,24,0.35);
+    outline-offset: 1px;
+}
+
+.trip-city-options-list {
+    max-height: 260px;
+    overflow: auto;
+    display: grid;
+    gap: 8px;
+    padding-right: 2px;
+}
+
+.trip-city-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(143, 182, 231, 0.18);
+    background: rgba(255,255,255,0.03);
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.trip-city-check:hover {
+    border-color: rgba(245,197,24,0.4);
+    background: rgba(245,197,24,0.06);
+}
+
+.trip-city-check input {
+    width: 16px;
+    height: 16px;
+    accent-color: #f5c518;
+    flex: 0 0 auto;
+}
+
+.trip-city-check span {
+    color: #e6efff;
+    font-size: 0.95rem;
+    line-height: 1.25;
+}
+
+.trip-city-check input:checked + span {
+    color: #ffe8a4;
+    font-weight: 600;
+}
+
+.trip-city-empty {
+    border-radius: 10px;
+    border: 1px dashed rgba(143, 182, 231, 0.28);
+    padding: 12px;
+    color: #a7bad7;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .trip-city-options-list {
+        max-height: 220px;
+    }
+    .trip-city-check {
+        padding: 12px 12px;
+    }
+    .trip-city-check span {
+        font-size: 1rem;
+    }
+}

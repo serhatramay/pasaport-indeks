@@ -6,7 +6,16 @@ const LEAFLET_JS_URL = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
 const CHART_JS_URL = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
 const VISA_FREE_HIGHLIGHT_THRESHOLD = 150;
 const TRIP_CITY_OPTIONS = {
-    TR: ['İstanbul', 'Ankara', 'İzmir', 'Antalya', 'Kapadokya', 'Bodrum'],
+    TR: [
+        'Adana', 'Adıyaman', 'Afyonkarahisar', 'Ağrı', 'Aksaray', 'Amasya', 'Ankara', 'Antalya', 'Ardahan', 'Artvin',
+        'Aydın', 'Balıkesir', 'Bartın', 'Batman', 'Bayburt', 'Bilecik', 'Bingöl', 'Bitlis', 'Bolu', 'Burdur',
+        'Bursa', 'Çanakkale', 'Çankırı', 'Çorum', 'Denizli', 'Diyarbakır', 'Düzce', 'Edirne', 'Elazığ', 'Erzincan',
+        'Erzurum', 'Eskişehir', 'Gaziantep', 'Giresun', 'Gümüşhane', 'Hakkari', 'Hatay', 'Iğdır', 'Isparta', 'İstanbul',
+        'İzmir', 'Kahramanmaraş', 'Karabük', 'Karaman', 'Kars', 'Kastamonu', 'Kayseri', 'Kilis', 'Kırıkkale', 'Kırklareli',
+        'Kırşehir', 'Kocaeli', 'Konya', 'Kütahya', 'Malatya', 'Manisa', 'Mardin', 'Mersin', 'Muğla', 'Muş',
+        'Nevşehir', 'Niğde', 'Ordu', 'Osmaniye', 'Rize', 'Sakarya', 'Samsun', 'Siirt', 'Sinop', 'Sivas',
+        'Şanlıurfa', 'Şırnak', 'Tekirdağ', 'Tokat', 'Trabzon', 'Tunceli', 'Uşak', 'Van', 'Yalova', 'Yozgat', 'Zonguldak'
+    ],
     DE: ['Berlin', 'Münih', 'Hamburg', 'Frankfurt', 'Köln', 'Düsseldorf'],
     FR: ['Paris', 'Lyon', 'Nice', 'Marsilya', 'Bordeaux', 'Toulouse'],
     ES: ['Madrid', 'Barselona', 'Valensiya', 'Sevilla', 'Malaga', 'Bilbao'],
@@ -152,6 +161,7 @@ const compareFilterState = { search: '', region: 'all', sort: 'rank' };
 const passportFilterState = { mode: 'all', search: '', region: 'all', sort: 'rank', limit: 24, step: 24 };
 const rankingFilterState = { search: '', region: 'all', limit: 20, step: 20 };
 let tripPlannerSetupDone = false;
+let tripCityPickerSetupDone = false;
 let rankingRendered = false;
 let mapInitStarted = false;
 let turkeyChartStarted = false;
@@ -691,11 +701,132 @@ function getSelectedTripCities() {
     return [...citySelect.selectedOptions].map(option => option.value).filter(Boolean);
 }
 
+function getTripCityPickerEls() {
+    return {
+        select: document.getElementById('trip-city-select'),
+        toggle: document.getElementById('trip-city-toggle'),
+        dropdown: document.getElementById('trip-city-dropdown'),
+        search: document.getElementById('trip-city-search'),
+        options: document.getElementById('trip-city-options')
+    };
+}
+
+function closeTripCityDropdown() {
+    const { toggle, dropdown } = getTripCityPickerEls();
+    if (!toggle || !dropdown) return;
+    dropdown.classList.add('is-collapsed');
+    toggle.setAttribute('aria-expanded', 'false');
+}
+
+function updateTripCityToggleLabel() {
+    const { toggle, select } = getTripCityPickerEls();
+    if (!(select instanceof HTMLSelectElement) || !toggle) return;
+    const selected = [...select.selectedOptions].map(o => o.value).filter(Boolean);
+    if (!select.options.length) {
+        toggle.textContent = 'Şehir verisi hazırlanıyor';
+        toggle.disabled = true;
+        return;
+    }
+    toggle.disabled = false;
+    if (!selected.length) {
+        toggle.textContent = 'Şehir seç';
+        return;
+    }
+    if (selected.length === 1) {
+        toggle.textContent = selected[0];
+        return;
+    }
+    toggle.textContent = `${selected.length} şehir seçildi`;
+}
+
+function renderTripCityCheckboxList() {
+    const { select, options, search } = getTripCityPickerEls();
+    if (!(select instanceof HTMLSelectElement) || !options) return;
+
+    const query = normalizeText(search?.value || '');
+    const allCities = [...select.options].map(o => o.value).filter(Boolean);
+    const filteredCities = allCities.filter(city => !query || normalizeText(city).includes(query));
+
+    if (!allCities.length) {
+        options.innerHTML = '<div class="trip-city-empty">Şehir verisi hazırlanıyor</div>';
+        updateTripCityToggleLabel();
+        return;
+    }
+
+    if (!filteredCities.length) {
+        options.innerHTML = '<div class="trip-city-empty">Aramaya uygun şehir bulunamadı</div>';
+        updateTripCityToggleLabel();
+        return;
+    }
+
+    const selectedSet = new Set(getSelectedTripCities());
+    options.innerHTML = filteredCities.map((city, index) => `
+        <label class="trip-city-check" for="trip-city-check-${index}">
+            <input id="trip-city-check-${index}" type="checkbox" value="${city}" ${selectedSet.has(city) ? 'checked' : ''}>
+            <span>${city}</span>
+        </label>
+    `).join('');
+
+    options.querySelectorAll('input[type="checkbox"]').forEach(input => {
+        input.addEventListener('change', e => {
+            const target = e.currentTarget;
+            const option = [...select.options].find(o => o.value === target.value);
+            if (option) option.selected = target.checked;
+
+            const selectedCount = [...select.selectedOptions].length;
+            if (selectedCount === 0 && select.options.length) {
+                select.options[0].selected = true;
+                const firstCheckbox = options.querySelector(`input[type="checkbox"][value="${CSS.escape(select.options[0].value)}"]`);
+                if (firstCheckbox) firstCheckbox.checked = true;
+            }
+
+            syncTripCitySummary();
+            renderHomeTripPlanner(PASAPORT_DATA);
+        });
+    });
+
+    updateTripCityToggleLabel();
+}
+
+function setupTripCityPickerUi() {
+    if (tripCityPickerSetupDone) return;
+    const { toggle, dropdown, search, options } = getTripCityPickerEls();
+    if (!toggle || !dropdown || !search || !options) return;
+
+    toggle.addEventListener('click', () => {
+        const willOpen = dropdown.classList.contains('is-collapsed');
+        if (willOpen) {
+            dropdown.classList.remove('is-collapsed');
+            toggle.setAttribute('aria-expanded', 'true');
+            renderTripCityCheckboxList();
+            setTimeout(() => search.focus(), 0);
+        } else {
+            closeTripCityDropdown();
+        }
+    });
+
+    search.addEventListener('input', () => renderTripCityCheckboxList());
+
+    document.addEventListener('click', e => {
+        const field = toggle.closest('.trip-field');
+        if (!field) return;
+        if (field.contains(e.target)) return;
+        closeTripCityDropdown();
+    });
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeTripCityDropdown();
+    });
+
+    tripCityPickerSetupDone = true;
+}
+
 function syncTripCitySummary() {
     const citySummary = document.getElementById('trip-city-summary');
     if (!citySummary) return;
     const selected = getSelectedTripCities();
     citySummary.textContent = selected.length ? `Seçilen: ${selected.join(', ')}` : 'Seçilen: yok';
+    updateTripCityToggleLabel();
 }
 
 function updateTripShareableUrl(originCode, destinationCode, selectedCities, days) {
@@ -867,6 +998,7 @@ function setupTripPlannerSelects(data) {
     originEl.value = 'TR';
     destinationEl.value = 'DE';
     tripPlannerSetupDone = true;
+    setupTripCityPickerUi();
     renderTripCityOptions('DE', []);
 }
 
@@ -885,11 +1017,15 @@ function getTripCityOptionsByCode(code) {
 function renderTripCityOptions(destinationCode, selectedCities) {
     const citySelect = document.getElementById('trip-city-select');
     if (!(citySelect instanceof HTMLSelectElement)) return;
+    setupTripCityPickerUi();
+    const { search } = getTripCityPickerEls();
     const cities = getTripCityOptionsByCode(destinationCode);
     citySelect.disabled = !cities.length;
     const selectedSet = new Set(Array.isArray(selectedCities) ? selectedCities : []);
     if (!cities.length) {
-        citySelect.innerHTML = '<option value="">Şehir verisi hazırlanıyor</option>';
+        citySelect.innerHTML = '';
+        if (search) search.value = '';
+        renderTripCityCheckboxList();
         syncTripCitySummary();
         return;
     }
@@ -901,6 +1037,8 @@ function renderTripCityOptions(destinationCode, selectedCities) {
     if ((selectedCount === 0) && citySelect.options.length) {
         citySelect.options[0].selected = true;
     }
+    if (search) search.value = '';
+    renderTripCityCheckboxList();
     syncTripCitySummary();
 }
 
