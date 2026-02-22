@@ -730,21 +730,35 @@ function updateTripCityToggleLabel() {
     const { toggle, select } = getTripCityPickerEls();
     if (!(select instanceof HTMLSelectElement) || !toggle) return;
     const selected = [...select.selectedOptions].map(o => o.value).filter(Boolean);
+    const esc = value => String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
     if (!select.options.length) {
-        toggle.textContent = 'Şehir verisi hazırlanıyor';
+        toggle.innerHTML = `<span class="trip-city-toggle-inner"><span class="trip-city-placeholder">Şehir verisi hazırlanıyor</span><span class="trip-city-caret" aria-hidden="true">▾</span></span>`;
+        toggle.setAttribute('aria-label', 'Şehir verisi hazırlanıyor');
         toggle.disabled = true;
         return;
     }
     toggle.disabled = false;
     if (!selected.length) {
-        toggle.textContent = 'Şehir seç';
+        toggle.innerHTML = `<span class="trip-city-toggle-inner"><span class="trip-city-placeholder">Şehir seç</span><span class="trip-city-caret" aria-hidden="true">▾</span></span>`;
+        toggle.setAttribute('aria-label', 'Şehir seç');
         return;
     }
-    if (selected.length === 1) {
-        toggle.textContent = selected[0];
-        return;
-    }
-    toggle.textContent = `${selected.length} şehir seçildi`;
+    const visible = selected.slice(0, 2);
+    const rest = selected.length - visible.length;
+    const chipsHtml = visible.map(city => `<span class="trip-city-chip">${esc(city)}</span>`).join('');
+    const moreHtml = rest > 0 ? `<span class="trip-city-chip trip-city-chip-more">+${rest}</span>` : '';
+    toggle.innerHTML = `
+        <span class="trip-city-toggle-inner">
+            <span class="trip-city-chip-wrap">${chipsHtml}${moreHtml}</span>
+            <span class="trip-city-caret" aria-hidden="true">▾</span>
+        </span>
+    `;
+    toggle.setAttribute('aria-label', `Seçilen şehirler: ${selected.join(', ')}`);
 }
 
 function renderTripCityCheckboxList() {

@@ -2558,3 +2558,75 @@ section h2,
     #rota-planlayici .trip-result-subtitle { font-size: 0.84rem; }
     #rota-planlayici .trip-kpi small { font-size: 0.74rem; }
 }
+
+/* ===== TRIP CITY CHIP SELECT V36 ===== */
+#rota-planlayici .trip-city-toggle {
+    min-height: 52px !important;
+    padding: 8px 12px !important;
+    text-align: left !important;
+}
+
+#rota-planlayici .trip-city-toggle-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+}
+
+#rota-planlayici .trip-city-chip-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    min-width: 0;
+}
+
+#rota-planlayici .trip-city-chip {
+    display: inline-flex;
+    align-items: center;
+    max-width: 180px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(245, 197, 24, 0.28);
+    background: rgba(245, 197, 24, 0.08);
+    color: #ffe8a6;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#rota-planlayici .trip-city-chip-more {
+    border-color: rgba(111, 177, 255, 0.35);
+    background: rgba(111, 177, 255, 0.12);
+    color: #d7eaff;
+}
+
+#rota-planlayici .trip-city-placeholder {
+    color: #c6d8ee;
+    font-weight: 500;
+}
+
+#rota-planlayici .trip-city-caret {
+    color: #d7e7ff;
+    opacity: 0.9;
+    font-size: 0.92rem;
+    flex: 0 0 auto;
+}
+
+#rota-planlayici .trip-city-toggle[aria-expanded="true"] .trip-city-caret {
+    transform: rotate(180deg);
+}
+
+@media (max-width: 900px) {
+    #rota-planlayici .trip-city-toggle {
+        min-height: 50px !important;
+    }
+    #rota-planlayici .trip-city-chip {
+        max-width: 140px;
+        font-size: 0.86rem;
+    }
+}
