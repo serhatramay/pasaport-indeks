@@ -763,6 +763,52 @@ const COUNTRY_PROFILES = {
     inflation: 'Monako/Fransa/Eurostat veri setleri birlikte değerlendirilmelidir.',
     foodCulture: 'Akdeniz-French Riviera mutfak etkisi baskındır.',
     famousPeople: ['Prens II. Albert', 'Prenses Charlene', 'Grace Kelly', 'Charles Leclerc', 'Louis Chiron', 'Stéphanie of Monaco', 'Caroline of Monaco', 'Rainier III', 'Jean-Michel Jarre (Monako bağlantısı)', 'Nico Rosberg (Monako yerleşik)']
+  },
+  TH: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'Chulalongkorn University', url: 'https://www.chula.ac.th/en/' },
+      { name: 'Mahidol University', url: 'https://mahidol.ac.th/en/' },
+      { name: 'Chiang Mai University', url: 'https://www.cmu.ac.th/en/' },
+      { name: 'Thammasat University', url: 'https://tu.ac.th/en' },
+      { name: 'Kasetsart University', url: 'https://www.ku.ac.th/en' }
+    ],
+    places: ['Bangkok Grand Palace', 'Phuket sahilleri', 'Chiang Mai Eski Şehir', 'Krabi / Railay', 'Ayutthaya Tarihi Parkı'],
+    operators: [
+      { name: 'AIS', url: 'https://www.ais.th/en/' },
+      { name: 'True', url: 'https://www.true.th/en' },
+      { name: 'dtac', url: 'https://www.dtac.co.th/en/' }
+    ],
+    currency: 'Tayland Bahtı (THB)',
+    minimumWage: 'Asgari ücret il/bölge bazında günlük taban ücret olarak farklılaşabilir; resmi güncel tablo kontrol edilmelidir.',
+    livingCost: 'Bangkok ve turistik adalarda konaklama maliyeti yükselir; kuzey şehirlerde daha dengeli olabilir.',
+    government: 'Anayasal monarşi (parlamenter yapı unsurlarıyla)',
+    inflation: 'Bank of Thailand ve resmi istatistik kurumu verileriyle dönemsel takip edilmelidir.',
+    foodCulture: 'Sokak yemekleri, baharatlı tatlar, noodle ve deniz ürünü odaklı güçlü bir yemek kültürü vardır.',
+    famousPeople: ['Bhumibol Adulyadej', 'Vajiralongkorn', 'Lisa (BLACKPINK)', 'Tony Jaa', 'BamBam', 'Apichatpong Weerasethakul', 'Buakaw Banchamek', 'Sorn (CLC)', 'Bright Vachirawit', 'Mew Suppasit']
+  },
+  GE: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'Tbilisi State University', url: 'https://www.tsu.ge/en' },
+      { name: 'Ilia State University', url: 'https://iliauni.edu.ge/en/' },
+      { name: 'Georgian Technical University', url: 'https://gtu.ge/Eng/' },
+      { name: 'Free University of Tbilisi', url: 'https://freeuni.edu.ge/en' },
+      { name: 'Caucasus University', url: 'https://cu.edu.ge/en' }
+    ],
+    places: ['Tiflis Eski Şehir', 'Batum sahil hattı', 'Kazbegi / Gergeti', 'Kakheti şarap rotası', 'Mtskheta'],
+    operators: [
+      { name: 'Magti', url: 'https://magticom.ge/' },
+      { name: 'Silknet', url: 'https://silknet.com/' },
+      { name: 'Cellfie Mobile', url: 'https://cellfie.ge/' }
+    ],
+    currency: 'Gürcistan Larisi (GEL)',
+    minimumWage: 'Tek bir modern ulusal asgari ücret referansı pratikte sınırlı olabilir; sektör bazlı ücretler ve resmi kaynaklar birlikte takip edilmelidir.',
+    livingCost: 'Tiflis ve Batum’da kiralar artabilir; uzun konaklamada mahalle bazlı fark belirgindir.',
+    government: 'Parlamenter cumhuriyet',
+    inflation: 'National Bank of Georgia ve Geostat verileriyle güncel takip önerilir.',
+    foodCulture: 'Haçapuri, hinkali ve şarap kültürü ülke mutfağının temel unsurlarıdır.',
+    famousPeople: ['Şota Rustaveli', 'Nino Katamadze', 'Katie Melua', 'Mikheil Saakashvili', 'Zurab Tsereteli', 'Kakha Kaladze', 'Khvicha Kvaratskhelia', 'Merab Dvalishvili', 'Nino Haratişvili', 'Salome Zurabishvili']
   }
 };
 
