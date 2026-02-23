@@ -1274,6 +1274,582 @@ const COUNTRY_PROFILES = {
     inflation: 'Merkez bankası ve ulusal istatistik verileriyle dönemsel takip edilmelidir.',
     foodCulture: 'Creole mutfağı; deniz ürünleri, baharatlar ve tropikal meyveler öne çıkar.',
     famousPeople: ['Wavel Ramkalawan', 'Danny Faure', 'James Michel', 'Patrick Victor', 'David Andre', 'Jean-Marc Volcy', 'Philip Toussaint', 'Kevin Vidot', 'Niko Vidot', 'Judith Sinon']
+  },
+  VA: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'Pontifical Gregorian University', url: 'https://www.unigre.it/en' },
+      { name: 'Pontifical Lateran University', url: 'https://www.pul.it/' },
+      { name: 'Pontifical Urbaniana University', url: 'https://www.urbaniana.edu/' },
+      { name: 'Pontifical University of St. Thomas Aquinas', url: 'https://angelicum.it/' },
+      { name: 'Pontifical Biblical Institute', url: 'https://www.biblico.it/' }
+    ],
+    places: ['Aziz Petrus Bazilikası', 'Aziz Petrus Meydanı', 'Vatikan Müzeleri', 'Sistine Şapeli', 'Vatikan Bahçeleri (rezervasyonlu)'],
+    operators: [
+      { name: 'TIM Italia', url: 'https://www.tim.it/' },
+      { name: 'Vodafone Italia', url: 'https://www.vodafone.it/' },
+      { name: 'WindTre', url: 'https://www.windtre.it/' }
+    ],
+    currency: 'Euro (EUR)',
+    minimumWage: 'Vatikan içinde çalışma koşulları kurum bazlıdır; klasik ulusal asgari ücret yaklaşımından farklı değerlendirilebilir.',
+    livingCost: 'Seyahat planı pratikte Roma üzerinden yapılır; konaklama ve ulaşım maliyetleri Roma fiyatlarına göre hesaplanmalıdır.',
+    government: 'Teokratik seçilmiş monarşi',
+    inflation: 'Fiyat dinamikleri İtalya ve Euro Bölgesi koşullarından etkilenir.',
+    foodCulture: 'Ziyaret deneyimi Roma mutfağı ile birlikte değerlendirilir; Vatikan içinde seçenekler sınırlıdır.',
+    famousPeople: ['Papa Franciscus', 'Papa XVI. Benedictus', 'Papa II. Ioannes Paulus', 'Papa VI. Paulus', 'Papa XXIII. Ioannes', 'Michelangelo', 'Raphael', 'Gian Lorenzo Bernini', 'Papa XIII. Leo', 'Papa XII. Pius']
+  },
+  AR: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'Universidad de Buenos Aires (UBA)', url: 'https://www.uba.ar/' },
+      { name: 'Universidad Nacional de La Plata', url: 'https://unlp.edu.ar/' },
+      { name: 'Universidad Nacional de Córdoba', url: 'https://www.unc.edu.ar/' },
+      { name: 'Universidad Torcuato Di Tella', url: 'https://www.utdt.edu/' },
+      { name: 'Universidad Austral', url: 'https://www.austral.edu.ar/' }
+    ],
+    places: ['Buenos Aires', 'Patagonya (Bariloche / El Calafate)', 'Iguazú Şelaleleri', 'Mendoza', 'Ushuaia'],
+    operators: [
+      { name: 'Personal', url: 'https://www.personal.com.ar/' },
+      { name: 'Movistar Argentina', url: 'https://www.movistar.com.ar/' },
+      { name: 'Claro Argentina', url: 'https://www.claro.com.ar/' }
+    ],
+    currency: 'Arjantin Pesosu (ARS)',
+    minimumWage: 'Yasal taban ücret düzenli güncellenir; yüksek enflasyon ortamında güncel resmi kaynak teyidi önemlidir.',
+    livingCost: 'Kur oynaklığı nedeniyle kısa sürede değişebilir; şehir ve ödeme yöntemine göre bütçe farkı oluşur.',
+    government: 'Federal başkanlık sistemi',
+    inflation: 'Yüksek oynaklık görülebilir; merkez bankası ve resmi istatistik verileri yakından izlenmelidir.',
+    foodCulture: 'Et ağırlıklı mutfak, asado kültürü, empanada ve İtalyan etkili şehir mutfağı belirgindir.',
+    famousPeople: ['Lionel Messi', 'Diego Maradona', 'Papa Franciscus', 'Jorge Luis Borges', 'Eva Perón', 'Juan Perón', 'Martha Argerich', 'Manu Ginóbili', 'Sergio Agüero', 'Astor Piazzolla']
+  },
+  UY: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'Universidad de la República', url: 'https://udelar.edu.uy/portal/' },
+      { name: 'Universidad ORT Uruguay', url: 'https://www.ort.edu.uy/' },
+      { name: 'Universidad Católica del Uruguay', url: 'https://www.ucu.edu.uy/' },
+      { name: 'Universidad de Montevideo', url: 'https://www.um.edu.uy/' },
+      { name: 'Universidad Tecnológica del Uruguay', url: 'https://utec.edu.uy/' }
+    ],
+    places: ['Montevideo', 'Punta del Este', 'Colonia del Sacramento', 'José Ignacio', 'Rocha kıyıları'],
+    operators: [
+      { name: 'Antel', url: 'https://www.antel.com.uy/' },
+      { name: 'Movistar Uruguay', url: 'https://www.movistar.com.uy/' },
+      { name: 'Claro Uruguay', url: 'https://www.claro.com.uy/' }
+    ],
+    currency: 'Uruguay Pesosu (UYU)',
+    minimumWage: 'Ulusal asgari ücret resmi kararlarla güncellenir; sektör anlaşmaları da ücretleri etkileyebilir.',
+    livingCost: 'Montevideo ve sahil bölgelerinde yaşam maliyeti daha yüksek olabilir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle dönemsel takip önerilir.',
+    foodCulture: 'Et, mate kültürü ve Río de la Plata etkili mutfak öne çıkar.',
+    famousPeople: ['José Mujica', 'Luis Suárez', 'Edinson Cavani', 'Diego Forlán', 'Jorge Drexler', 'Natalia Oreiro', 'Mario Benedetti', 'Eduardo Galeano', 'Tabaré Vázquez', 'Juan Manuel Blanes']
+  },
+  MO: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'University of Macau', url: 'https://www.um.edu.mo/' },
+      { name: 'Macau University of Science and Technology', url: 'https://www.must.edu.mo/' },
+      { name: 'City University of Macau', url: 'https://www.cityu.edu.mo/' },
+      { name: 'Macau Polytechnic University', url: 'https://www.mpu.edu.mo/' },
+      { name: 'Kiang Wu Nursing College of Macau', url: 'https://www.kwnc.edu.mo/' }
+    ],
+    places: ['Historic Centre of Macao', 'Ruins of St. Paul', 'Cotai Strip', 'A-Ma Temple', 'Taipa Village'],
+    operators: [
+      { name: 'CTM', url: 'https://www.ctm.net/' },
+      { name: 'China Telecom Macau', url: 'https://www.chinatelecom.com.mo/' },
+      { name: '3 Macau', url: 'https://www.three.com.mo/' }
+    ],
+    currency: 'Makao Patakası (MOP)',
+    minimumWage: 'Asgari ücret ve sektör uygulamaları resmi işgücü mevzuatına göre teyit edilmelidir.',
+    livingCost: 'Konaklama ve turistik dönem fiyatları yükselebilir; Hong Kong bağlantılı planlar bütçeyi etkiler.',
+    government: 'Özel İdari Bölge (Çin’e bağlı idari yapı)',
+    inflation: 'Resmi istatistik ve para otoritesi verileriyle takip önerilir.',
+    foodCulture: 'Portekiz-Çin füzyon mutfağı; Macanese yemekleri ve sokak lezzetleri öne çıkar.',
+    famousPeople: ['Stanley Ho', 'Pansy Ho', 'Lawrence Ho', 'Edmund Ho', 'Ho Iat Seng', 'Fernando Chui', 'Maria Cordero', 'Lio Kuokman', 'Sio Hon Pan', 'Leong On Kei']
+  },
+  KN: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'University of Medicine and Health Sciences (St. Kitts)', url: 'https://www.umhs-sk.org/' },
+      { name: 'Ross University School of Veterinary Medicine', url: 'https://veterinary.rossu.edu/' },
+      { name: 'International University of the Health Sciences', url: 'https://www.iuhs.edu/' },
+      { name: 'Clarence Fitzroy Bryant College', url: 'https://www.cfbc.edu.kn/' },
+      { name: 'Medical University of the Americas (Nevis)', url: 'https://www.mua.edu/' }
+    ],
+    places: ['Basseterre', 'Brimstone Hill Fortress', 'Frigate Bay', 'Nevis Peak çevresi', 'Pinney’s Beach'],
+    operators: [
+      { name: 'The Cable', url: 'https://www.thecable.net/' },
+      { name: 'Digicel St. Kitts & Nevis', url: 'https://www.digicelgroup.com/kn/en.html' },
+      { name: 'Flow Caribbean', url: 'https://discoverflow.co/' }
+    ],
+    currency: 'Doğu Karayip Doları (XCD)',
+    minimumWage: 'Ücret düzenlemeleri ve çalışma şartları için resmi çalışma otoritesi kaynakları kontrol edilmelidir.',
+    livingCost: 'Ada ekonomisi ve ithal ürün bağımlılığı nedeniyle yaşam maliyeti yüksek olabilir.',
+    government: 'Parlamenter demokrasi (anayasal monarşi)',
+    inflation: 'ECCB ve yerel resmi verilerle dönemsel takip önerilir.',
+    foodCulture: 'Karayip mutfağı; deniz ürünleri, keçi eti yemekleri ve tropikal meyveler öne çıkar.',
+    famousPeople: ['Terrance Drew', 'Timothy Harris', 'Kim Collins', 'Joan Armatrading', 'Elquemedo Willett', 'Byron Messia', 'Marlon Asher (bölgesel bağlantı)', 'Jermaine Hobson', 'Carlton Brangman', 'Kennedy Simmonds']
+  },
+  AG: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'University of Health Sciences Antigua', url: 'https://uhsa.ag/' },
+      { name: 'American University of Antigua', url: 'https://www.auamed.org/' },
+      { name: 'Antigua State College', url: 'https://antiguastatecollege.edu.ag/' },
+      { name: 'Antigua and Barbuda International Institute of Technology', url: 'https://abiit.edu.ag/' },
+      { name: 'University of the West Indies (regional)', url: 'https://www.uwi.edu/' }
+    ],
+    places: ['St. John’s', 'English Harbour', 'Nelson’s Dockyard', 'Shirley Heights', 'Dickenson Bay'],
+    operators: [
+      { name: 'Flow Antigua', url: 'https://discoverflow.co/antigua/' },
+      { name: 'Digicel Antigua', url: 'https://www.digicelgroup.com/ag/en.html' },
+      { name: 'APUA Inet', url: 'https://apuainet.ag/' }
+    ],
+    currency: 'Doğu Karayip Doları (XCD)',
+    minimumWage: 'Asgari ücret ve sektör uygulamaları için resmi çalışma mevzuatı teyidi önerilir.',
+    livingCost: 'Turistik kıyı bölgelerinde konaklama ve hizmet maliyetleri yüksektir.',
+    government: 'Parlamenter demokrasi (anayasal monarşi)',
+    inflation: 'ECCB ve yerel resmi verilerle takip edilmelidir.',
+    foodCulture: 'Karayip mutfağı; deniz ürünleri ve baharatlı ada yemekleri yaygındır.',
+    famousPeople: ['Viv Richards', 'Curtly Ambrose', 'Andy Roberts', 'Gaston Browne', 'Baldwin Spencer', 'Rakeem Cornwall', 'Claudette Peters', 'Asot Michael', 'Tim Hector', 'Mellisa Phelps']
+  },
+  PA: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'Universidad de Panamá', url: 'https://www.up.ac.pa/' },
+      { name: 'Universidad Tecnológica de Panamá', url: 'https://utp.ac.pa/' },
+      { name: 'Universidad Católica Santa María La Antigua', url: 'https://usma.ac.pa/' },
+      { name: 'Universidad Latina de Panamá', url: 'https://ulatina.edu.pa/' },
+      { name: 'Florida State University Panama', url: 'https://international.fsu.edu/panama/' }
+    ],
+    places: ['Panama City', 'Panama Kanalı (Miraflores)', 'Casco Viejo', 'Bocas del Toro', 'Boquete'],
+    operators: [
+      { name: 'Tigo Panama', url: 'https://www.tigo.com.pa/' },
+      { name: 'Más Móvil Panamá', url: 'https://www.masmovilpanama.com/' },
+      { name: 'Digicel Panama', url: 'https://www.digicelgroup.com/pa/es.html' }
+    ],
+    currency: 'Panama Balboası / ABD Doları (PAB/USD)',
+    minimumWage: 'Asgari ücret bölge ve sektör bazında farklı kategorilerde belirlenebilir; resmi tablo teyidi gerekir.',
+    livingCost: 'Panama City ve expat bölgelerinde maliyet yükselir; kırsal alanlarda daha düşüktür.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Resmi istatistik ve ekonomi bakanlığı verileriyle takip önerilir.',
+    foodCulture: 'Karayip-Latin etkili mutfak; deniz ürünleri, pirinç yemekleri ve tropikal tatlar öne çıkar.',
+    famousPeople: ['Rubén Blades', 'Mariano Rivera', 'Roberto Durán', 'Mireya Moscoso', 'Omar Torrijos', 'Irving Saladino', 'Sech', 'Danilo Pérez', 'Román Torres', 'Erika Ender']
+  },
+  GD: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: "St. George's University", url: 'https://www.sgu.edu/' },
+      { name: 'T.A. Marryshow Community College', url: 'https://tamcc.edu.gd/' },
+      { name: 'University of the West Indies Open Campus', url: 'https://www.open.uwi.edu/' },
+      { name: "St. George's University School of Medicine", url: 'https://www.sgu.edu/academic-programs/school-of-medicine/' },
+      { name: 'Grenada National Training Agency (resmi eğitim referansı)', url: 'https://www.gov.gd/' }
+    ],
+    places: ["St. George's", 'Grand Anse Beach', 'Underwater Sculpture Park', 'Annandale Falls', 'Carriacou'],
+    operators: [
+      { name: 'Digicel Grenada', url: 'https://www.digicelgroup.com/gd/en.html' },
+      { name: 'Flow Grenada', url: 'https://discoverflow.co/grenada/' },
+      { name: 'Grenada Cooperative Bank / ISP refs', url: 'https://www.gov.gd/' }
+    ],
+    currency: 'Doğu Karayip Doları (XCD)',
+    minimumWage: 'Ücret düzenlemeleri için resmi çalışma bakanlığı ve iş mevzuatı kaynakları kontrol edilmelidir.',
+    livingCost: 'Turistik dönemlerde sahil bölgelerinde fiyatlar yükselir; ithal ürün bağımlılığı maliyeti artırabilir.',
+    government: 'Parlamenter demokrasi (anayasal monarşi)',
+    inflation: 'ECCB ve yerel resmi verilerle dönemsel takip önerilir.',
+    foodCulture: 'Baharat adası mutfağı; hindistan cevizi, deniz ürünleri ve baharat kullanımı güçlüdür.',
+    famousPeople: ['Maurice Bishop', 'Keith Mitchell', 'Kirani James', 'Anderson Peters', 'Merle Collins', 'Teddyson John', 'Tillman Thomas', 'Carlyle Glean', 'Alicia Modestine', 'Nazim Burke']
+  },
+  LC: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'Sir Arthur Lewis Community College', url: 'https://salcc.edu.lc/' },
+      { name: 'University of the West Indies Open Campus', url: 'https://www.open.uwi.edu/' },
+      { name: 'American International Medical University', url: 'https://www.aimu-edu.us/' },
+      { name: 'Monroe College Saint Lucia', url: 'https://www.monroecollege.edu/' },
+      { name: 'Regional nursing and training institutes (official references)', url: 'https://www.govt.lc/' }
+    ],
+    places: ['Castries', 'Gros Islet', 'Pitons', 'Soufrière', 'Pigeon Island'],
+    operators: [
+      { name: 'Flow Saint Lucia', url: 'https://discoverflow.co/st-lucia/' },
+      { name: 'Digicel Saint Lucia', url: 'https://www.digicelgroup.com/lc/en.html' },
+      { name: 'Government ICT / local providers', url: 'https://www.govt.lc/' }
+    ],
+    currency: 'Doğu Karayip Doları (XCD)',
+    minimumWage: 'Asgari ücret ve sektörel ücret uygulamaları için resmi çalışma otoritesi kaynakları teyit edilmelidir.',
+    livingCost: 'Turistik sahil ve resort bölgelerinde maliyet yükselir; yerel bölgelerde daha dengelidir.',
+    government: 'Parlamenter demokrasi (anayasal monarşi)',
+    inflation: 'ECCB ve resmi verilerle dönemsel takip önerilir.',
+    foodCulture: 'Karayip-Creole mutfağı; deniz ürünleri, baharatlar ve tropikal ürünler öne çıkar.',
+    famousPeople: ['Derek Walcott', 'Arthur Lewis', 'Daren Sammy', 'Julien Alfred', 'Levern Spencer', 'Winston Duke', 'Kenson Casimir', 'Ronald Boo Hinkson', 'Philip J. Pierre', 'Kezia Frederick']
+  },
+  BB: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'University of the West Indies Cave Hill', url: 'https://www.cavehill.uwi.edu/' },
+      { name: 'Barbados Community College', url: 'https://www.bcc.edu.bb/' },
+      { name: 'UWI Open Campus Barbados', url: 'https://www.open.uwi.edu/' },
+      { name: 'Codrington College', url: 'https://www.codrington.edu.bb/' },
+      { name: 'Samuel Jackman Prescod Institute of Technology', url: 'https://sjpi.edu.bb/' }
+    ],
+    places: ['Bridgetown', 'Carlisle Bay', 'Bathsheba', 'Oistins', 'Hunte’s Gardens'],
+    operators: [
+      { name: 'Flow Barbados', url: 'https://discoverflow.co/barbados/' },
+      { name: 'Digicel Barbados', url: 'https://www.digicelgroup.com/bb/en.html' },
+      { name: 'Cable Bahamas / regional ISP references', url: 'https://www.barbados.gov.bb/' }
+    ],
+    currency: 'Barbados Doları (BBD)',
+    minimumWage: 'Ücret tabanı ve sektörel uygulamalar resmi kaynaklardan doğrulanmalıdır.',
+    livingCost: 'Ada ekonomisi ve turistik bölgeler nedeniyle konaklama/yeme-içme maliyeti yükselebilir.',
+    government: 'Parlamenter cumhuriyet',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle takip edilmelidir.',
+    foodCulture: 'Karayip mutfağı, flying fish, deniz ürünleri ve rom kültürü öne çıkar.',
+    famousPeople: ['Rihanna', 'Mia Mottley', 'Garfield Sobers', 'Obadele Thompson', 'Shontelle', 'Jofra Archer', 'Clyde Walcott', 'Desree', 'Grantley Adams', 'Barbados Joe']
+  },
+  DM: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'Dominica State College', url: 'https://dsc.edu.dm/' },
+      { name: 'All Saints University School of Medicine', url: 'https://allsaintsu.org/' },
+      { name: 'Ross University School of Medicine (regional reference)', url: 'https://medical.rossu.edu/' },
+      { name: 'University of the West Indies Open Campus', url: 'https://www.open.uwi.edu/' },
+      { name: 'IUGS Dominica', url: 'https://iugrad.edu.dm/' }
+    ],
+    places: ['Roseau', 'Boiling Lake', 'Trafalgar Falls', 'Cabrits National Park', 'Champagne Reef'],
+    operators: [
+      { name: 'Digicel Dominica', url: 'https://www.digicelgroup.com/dm/en.html' },
+      { name: 'Flow Dominica', url: 'https://discoverflow.co/dominica/' },
+      { name: 'Marpin Telecoms', url: 'https://www.marpin.dm/' }
+    ],
+    currency: 'Doğu Karayip Doları (XCD)',
+    minimumWage: 'Resmi çalışma mevzuatı ve ücret düzenlemeleri kaynaklarından teyit edilmelidir.',
+    livingCost: 'Ada lojistiği ve ithal ürün etkisi nedeniyle fiyatlar bölgesel olarak yükselebilir.',
+    government: 'Parlamenter demokrasi',
+    inflation: 'ECCB ve yerel resmi verilerle takip önerilir.',
+    foodCulture: 'Karayip-Creole mutfağı; kök sebzeler, deniz ürünleri ve tropikal tatlar yaygındır.',
+    famousPeople: ['Roosevelt Skerrit', 'Eugenia Charles', 'Jean Rhys', 'Thea LaFond', 'Lennox Honychurch', 'Ophelia Marie', 'Gordon Henderson', 'Kassav members (regional influence)', 'Benoit Bardouille', 'Alick Lazare']
+  },
+  MD: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'Moldova State University', url: 'https://usm.md/' },
+      { name: 'Technical University of Moldova', url: 'https://utm.md/en/' },
+      { name: 'Nicolae Testemițanu State University of Medicine and Pharmacy', url: 'https://usmf.md/en' },
+      { name: 'Academy of Economic Studies of Moldova', url: 'https://ase.md/' },
+      { name: 'Free International University of Moldova', url: 'https://ulim.md/' }
+    ],
+    places: ['Kişinev', 'Orheiul Vechi', 'Cricova Şarap Mahzenleri', 'Soroca Kalesi', 'Tiraspol (geçiş koşulu kontrolü)'],
+    operators: [
+      { name: 'Orange Moldova', url: 'https://www.orange.md/' },
+      { name: 'Moldcell', url: 'https://www.moldcell.md/' },
+      { name: 'Moldtelecom (Unite)', url: 'https://www.moldtelecom.md/' }
+    ],
+    currency: 'Moldova Leyi (MDL)',
+    minimumWage: 'Asgari ücret ve sektör uygulamaları için resmi çalışma/ekonomi kurumlarının duyuruları teyit edilmelidir.',
+    livingCost: 'Kişinev diğer şehirlere göre daha pahalıdır; konaklama ve ulaşım kalemleri bölgeye göre değişir.',
+    government: 'Parlamenter cumhuriyet',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle dönemsel takip önerilir.',
+    foodCulture: 'Doğu Avrupa-Balkan etkili mutfak; et, hamur işi ve şarap kültürü öne çıkar.',
+    famousPeople: ['Maia Sandu', 'Igor Dodon', 'Dan Balan', 'Natalia Barbu', 'Dorin Chirtoacă', 'Sergiu Celibidache', 'Vladimir Voronin', 'Pavel Stratan', 'O-Zone', 'Ion Suruceanu']
+  },
+  VC: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'St. Vincent and the Grenadines Community College', url: 'https://svgcc.vc/' },
+      { name: 'University of the West Indies Open Campus', url: 'https://www.open.uwi.edu/' },
+      { name: 'St. James School of Medicine (Caribbean reference)', url: 'https://www.sjsm.org/' },
+      { name: 'Teacher Education programmes (official refs)', url: 'https://www.gov.vc/' },
+      { name: 'SVG Technical College references', url: 'https://www.gov.vc/' }
+    ],
+    places: ['Kingstown', 'Bequia', 'Mustique', 'Tobago Cays', 'La Soufrière Volcano'],
+    operators: [
+      { name: 'Flow SVG', url: 'https://discoverflow.co/st-vincent/' },
+      { name: 'Digicel SVG', url: 'https://www.digicelgroup.com/vc/en.html' },
+      { name: 'Government ICT references', url: 'https://www.gov.vc/' }
+    ],
+    currency: 'Doğu Karayip Doları (XCD)',
+    minimumWage: 'Resmi çalışma mevzuatı ve ücret düzenlemeleri kaynaklarından teyit edilmelidir.',
+    livingCost: 'Ada ekonomisi ve ithal ürün bağımlılığı nedeniyle maliyetler yükselebilir.',
+    government: 'Parlamenter demokrasi (anayasal monarşi)',
+    inflation: 'ECCB ve yerel resmi verilerle dönemsel takip önerilir.',
+    foodCulture: 'Karayip mutfağı; deniz ürünleri, kök sebzeler ve baharatlı yerel yemekler öne çıkar.',
+    famousPeople: ['Ralph Gonsalves', 'Shafiqua Maloney', 'Adonal Foyle', 'Kevin Lyttle', 'Hasely Crawford', 'Ellsworth Keane', 'Franklyn Stephenson', 'Kezia George', 'Basil Charles', 'Hugh Mulzac']
+  },
+  PY: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'Universidad Nacional de Asunción', url: 'https://www.una.py/' },
+      { name: 'Universidad Católica Nuestra Señora de la Asunción', url: 'https://www.uc.edu.py/' },
+      { name: 'Universidad Americana', url: 'https://americana.edu.py/' },
+      { name: 'Universidad del Norte', url: 'https://www.uninorte.edu.py/' },
+      { name: 'Universidad Autónoma de Asunción', url: 'https://www.uaa.edu.py/' }
+    ],
+    places: ['Asunción', 'Ciudad del Este', 'Encarnación', 'Itaipú çevresi', 'Jesuit Missions (Trinidad)'],
+    operators: [
+      { name: 'Tigo Paraguay', url: 'https://www.tigo.com.py/' },
+      { name: 'Personal Paraguay', url: 'https://www.personal.com.py/' },
+      { name: 'Claro Paraguay', url: 'https://www.claro.com.py/' }
+    ],
+    currency: 'Paraguay Guaranisi (PYG)',
+    minimumWage: 'Ulusal asgari ücret resmi kararlarla güncellenir; güncel resmi duyuru teyidi gerekir.',
+    livingCost: 'Asunción ve sınır ticaret bölgelerinde maliyet farklılık gösterebilir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle takip önerilir.',
+    foodCulture: 'Guaraní etkili mutfak; mısır, et ve peynirli yerel yemekler öne çıkar.',
+    famousPeople: ['José Asunción Flores', 'Augusto Roa Bastos', 'Roque Santa Cruz', 'Carlos Antonio López', 'Alfredo Stroessner', 'Leryn Franco', 'Derlis González', 'Arsenio Erico', 'Berta Rojas', 'Lucas Barrios']
+  },
+  GT: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'Universidad de San Carlos de Guatemala', url: 'https://www.usac.edu.gt/' },
+      { name: 'Universidad del Valle de Guatemala', url: 'https://www.uvg.edu.gt/' },
+      { name: 'Universidad Francisco Marroquín', url: 'https://www.ufm.edu/' },
+      { name: 'Universidad Rafael Landívar', url: 'https://principal.url.edu.gt/' },
+      { name: 'Universidad Galileo', url: 'https://www.galileo.edu/' }
+    ],
+    places: ['Guatemala City', 'Antigua Guatemala', 'Lake Atitlán', 'Tikal', 'Semuc Champey'],
+    operators: [
+      { name: 'Tigo Guatemala', url: 'https://www.tigo.com.gt/' },
+      { name: 'Claro Guatemala', url: 'https://www.claro.com.gt/' },
+      { name: 'Telefónica / Movistar legacy references', url: 'https://www.telefonica.com/' }
+    ],
+    currency: 'Guatemala Quetzalı (GTQ)',
+    minimumWage: 'Asgari ücret sektör ve iş koluna göre farklılaşabilir; resmi tablo teyidi önerilir.',
+    livingCost: 'Antigua ve turistik bölgeler Guatemala City dışındaki yerlere göre pahalı olabilir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik kurumuyla dönemsel takip edilmelidir.',
+    foodCulture: 'Maya-Latin etkili mutfak; mısır, fasulye, tamale ve bölgesel soslar öne çıkar.',
+    famousPeople: ['Rigoberta Menchú', 'Miguel Ángel Asturias', 'Bernardo Arévalo', 'Jimmy Morales', 'Carlos Ruiz', 'Ricardo Arjona', 'Óscar Isaac', 'Erick Barrondo', 'Luis von Ahn', 'Efraín Ríos Montt']
+  },
+  SV: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'Universidad de El Salvador', url: 'https://www.ues.edu.sv/' },
+      { name: 'UCA El Salvador', url: 'https://uca.edu.sv/' },
+      { name: 'Universidad Don Bosco', url: 'https://www.udb.edu.sv/' },
+      { name: 'Universidad Tecnológica de El Salvador', url: 'https://www.utec.edu.sv/' },
+      { name: 'ESEN', url: 'https://esen.edu.sv/' }
+    ],
+    places: ['San Salvador', 'Suchitoto', 'Ruta de las Flores', 'El Tunco / El Zonte', 'Santa Ana Volkanı çevresi'],
+    operators: [
+      { name: 'Tigo El Salvador', url: 'https://www.tigo.com.sv/' },
+      { name: 'Claro El Salvador', url: 'https://www.claro.com.sv/' },
+      { name: 'Telefónica legacy / local references', url: 'https://www.telefonica.com/' }
+    ],
+    currency: 'ABD Doları (USD)',
+    minimumWage: 'Asgari ücret sektör bazında kategorilere ayrılabilir; resmi çalışma bakanlığı kaynakları kontrol edilmelidir.',
+    livingCost: 'San Salvador ve sahil/turistik bölgelerde maliyet artabilir; güvenlik ve ulaşım planı önemlidir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Resmi veriler ve merkez bankası açıklamalarıyla dönemsel takip önerilir.',
+    foodCulture: 'Pupusa başta olmak üzere mısır bazlı yemekler ve Orta Amerika mutfağı öne çıkar.',
+    famousPeople: ['Nayib Bukele', 'Óscar Romero', 'Claudia Lars', 'Jorge González', 'Roque Dalton', 'Mauricio Funes', 'Ana Vilma de Escobar', 'Alfredo Cristiani', 'María Isabel Rodríguez', 'Alex Pineda Chacón']
+  },
+  BS: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'University of The Bahamas', url: 'https://www.ub.edu.bs/' },
+      { name: 'Bahamas Technical and Vocational Institute', url: 'https://btvi.edu.bs/' },
+      { name: 'UWI Open Campus Bahamas', url: 'https://www.open.uwi.edu/' },
+      { name: 'Bahamas Baptist Community College', url: 'https://www.bbccbahamas.com/' },
+      { name: 'National training and hospitality institutes (official refs)', url: 'https://www.bahamas.gov.bs/' }
+    ],
+    places: ['Nassau', 'Paradise Island', 'Exuma Cays', 'Eleuthera', 'Grand Bahama'],
+    operators: [
+      { name: 'BTC Bahamas', url: 'https://www.btcbahamas.com/' },
+      { name: 'Aliv', url: 'https://www.bealiv.com/' },
+      { name: 'REV', url: 'https://www.rev.bs/' }
+    ],
+    currency: 'Bahama Doları (BSD)',
+    minimumWage: 'Ücret tabanı ve iş sözleşmesi koşulları için resmi iş gücü kaynakları teyit edilmelidir.',
+    livingCost: 'Turistik adalarda yaşam maliyeti ve konaklama bedelleri yüksektir.',
+    government: 'Parlamenter demokrasi (anayasal monarşi)',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle takip önerilir.',
+    foodCulture: 'Karayip deniz ürünleri, conch yemekleri ve ada mutfağı öne çıkar.',
+    famousPeople: ['Sidney Poitier', 'Lenny Kravitz', 'Shaunae Miller-Uibo', 'Buddy Hield', 'Deandre Ayton', 'Perry Christie', 'Hubert Ingraham', 'Linden Pindling', 'Rudy Grant', 'Nassau musicians (Baha Men)']
+  },
+  HN: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'Universidad Nacional Autónoma de Honduras', url: 'https://www.unah.edu.hn/' },
+      { name: 'Universidad Tecnológica Centroamericana', url: 'https://www.unitec.edu/' },
+      { name: 'Universidad Católica de Honduras', url: 'https://www.unicah.edu/' },
+      { name: 'Universidad de San Pedro Sula', url: 'https://www.usap.edu/' },
+      { name: 'Zamorano', url: 'https://www.zamorano.edu/' }
+    ],
+    places: ['Tegucigalpa', 'San Pedro Sula', 'Copán Ruinas', 'Roatán', 'Utila'],
+    operators: [
+      { name: 'Tigo Honduras', url: 'https://www.tigo.com.hn/' },
+      { name: 'Claro Honduras', url: 'https://www.claro.com.hn/' },
+      { name: 'Hondutel', url: 'https://www.hondutel.hn/' }
+    ],
+    currency: 'Honduras Lempirası (HNL)',
+    minimumWage: 'Asgari ücret sektör ve ölçek bazında farklılaşabilir; resmi kaynaklar üzerinden teyit edilmelidir.',
+    livingCost: 'Turistik adalar ve büyük şehir merkezlerinde maliyet daha yüksek olabilir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle düzenli takip önerilir.',
+    foodCulture: 'Orta Amerika mutfağı; tortilla, fasulye, deniz ürünleri ve muz bazlı yemekler yaygındır.',
+    famousPeople: ['Francisco Morazán', 'Xiomara Castro', 'Juan Orlando Hernández', 'Carlos Mencia', 'David Suazo', 'Maynor Figueroa', 'Berta Cáceres', 'Amado Guevara', 'Teófimo López', 'José Cecilio del Valle']
+  },
+  TT: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'The University of the West Indies St. Augustine', url: 'https://sta.uwi.edu/' },
+      { name: 'University of Trinidad and Tobago', url: 'https://utt.edu.tt/' },
+      { name: 'COSTAATT', url: 'https://www.costaatt.edu.tt/' },
+      { name: 'UWI Open Campus Trinidad and Tobago', url: 'https://www.open.uwi.edu/' },
+      { name: 'University of the Southern Caribbean', url: 'https://usc.edu.tt/' }
+    ],
+    places: ['Port of Spain', 'San Fernando', 'Maracas Bay', 'Tobago / Pigeon Point', 'Asa Wright Nature Centre'],
+    operators: [
+      { name: 'bmobile', url: 'https://bmobile.co.tt/' },
+      { name: 'Digicel Trinidad and Tobago', url: 'https://www.digicelgroup.com/tt/en.html' },
+      { name: 'Flow Trinidad and Tobago', url: 'https://discoverflow.co/trinidad/' }
+    ],
+    currency: 'Trinidad ve Tobago Doları (TTD)',
+    minimumWage: 'Asgari ücret ve iş hukuku detayları için resmi çalışma bakanlığı kaynakları kontrol edilmelidir.',
+    livingCost: 'Port of Spain ve enerji sektörüne bağlı bölgelerde maliyet artabilir.',
+    government: 'Parlamenter cumhuriyet',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle dönemsel takip önerilir.',
+    foodCulture: 'Karayip-Hint etkili mutfak; doubles, roti ve sokak yemekleri öne çıkar.',
+    famousPeople: ['Brian Lara', 'Nicki Minaj', 'Machel Montano', 'Ato Boldon', 'Hasely Crawford', 'V.S. Naipaul', 'Calypso Rose', 'Dwight Yorke', 'Sundar Popo', 'Shivnarine Chanderpaul']
+  },
+  ZA: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'University of Cape Town', url: 'https://www.uct.ac.za/' },
+      { name: 'University of the Witwatersrand', url: 'https://www.wits.ac.za/' },
+      { name: 'Stellenbosch University', url: 'https://www.sun.ac.za/english' },
+      { name: 'University of Pretoria', url: 'https://www.up.ac.za/' },
+      { name: 'University of Johannesburg', url: 'https://www.uj.ac.za/' }
+    ],
+    places: ['Cape Town', 'Johannesburg', 'Kruger National Park', 'Garden Route', 'Durban'],
+    operators: [
+      { name: 'Vodacom', url: 'https://www.vodacom.co.za/' },
+      { name: 'MTN South Africa', url: 'https://www.mtn.co.za/' },
+      { name: 'Cell C', url: 'https://www.cellc.co.za/' },
+      { name: 'Telkom Mobile', url: 'https://www.telkom.co.za/' }
+    ],
+    currency: 'Güney Afrika Randı (ZAR)',
+    minimumWage: 'Ulusal asgari ücret resmi kararlarla güncellenir; sektör istisnaları için resmi mevzuat kontrol edilmelidir.',
+    livingCost: 'Cape Town ve Johannesburg’da konut/mobilite maliyetleri yükselir; konum seçimi bütçeyi etkiler.',
+    government: 'Parlamenter cumhuriyet',
+    inflation: 'SARB ve resmi istatistik kurumu verileriyle dönemsel takip önerilir.',
+    foodCulture: 'Çok kültürlü mutfak; braai, Cape Malay etkisi ve bölgesel et yemekleri öne çıkar.',
+    famousPeople: ['Nelson Mandela', 'Desmond Tutu', 'Charlize Theron', 'Trevor Noah', 'Elon Musk', 'Caster Semenya', 'Siya Kolisi', 'Miriam Makeba', 'Nadine Gordimer', 'J.R.R. Tolkien']
+  },
+  JM: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'University of the West Indies Mona', url: 'https://www.mona.uwi.edu/' },
+      { name: 'University of Technology, Jamaica', url: 'https://www.utech.edu.jm/' },
+      { name: 'University of the Commonwealth Caribbean', url: 'https://ucc.edu.jm/' },
+      { name: 'Northern Caribbean University', url: 'https://www.ncu.edu.jm/' },
+      { name: 'Edna Manley College', url: 'https://emc.edu.jm/' }
+    ],
+    places: ['Kingston', 'Montego Bay', 'Negril', 'Ocho Rios', 'Blue Mountains'],
+    operators: [
+      { name: 'Digicel Jamaica', url: 'https://www.digicelgroup.com/jm/en.html' },
+      { name: 'Flow Jamaica', url: 'https://discoverflow.co/jamaica/' },
+      { name: 'Government telecom references', url: 'https://www.gov.jm/' }
+    ],
+    currency: 'Jamaika Doları (JMD)',
+    minimumWage: 'Asgari ücret düzenlemeleri resmi çalışma bakanlığı kaynaklarından teyit edilmelidir.',
+    livingCost: 'Turistik kıyı bölgelerinde maliyet yükselir; şehir ve resort farkı belirgindir.',
+    government: 'Parlamenter demokrasi (anayasal monarşi)',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle takip edilmelidir.',
+    foodCulture: 'Jerk mutfağı, ackee and saltfish ve Karayip baharat profili öne çıkar.',
+    famousPeople: ['Bob Marley', 'Usain Bolt', 'Shelly-Ann Fraser-Pryce', 'Sean Paul', 'Jimmy Cliff', 'Shaggy', 'Marcus Garvey', 'Portia Simpson-Miller', 'Yohan Blake', 'Louise Bennett-Coverley']
+  },
+  NI: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'UNAN', url: 'https://www.unan.edu.ni/' },
+      { name: 'UCA Nicaragua', url: 'https://www.uca.edu.ni/' },
+      { name: 'UAM Nicaragua', url: 'https://uam.edu.ni/' },
+      { name: 'Universidad Nacional de Ingeniería', url: 'https://www.uni.edu.ni/' },
+      { name: 'INCAE Business School', url: 'https://www.incae.edu/' }
+    ],
+    places: ['Managua', 'Granada', 'León', 'Ometepe', 'San Juan del Sur'],
+    operators: [
+      { name: 'Claro Nicaragua', url: 'https://www.claro.com.ni/' },
+      { name: 'Tigo Nicaragua', url: 'https://www.tigo.com.ni/' },
+      { name: 'Telcor resmi iletişim referansı', url: 'https://www.telcor.gob.ni/' }
+    ],
+    currency: 'Nikaragua Córdoba’sı (NIO)',
+    minimumWage: 'Asgari ücret sektör bazında kategorilere göre belirlenebilir; resmi kaynak teyidi gereklidir.',
+    livingCost: 'Turistik bölgeler ve şehir merkezlerinde konaklama maliyeti artabilir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle dönemsel takip önerilir.',
+    foodCulture: 'Mısır, fasulye, et ve tropikal ürün ağırlıklı Orta Amerika mutfağı yaygındır.',
+    famousPeople: ['Rubén Darío', 'Daniel Ortega', 'Violeta Chamorro', 'Bianca Jagger', 'Alexis Argüello', 'Ernesto Cardenal', 'Gioconda Belli', 'Carlos Mejía Godoy', 'Román González', 'Sergio Ramírez']
+  },
+  VU: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'University of the South Pacific (Vanuatu campus)', url: 'https://www.usp.ac.fj/' },
+      { name: 'Vanuatu Institute of Technology', url: 'https://www.vit.edu.vu/' },
+      { name: 'Vanuatu Agriculture College (official references)', url: 'https://www.gov.vu/' },
+      { name: 'USP Emalus Campus', url: 'https://www.usp.ac.fj/index.php?id=emalus' },
+      { name: 'Ministry of Education training references', url: 'https://moet.gov.vu/' }
+    ],
+    places: ['Port Vila', 'Espiritu Santo', 'Champagne Beach', 'Mount Yasur', 'Blue Holes'],
+    operators: [
+      { name: 'Vodafone Vanuatu', url: 'https://www.vodafone.com.vu/' },
+      { name: 'Digicel Vanuatu', url: 'https://www.digicelgroup.com/vu/en.html' },
+      { name: 'TVL', url: 'https://www.tvl.vu/' }
+    ],
+    currency: 'Vanuatu Vatusu (VUV)',
+    minimumWage: 'Çalışma koşulları ve ücret düzenlemeleri için resmi kurum kaynaklarıyla teyit önerilir.',
+    livingCost: 'Ada lojistiği ve ithalat nedeniyle maliyetler yüksek olabilir; turistik adalarda fark artar.',
+    government: 'Parlamenter cumhuriyet',
+    inflation: 'Merkez bankası ve resmi verilerle dönemsel takip edilmelidir.',
+    foodCulture: 'Melanezya etkili ada mutfağı; kök sebzeler, deniz ürünleri ve yerel pişirme yöntemleri yaygındır.',
+    famousPeople: ['Walter Lini', 'Charlot Salwai', 'Ralph Regenvanu', 'Grace Mera Molisa', 'Joe Natuman', 'Ishmael Kalsakau', 'Moses Kahu', 'Sela Molisa', 'Bule Jitamas', 'Bing Obed']
+  },
+  BO: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'Universidad Mayor de San Andrés (UMSA)', url: 'https://www.umsa.bo/' },
+      { name: 'Universidad Mayor de San Simón', url: 'https://www.umss.edu.bo/' },
+      { name: 'Universidad Católica Boliviana', url: 'https://www.ucb.edu.bo/' },
+      { name: 'Universidad Privada Boliviana', url: 'https://www.upb.edu/' },
+      { name: 'Universidad Autónoma Gabriel René Moreno', url: 'https://www.uagrm.edu.bo/' }
+    ],
+    places: ['La Paz', 'Salar de Uyuni', 'Sucre', 'Santa Cruz de la Sierra', 'Titicaca Gölü (Bolivya tarafı)'],
+    operators: [
+      { name: 'Entel Bolivia', url: 'https://www.entel.bo/' },
+      { name: 'Tigo Bolivia', url: 'https://www.tigo.com.bo/' },
+      { name: 'Viva Bolivia', url: 'https://www.viva.com.bo/' }
+    ],
+    currency: 'Bolivya Bolivianosu (BOB)',
+    minimumWage: 'Ulusal asgari ücret düzenli güncellenir; resmi çalışma/ekonomi kaynaklarından teyit edilmelidir.',
+    livingCost: 'La Paz ve Santa Cruz arasında maliyet farkı olabilir; rakım ve ulaşım planı bütçeyi etkiler.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle takip önerilir.',
+    foodCulture: 'And bölgesi ve yerel topluluk etkili mutfak; mısır, patates ve et yemekleri öne çıkar.',
+    famousPeople: ['Evo Morales', 'Luis Arce', 'Marcelo Martins', 'Jaime Escalante', 'Alcides Arguedas', 'Marina Núñez del Prado', 'Eduardo Abaroa', 'Sonia Falcone', 'Lidia Gueiler', 'Carlos Mesa']
+  },
+  BZ: {
+    updatedAt: '2026-02-23',
+    schools: [
+      { name: 'University of Belize', url: 'https://www.ub.edu.bz/' },
+      { name: 'Galen University', url: 'https://galen.edu.bz/' },
+      { name: 'Sacred Heart Junior College', url: 'https://www.shjc.edu.bz/' },
+      { name: 'Belize Medical College', url: 'https://www.belizemedicalcollege.org/' },
+      { name: 'UWI Open Campus (Belize references)', url: 'https://www.open.uwi.edu/' }
+    ],
+    places: ['Belize City', 'Ambergris Caye (San Pedro)', 'Caye Caulker', 'Great Blue Hole', 'San Ignacio / Maya kalıntıları'],
+    operators: [
+      { name: 'Digi Belize', url: 'https://www.livedigi.com/' },
+      { name: 'Smart Belize', url: 'https://www.smart.com.bz/' },
+      { name: 'Belize Telemedia', url: 'https://www.btl.com.bz/' }
+    ],
+    currency: 'Belize Doları (BZD)',
+    minimumWage: 'Asgari ücret ve çalışma koşulları için resmi iş gücü kaynaklarıyla teyit önerilir.',
+    livingCost: 'Adalar ve turistik kıyı bölgeleri iç bölgelere göre daha pahalı olabilir.',
+    government: 'Parlamenter demokrasi (anayasal monarşi)',
+    inflation: 'Merkez bankası ve resmi verilerle dönemsel takip edilmelidir.',
+    foodCulture: 'Karayip, Maya ve Latin etkili mutfak; deniz ürünleri ve pirinç-fasulye yaygındır.',
+    famousPeople: ['George Cadle Price', 'Dean Barrow', 'John Briceño', 'Andy Palacio', 'Philip Goldson', 'Wilfred Peters', 'Marion Jones', 'Thea Garcia-Ramirez', 'Jules Vasquez', 'Leila Vernon']
   }
 };
 
