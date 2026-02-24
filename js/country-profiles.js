@@ -1850,6 +1850,931 @@ const COUNTRY_PROFILES = {
     inflation: 'Merkez bankası ve resmi verilerle dönemsel takip edilmelidir.',
     foodCulture: 'Karayip, Maya ve Latin etkili mutfak; deniz ürünleri ve pirinç-fasulye yaygındır.',
     famousPeople: ['George Cadle Price', 'Dean Barrow', 'John Briceño', 'Andy Palacio', 'Philip Goldson', 'Wilfred Peters', 'Marion Jones', 'Thea Garcia-Ramirez', 'Jules Vasquez', 'Leila Vernon']
+  },
+  GY: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'University of Guyana', url: 'https://uog.edu.gy/' },
+      { name: 'Texila American University (Guyana campus)', url: 'https://tauedu.org/' },
+      { name: 'Government Technical Institute (education refs)', url: 'https://education.gov.gy/' },
+      { name: 'Cyril Potter College of Education', url: 'https://education.gov.gy/' },
+      { name: 'UG Berbice Campus', url: 'https://uog.edu.gy/' }
+    ],
+    places: ['Georgetown', 'Kaieteur Şelalesi', 'Iwokrama Rainforest', 'Essequibo kıyıları', 'Rupununi Savannah'],
+    operators: [
+      { name: 'GTT', url: 'https://gtt.co.gy/' },
+      { name: 'Digicel Guyana', url: 'https://www.digicelgroup.com/gy/en.html' },
+      { name: 'ENet', url: 'https://www.enetgy.com/' }
+    ],
+    currency: 'Guyana Doları (GYD)',
+    minimumWage: 'Asgari ücret ve kamu/özel sektör farklılıkları için resmi çalışma kaynakları teyit edilmelidir.',
+    livingCost: 'Georgetown ve petrol ekonomisi etkili bölgelerde konut maliyetleri artabilir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle dönemsel takip önerilir.',
+    foodCulture: 'Hint-Karayip etkili mutfak; köri, pirinç ve deniz ürünleri öne çıkar.',
+    famousPeople: ['Cheddi Jagan', 'Forbes Burnham', 'Irfaan Ali', 'Shivnarine Chanderpaul', 'Rohan Kanhai', 'Eddy Grant', 'Clive Lloyd', 'CCH Pounder', 'Walter Rodney', 'Mia Mottley']
+  },
+  AM: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'Yerevan State University', url: 'https://www.ysu.am/en' },
+      { name: 'American University of Armenia', url: 'https://aua.am/' },
+      { name: 'National Polytechnic University of Armenia', url: 'https://polytech.am/en/' },
+      { name: 'Yerevan State Medical University', url: 'https://ysmu.am/en/' },
+      { name: 'French University in Armenia', url: 'https://ufar.am/' }
+    ],
+    places: ['Erivan', 'Garni Tapınağı', 'Geghard Manastırı', 'Sevan Gölü', 'Dilijan'],
+    operators: [
+      { name: 'Viva Armenia', url: 'https://www.viva.am/' },
+      { name: 'Team Telecom Armenia', url: 'https://www.telecomarmenia.am/' },
+      { name: 'Ucom', url: 'https://www.ucom.am/' }
+    ],
+    currency: 'Ermenistan Dramı (AMD)',
+    minimumWage: 'Ulusal asgari ücret resmi kararlarla güncellenir; güncel rakam resmi kaynaklardan teyit edilmelidir.',
+    livingCost: 'Erivan diğer şehirlere göre daha maliyetlidir; kısa dönem kiralarda fiyatlar artabilir.',
+    government: 'Parlamenter cumhuriyet',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle takip önerilir.',
+    foodCulture: 'Kafkas mutfağı; et, hamur işi, otlar ve tandır benzeri pişirme kültürü öne çıkar.',
+    famousPeople: ['Serj Tankian', 'Charles Aznavour', 'Henrikh Mkhitaryan', 'Nikol Pashinyan', 'Aram Khachaturian', 'Tigran Petrosian', 'Parajanov', 'Levon Aronian', 'Sirusho', 'Hovhannes Tumanyan']
+  },
+  WS: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'National University of Samoa', url: 'https://nus.edu.ws/' },
+      { name: 'Samoa Polytechnic legacy (NUS faculties)', url: 'https://nus.edu.ws/' },
+      { name: 'Leififi College / teacher training refs', url: 'https://www.mesc.gov.ws/' },
+      { name: 'USP Samoa campus (regional)', url: 'https://www.usp.ac.fj/' },
+      { name: 'Samoa Qualifications Authority refs', url: 'https://www.sqa.gov.ws/' }
+    ],
+    places: ['Apia', 'To Sua Ocean Trench', 'Lalomanu Beach', 'Upolu adası şelaleleri', 'Savai’i'],
+    operators: [
+      { name: 'Digicel Samoa', url: 'https://www.digicelgroup.com/ws/en.html' },
+      { name: 'Vodafone Samoa', url: 'https://vodafone.ws/' },
+      { name: 'Bluesky Samoa', url: 'https://blueskysamoa.ws/' }
+    ],
+    currency: 'Samoa Talası (WST)',
+    minimumWage: 'Resmi ücret düzenlemeleri ve kamu/özel sektör koşulları için resmi kaynak teyidi önerilir.',
+    livingCost: 'Ada lojistiği ve ithal ürün etkisi nedeniyle maliyetler yükselir.',
+    government: 'Parlamenter demokrasi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle takip edilmelidir.',
+    foodCulture: 'Polinezya ada mutfağı; deniz ürünleri, hindistancevizi ve kök sebzeler öne çıkar.',
+    famousPeople: ['Fiame Naomi Mataʻafa', 'Malietoa Tanumafili II', 'David Tua', 'Dwayne Johnson (Samoa köken bağlantısı)', 'Tofilau Eti Alesana', 'Valerie Adams (Samoa kökeni)', 'Brian Lima', 'Albert Wendt', 'Lemi Ponifasio', 'Samoa rugby oyuncuları']
+  },
+  FJ: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'University of the South Pacific', url: 'https://www.usp.ac.fj/' },
+      { name: 'Fiji National University', url: 'https://www.fnu.ac.fj/' },
+      { name: 'University of Fiji', url: 'https://www.unifiji.ac.fj/' },
+      { name: 'Sangam Institute of Technology refs', url: 'https://www.education.gov.fj/' },
+      { name: 'Fiji School of Medicine history/health faculties', url: 'https://www.fnu.ac.fj/' }
+    ],
+    places: ['Nadi', 'Suva', 'Mamanuca Adaları', 'Yasawa Adaları', 'Pacific Harbour'],
+    operators: [
+      { name: 'Vodafone Fiji', url: 'https://www.vodafone.com.fj/' },
+      { name: 'Digicel Fiji', url: 'https://www.digicelgroup.com/fj/en.html' },
+      { name: 'Inkk Mobile', url: 'https://www.inkk.com.fj/' }
+    ],
+    currency: 'Fiji Doları (FJD)',
+    minimumWage: 'Asgari ücret ve sektör uygulamaları resmi çalışma mevzuatı kaynaklarından doğrulanmalıdır.',
+    livingCost: 'Turistik adalar ve resort bölgelerinde maliyet yüksektir; ana adalarda daha dengelidir.',
+    government: 'Parlamenter cumhuriyet',
+    inflation: 'Merkez bankası ve resmi verilerle dönemsel takip önerilir.',
+    foodCulture: 'Hint-Pasifik ada etkili mutfak; deniz ürünleri, köri ve tropikal ürünler öne çıkar.',
+    famousPeople: ['Waisale Serevi', 'Frank Bainimarama', 'Sitiveni Rabuka', 'Semi Radradra', 'Nemani Nadolo', 'Vilimoni Delasau', 'Litia Cava', 'Mick Beddoes', 'Jese Saukuru', 'Bula FM artists']
+  },
+  SR: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'Anton de Kom University of Suriname', url: 'https://www.uvs.edu/' },
+      { name: 'Institute for Graduate Studies and Research (Anton de Kom)', url: 'https://www.uvs.edu/' },
+      { name: 'Polytechnic College Suriname refs', url: 'https://gov.sr/' },
+      { name: 'Teacher training institutes (official refs)', url: 'https://gov.sr/' },
+      { name: 'Medical training institutions references', url: 'https://gov.sr/' }
+    ],
+    places: ['Paramaribo', 'Brownsberg', 'Commewijne', 'Galibi', 'Suriname Nehri rotaları'],
+    operators: [
+      { name: 'Telesur', url: 'https://www.telesur.sr/' },
+      { name: 'Digicel Suriname', url: 'https://www.digicelgroup.com/sr/en.html' },
+      { name: 'Parbonet', url: 'https://www.parbo.net/' }
+    ],
+    currency: 'Surinam Doları (SRD)',
+    minimumWage: 'Asgari ücret ve çalışma koşulları için resmi çalışma kurumlarının güncel duyuruları teyit edilmelidir.',
+    livingCost: 'Paramaribo merkezinde maliyet daha yüksek olabilir; ithal ürünler bütçeyi etkiler.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle yakından takip önerilir.',
+    foodCulture: 'Çok kültürlü mutfak; Hint, Cava, Creole ve Hollanda etkileri birlikte görülür.',
+    famousPeople: ['Desi Bouterse', 'Chan Santokhi', 'Clarence Seedorf', 'Ruud Gullit (Surinam kökeni)', 'Edgar Davids (Surinam kökeni)', 'Astrid Roemer', 'Anthony Nesty', 'Ronnie Brunswijk', 'Tyrone Spong', 'Jeangu Macrooy']
+  },
+  BW: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'University of Botswana', url: 'https://www.ub.bw/' },
+      { name: 'Botswana International University of Science and Technology', url: 'https://www.biust.ac.bw/' },
+      { name: 'Botswana Open University', url: 'https://www.bou.ac.bw/' },
+      { name: 'Botswana Accountancy College', url: 'https://www.bac.ac.bw/' },
+      { name: 'Limkokwing University Botswana', url: 'https://www.limkokwing.net/botswana/' }
+    ],
+    places: ['Gaborone', 'Okavango Delta', 'Chobe National Park', 'Makgadikgadi Pans', 'Kasane'],
+    operators: [
+      { name: 'Mascom', url: 'https://www.mascom.bw/' },
+      { name: 'Orange Botswana', url: 'https://www.orange.co.bw/' },
+      { name: 'BTC Mobile', url: 'https://www.btc.bw/' }
+    ],
+    currency: 'Botsvana Pulası (BWP)',
+    minimumWage: 'Asgari ücret ve sektör koşulları için resmi çalışma bakanlığı kaynaklarıyla teyit edilmelidir.',
+    livingCost: 'Gaborone ve safari odaklı bölgelerde konaklama maliyeti yükselir.',
+    government: 'Parlamenter cumhuriyet',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle dönemsel takip önerilir.',
+    foodCulture: 'Güney Afrika etkili mutfak; et, mısır unu yemekleri ve yerel geleneksel tabaklar öne çıkar.',
+    famousPeople: ['Ian Khama', 'Mokgweetsi Masisi', 'Amantle Montsho', 'Letsile Tebogo', 'Mpule Kwelagobe', 'Unity Dow', 'Samantha Mogwe', 'Duma Boko', 'Refilwe Modiselle', 'Tshepo Mmolotsi']
+  },
+  TO: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'University of the South Pacific (Tonga campus)', url: 'https://www.usp.ac.fj/' },
+      { name: 'Tonga Institute of Higher Education', url: 'https://www.tieh.to/' },
+      { name: 'Tonga National University references', url: 'https://www.gov.to/' },
+      { name: 'Teacher training institutions (official refs)', url: 'https://www.education.gov.to/' },
+      { name: 'Atenisi University', url: 'https://www.atenisi.edu.to/' }
+    ],
+    places: ['Nukuʻalofa', 'Tongatapu', 'Vavaʻu', 'Haʻapai', 'Mapuʻa ʻa Vaea blowholes'],
+    operators: [
+      { name: 'Digicel Tonga', url: 'https://www.digicelgroup.com/to/en.html' },
+      { name: 'TCC (UCall)', url: 'https://www.tcc.to/' },
+      { name: 'Tonga Communications Corporation ISP', url: 'https://www.tcc.to/' }
+    ],
+    currency: 'Tonga Paʻangası (TOP)',
+    minimumWage: 'Ücret düzenlemeleri ve kamu/özel sektör uygulamaları için resmi kaynak teyidi önerilir.',
+    livingCost: 'Ada lojistiği ve ithalat maliyetleri günlük yaşam giderlerini yükseltebilir.',
+    government: 'Anayasal monarşi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle takip edilmelidir.',
+    foodCulture: 'Polinezya mutfağı; kök sebzeler, deniz ürünleri ve ortak ada pişirme kültürü öne çıkar.',
+    famousPeople: ['Kral Tupou VI', 'ʻAkilisi Pōhiva', 'Pita Taufatofua', 'Israel Folau (Tonga kökeni)', 'Mako Vunipola (Tonga kökeni)', 'Sonatane Takulua', 'Feʻao Vunipola', 'Uli Latukefu', 'Taufaʻahau Tupou IV', 'Princess Pilolevu']
+  },
+  PW: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'Palau Community College', url: 'https://pcc.palau.edu/' },
+      { name: 'Palau High School / education ministry refs', url: 'https://www.palaumoe.net/' },
+      { name: 'PCC School of Nursing', url: 'https://pcc.palau.edu/' },
+      { name: 'USP / regional higher education references', url: 'https://www.usp.ac.fj/' },
+      { name: 'Palau Ministry of Education training refs', url: 'https://www.palaumoe.net/' }
+    ],
+    places: ['Koror', 'Rock Islands', 'Jellyfish Lake (erişim durumu kontrolü)', 'Peleliu', 'Ngardmau Waterfall'],
+    operators: [
+      { name: 'Palau National Communications Corp (PNCC)', url: 'https://www.pnccpalau.com/' },
+      { name: 'PalauTel / PNCC mobile', url: 'https://www.pnccpalau.com/' },
+      { name: 'Regional eSIM/roaming providers', url: 'https://www.palaugov.pw/' }
+    ],
+    currency: 'ABD Doları (USD)',
+    minimumWage: 'Asgari ücret ve iş koşulları için resmi çalışma mevzuatı kaynaklarıyla teyit önerilir.',
+    livingCost: 'Ada lojistiği ve turizm nedeniyle konaklama ve gıda maliyeti yüksek olabilir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Resmi veriler ve ABD dolar bazlı fiyat hareketleri birlikte izlenmelidir.',
+    foodCulture: 'Pasifik ada mutfağı; deniz ürünleri, tropikal ürünler ve Asya etkili yemekler görülür.',
+    famousPeople: ['Surangel Whipps Jr.', 'Tommy Remengesau Jr.', 'Kuniwo Nakamura', 'Johnson Toribiong', 'Sandra Pierantozzi', 'Ngiratkel Etpison', 'Elbuchel Sadang', 'Bethwel Henry', 'Caleb Otto', 'Palau kamu figürleri']
+  },
+  NA: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'University of Namibia', url: 'https://www.unam.edu.na/' },
+      { name: 'Namibia University of Science and Technology', url: 'https://www.nust.na/' },
+      { name: 'International University of Management', url: 'https://www.ium.edu.na/' },
+      { name: 'Welwitchia University', url: 'https://welwitchia.com.na/' },
+      { name: 'Namibia College of Open Learning refs', url: 'https://www.namcol.edu.na/' }
+    ],
+    places: ['Windhoek', 'Etosha National Park', 'Swakopmund', 'Sossusvlei', 'Skeleton Coast'],
+    operators: [
+      { name: 'MTC Namibia', url: 'https://www.mtc.com.na/' },
+      { name: 'Telecom Namibia', url: 'https://www.telecom.na/' },
+      { name: 'TN Mobile / Leo', url: 'https://www.telecom.na/' }
+    ],
+    currency: 'Namibya Doları (NAD)',
+    minimumWage: 'Sektör bazlı ücret uygulamaları farklılaşabilir; resmi çalışma kaynakları teyit edilmelidir.',
+    livingCost: 'Windhoek ve turistik rota şehirlerinde maliyet artabilir; araç kiralama bütçesi önemlidir.',
+    government: 'Yarı başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle dönemsel takip önerilir.',
+    foodCulture: 'Güney Afrika etkili mutfak; et, oyun eti ve Alman kolonyal etkili tatlar görülür.',
+    famousPeople: ['Hage Geingob', 'Sam Nujoma', 'Nangolo Mbumba', 'Frank Fredericks', 'The Dogg', 'Top Cheri', 'Patricia Olivier', 'Behati Prinsloo', 'Netumbo Nandi-Ndaitwah', 'Brave Warriors oyuncuları']
+  },
+  BY: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'Belarusian State University', url: 'https://bsu.by/en/' },
+      { name: 'Belarusian National Technical University', url: 'https://bntu.by/en' },
+      { name: 'Belarusian State Medical University', url: 'https://www.bsmu.by/en/' },
+      { name: 'Yanka Kupala State University of Grodno', url: 'https://en.grsu.by/' },
+      { name: 'Belarus State Economic University', url: 'http://bseu.by/en/' }
+    ],
+    places: ['Minsk', 'Nesvizh Castle', 'Mir Castle', 'Brest Fortress', 'Belovezhskaya Pushcha'],
+    operators: [
+      { name: 'A1 Belarus', url: 'https://www.a1.by/' },
+      { name: 'MTS Belarus', url: 'https://www.mts.by/' },
+      { name: 'life:) Belarus', url: 'https://www.life.com.by/' }
+    ],
+    currency: 'Belarus Rublesi (BYN)',
+    minimumWage: 'Asgari ücret resmi kararlarla güncellenir; yaptırım ve ekonomik koşullar nedeniyle güncel teyit önemlidir.',
+    livingCost: 'Minsk merkezinde maliyet diğer şehirlere göre daha yüksektir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle dönemsel takip önerilir.',
+    foodCulture: 'Doğu Avrupa mutfağı; patates, et ve çorba kültürü öne çıkar.',
+    famousPeople: ['Alexander Lukashenko', 'Svetlana Alexievich', 'Aryna Sabalenka', 'Victoria Azarenka', 'Marc Chagall', 'Maksim Mirnyi', 'Darya Domracheva', 'Ruslan Salei', 'Pyotr Klimuk', 'Yanka Kupala']
+  },
+  KG: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'Kyrgyz National University', url: 'https://www.knu.kg/' },
+      { name: 'American University of Central Asia', url: 'https://auca.kg/' },
+      { name: 'Kyrgyz State Technical University', url: 'https://kstu.kg/' },
+      { name: 'Kyrgyz State Medical Academy', url: 'https://kgma.kg/' },
+      { name: 'OSCE Academy in Bishkek', url: 'https://osce-academy.net/' }
+    ],
+    places: ['Bişkek', 'Issık Göl', 'Karakol', 'Ala Archa National Park', 'Song-Köl'],
+    operators: [
+      { name: 'Beeline Kyrgyzstan', url: 'https://beeline.kg/' },
+      { name: 'O!', url: 'https://o.kg/' },
+      { name: 'MegaCom', url: 'https://megacom.kg/' }
+    ],
+    currency: 'Kırgızistan Somu (KGS)',
+    minimumWage: 'Asgari ücret ve sektör koşulları için resmi çalışma kaynaklarıyla teyit önerilir.',
+    livingCost: 'Bişkek ve turistik dağ/rezerv bölgelerinde maliyet artabilir; sezon etkisi yüksektir.',
+    government: 'Parlamenter-başkanlık karışık yapı (cumhuriyet)',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle takip edilmelidir.',
+    foodCulture: 'Orta Asya mutfağı; et, hamur işi, süt ürünleri ve çay kültürü öne çıkar.',
+    famousPeople: ['Cengiz Aytmatov', 'Kurmanjan Datka', 'Sadyr Japarov', 'Roza Otunbayeva', 'Toktogul Satylganov', 'Ormon Khan', 'Valentina Shevchenko (Kırgız doğumlu)', 'Aisuluu Tynybekova', 'Denis Petrashov', 'Sapar Isakov']
+  },
+  MN: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'National University of Mongolia', url: 'https://www.num.edu.mn/en/' },
+      { name: 'Mongolian University of Science and Technology', url: 'https://www.must.edu.mn/en/' },
+      { name: 'Mongolian National University of Medical Sciences', url: 'https://mnums.edu.mn/' },
+      { name: 'University of Finance and Economics', url: 'https://www.ufe.edu.mn/' },
+      { name: 'Mongolian State University of Education', url: 'https://msue.edu.mn/' }
+    ],
+    places: ['Ulan Batur', 'Terelj National Park', 'Gobi Çölü', 'Khuvsgul Gölü', 'Karakorum'],
+    operators: [
+      { name: 'MobiCom', url: 'https://www.mobicom.mn/' },
+      { name: 'Unitel', url: 'https://www.unitel.mn/' },
+      { name: 'Skytel', url: 'https://www.skytel.mn/' },
+      { name: 'G-Mobile', url: 'https://www.gmobile.mn/' }
+    ],
+    currency: 'Moğol Tugriki (MNT)',
+    minimumWage: 'Ulusal asgari ücret resmi kararlarla güncellenir; güncel tutar resmi kaynaklardan doğrulanmalıdır.',
+    livingCost: 'Ulan Batur ve kış sezonunda ısınma/ulaşım maliyetleri bütçeyi etkiler.',
+    government: 'Parlamenter cumhuriyet',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle dönemsel takip önerilir.',
+    foodCulture: 'Bozkır kültürü etkili mutfak; et, süt ürünleri ve hamur işi ağırlıklıdır.',
+    famousPeople: ['Cengiz Han', 'Sühbaatar', 'Khaltmaagiin Battulga', 'Ukhnaagiin Khürelsükh', 'The Hu (müzik grubu)', 'G. Mend-Ooyo', 'Naran (şarkıcı)', 'Munkhbat Urantsetseg', 'Dolgorsürengiin Dagvadorj (Asashoryu)', 'Mongolian throat singers']
+  },
+  UZ: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'National University of Uzbekistan', url: 'https://nuu.uz/en/' },
+      { name: 'Tashkent State Technical University', url: 'https://tdtu.uz/' },
+      { name: 'Westminster International University in Tashkent', url: 'https://www.wiut.uz/' },
+      { name: 'Tashkent Medical Academy', url: 'https://tma.uz/' },
+      { name: 'University of World Economy and Diplomacy', url: 'https://uwed.uz/en/' }
+    ],
+    places: ['Taşkent', 'Semerkant', 'Buhara', 'Hive', 'Çimgan / Charvak'],
+    operators: [
+      { name: 'Beeline Uzbekistan', url: 'https://beeline.uz/' },
+      { name: 'Ucell', url: 'https://ucell.uz/' },
+      { name: 'Mobiuz', url: 'https://mobi.uz/' },
+      { name: 'Uzmobile', url: 'https://uztelecom.uz/' }
+    ],
+    currency: 'Özbek Somu (UZS)',
+    minimumWage: 'Asgari ücret ve ücret tabanı resmi kararlarla güncellenir; resmi kaynak teyidi önerilir.',
+    livingCost: 'Taşkent diğer şehirlere göre daha pahalı olabilir; turistik şehirlerde sezon etkisi görülebilir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle dönemsel takip önerilir.',
+    foodCulture: 'Orta Asya mutfağı; pilav, kebap, hamur işleri ve çay kültürü belirgindir.',
+    famousPeople: ['İslam Kerimov', 'Şevket Mirziyoyev', 'Alisher Navoi', 'Amir Timur', 'Ulug Bey', 'Yulduz Usmonova', 'Oksana Chusovitina', 'Server Jeparov', 'Behzod Abduraimov', 'Ravshan Irmatov']
+  },
+  SN: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'Cheikh Anta Diop University', url: 'https://www.ucad.sn/' },
+      { name: 'Gaston Berger University', url: 'https://ugb.sn/' },
+      { name: 'Université Alioune Diop de Bambey', url: 'https://uadb.edu.sn/' },
+      { name: 'Université Assane Seck de Ziguinchor', url: 'https://www.univ-zig.sn/' },
+      { name: 'Institut Supérieur de Management (ISM)', url: 'https://www.groupeism.sn/' }
+    ],
+    places: ['Dakar', 'Île de Gorée', 'Saint-Louis', 'Saly', 'Lac Rose çevresi'],
+    operators: [
+      { name: 'Orange Sénégal', url: 'https://www.orange.sn/' },
+      { name: 'Free Sénégal', url: 'https://www.free.sn/' },
+      { name: 'Expresso Sénégal', url: 'https://www.expressotelecom.sn/' }
+    ],
+    currency: 'Batı Afrika CFA Frangı (XOF)',
+    minimumWage: 'Ücret tabanı ve sektör uygulamaları için resmi çalışma kaynaklarından teyit önerilir.',
+    livingCost: 'Dakar ve turistik kıyı bölgelerinde maliyet daha yüksektir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'BCEAO ve resmi istatistik verileriyle dönemsel takip önerilir.',
+    foodCulture: 'Batı Afrika mutfağı; pirinç, balık, yer fıstığı sosları ve baharatlar öne çıkar.',
+    famousPeople: ['Léopold Sédar Senghor', 'Youssou N\'Dour', 'Sadio Mané', 'Ousmane Sonko', 'Macky Sall', 'Akon', 'Omar Pene', 'Djibril Diop Mambéty', 'Aminata Sow Fall', 'Cheikh Anta Diop']
+  },
+  KI: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'University of the South Pacific (Kiribati campus)', url: 'https://www.usp.ac.fj/' },
+      { name: 'Kiribati Teachers College', url: 'https://www.education.gov.ki/' },
+      { name: 'Marine Training Centre', url: 'https://www.mtc.edu.ki/' },
+      { name: 'KITS / technical institutes refs', url: 'https://www.mfet.gov.ki/' },
+      { name: 'Ministry of Education training references', url: 'https://www.education.gov.ki/' }
+    ],
+    places: ['Tarawa (South Tarawa)', 'Kiritimati Island', 'Abaiang', 'Butaritari', 'Atol plajları ve lagünler'],
+    operators: [
+      { name: 'ATHKL / Vodafone Kiribati', url: 'https://www.mic.gov.ki/' },
+      { name: 'Ocean Link / internet refs', url: 'https://www.mic.gov.ki/' },
+      { name: 'Government telecom references', url: 'https://www.mic.gov.ki/' }
+    ],
+    currency: 'Avustralya Doları (AUD)',
+    minimumWage: 'Ücret düzenlemeleri ve kamu/özel sektör uygulamaları için resmi kaynak teyidi önerilir.',
+    livingCost: 'Ada lojistiği ve ithal ürün bağımlılığı maliyetleri yükseltebilir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Resmi veriler ve ithalat fiyat etkileri birlikte izlenmelidir.',
+    foodCulture: 'Pasifik ada mutfağı; balık, hindistancevizi ve kök sebzeler öne çıkar.',
+    famousPeople: ['Anote Tong', 'Taneti Maamau', 'Teburoro Tito', 'Ieremia Tabai', 'Teuea Toatu', 'David Katoatau', 'Kabure Tikoma', 'Kiribati iklim aktivistleri', 'Kiribati kamu figürleri', 'Bairiki yerel liderleri']
+  },
+  MV: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'Maldives National University', url: 'https://mnu.edu.mv/' },
+      { name: 'Islamic University of Maldives', url: 'https://ium.edu.mv/' },
+      { name: 'Villa College', url: 'https://www.villacollege.edu.mv/' },
+      { name: 'Avid College', url: 'https://avid.edu.mv/' },
+      { name: 'Cyryx College', url: 'https://cyryxcollege.edu.mv/' }
+    ],
+    places: ['Male', 'Hulhumalé', 'Ari Atoll', 'Baa Atoll', 'Resort / lokal ada rotaları'],
+    operators: [
+      { name: 'Dhiraagu', url: 'https://www.dhiraagu.com.mv/' },
+      { name: 'Ooredoo Maldives', url: 'https://www.ooredoo.mv/' },
+      { name: 'eSIM/roaming providers (travel refs)', url: 'https://visitmaldives.com/' }
+    ],
+    currency: 'Maldiv Rufiyaası (MVR)',
+    minimumWage: 'Çalışma izinleri ve sektör bazlı ücret uygulamaları için resmi kaynak teyidi önerilir.',
+    livingCost: 'Resort bölgeleri ile yerel adalar arasında çok ciddi maliyet farkı vardır.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi verilerle dönemsel takip önerilir.',
+    foodCulture: 'Deniz ürünleri, hindistancevizi ve Güney Asya etkili ada mutfağı öne çıkar.',
+    famousPeople: ['Mohamed Nasheed', 'Ibrahim Mohamed Solih', 'Mohamed Muizzu', 'Abdulla Yameen', 'Aminath Faiza', 'Ali Ashfaq', 'Niuma Mohamed', 'Ahmed Nihan', 'Aishath Rishmy', 'Mariya Didi']
+  },
+  NR: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'University of the South Pacific (Nauru campus refs)', url: 'https://www.usp.ac.fj/' },
+      { name: 'Nauru TVET / education department refs', url: 'https://www.naurugov.nr/' },
+      { name: 'Nauru secondary-tertiary training references', url: 'https://www.naurugov.nr/' },
+      { name: 'Regional scholarships and higher ed refs', url: 'https://www.naurugov.nr/' },
+      { name: 'Education ministry resources', url: 'https://www.naurugov.nr/' }
+    ],
+    places: ['Yaren (idari merkez)', 'Anibare Bay', 'Buada Lagoon', 'Command Ridge', 'Ada çevresi kıyı rotası'],
+    operators: [
+      { name: 'Digicel Nauru (regional refs)', url: 'https://www.digicelgroup.com/' },
+      { name: 'CenpacNet / local telecom refs', url: 'https://www.naurugov.nr/' },
+      { name: 'Government ICT references', url: 'https://www.naurugov.nr/' }
+    ],
+    currency: 'Avustralya Doları (AUD)',
+    minimumWage: 'Ücret ve çalışma koşulları için resmi devlet kaynaklarından teyit önerilir.',
+    livingCost: 'Küçük ada ekonomisi ve ithalat nedeniyle temel ürün maliyetleri yüksek olabilir.',
+    government: 'Parlamenter cumhuriyet',
+    inflation: 'Resmi veriler sınırlı olabilir; bölgesel fiyat hareketleri izlenmelidir.',
+    foodCulture: 'Ada mutfağı; deniz ürünleri ve ithal gıda ağırlıklı günlük tüketim yaygındır.',
+    famousPeople: ['Russ Kun', 'David Adeang', 'Baron Waqa', 'Marcus Stephen', 'Ludwig Scotty', 'Sprent Dabwido', 'Hammer DeRoburt', 'Kieren Keke', 'Charmaine Scotty', 'Nauru sports representatives']
+  },
+  CV: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'University of Cape Verde', url: 'https://www.unicv.edu.cv/' },
+      { name: 'Universidade Jean Piaget de Cabo Verde', url: 'https://www.unipiaget.edu.cv/' },
+      { name: 'Universidade de Santiago', url: 'https://www.usantiago.edu.cv/' },
+      { name: 'ISECMAR / maritime refs', url: 'https://www.governo.cv/' },
+      { name: 'Technical institutes references', url: 'https://www.governo.cv/' }
+    ],
+    places: ['Praia', 'Mindelo', 'Sal Adası', 'Santo Antão', 'Fogo Volkanı'],
+    operators: [
+      { name: 'CVMóvel', url: 'https://www.cvtelecom.cv/' },
+      { name: 'Unitel T+', url: 'https://www.uniteltmais.cv/' },
+      { name: 'Cabo Verde Telecom', url: 'https://www.cvtelecom.cv/' }
+    ],
+    currency: 'Cape Verde Eskudosu (CVE)',
+    minimumWage: 'Asgari ücret ve sektör koşulları için resmi çalışma kaynaklarıyla teyit önerilir.',
+    livingCost: 'Turistik adalarda konaklama maliyetleri artabilir; ada bazında fiyat farkları belirgindir.',
+    government: 'Yarı başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle dönemsel takip edilmelidir.',
+    foodCulture: 'Atlantik ada mutfağı; deniz ürünleri, mısır ve Portekiz etkili yemekler öne çıkar.',
+    famousPeople: ['Cesária Évora', 'Mayra Andrade', 'Jorge Carlos Fonseca', 'Amílcar Cabral', 'Pedro Pires', 'Sara Tavares', 'Elida Almeida', 'Lura', 'Nani (Cape Verde kökeni)', 'Ryan Mendes']
+  },
+  CI: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'Université Félix Houphouët-Boigny', url: 'https://www.ufhb.edu.ci/' },
+      { name: 'Institut National Polytechnique Félix Houphouët-Boigny', url: 'https://inphb.ci/' },
+      { name: 'Université Nangui Abrogoua', url: 'https://www.una.edu.ci/' },
+      { name: 'Université Alassane Ouattara', url: 'https://uao.edu.ci/' },
+      { name: 'Université Internationale de Grand-Bassam', url: 'https://www.uigb.edu.ci/' }
+    ],
+    places: ['Abidjan', 'Grand-Bassam', 'Yamoussoukro', 'Assinie', 'Taï National Park'],
+    operators: [
+      { name: 'Orange Côte d’Ivoire', url: 'https://www.orange.ci/' },
+      { name: 'MTN Côte d’Ivoire', url: 'https://www.mtn.ci/' },
+      { name: 'Moov Africa Côte d’Ivoire', url: 'https://www.moov-africa.ci/' }
+    ],
+    currency: 'Batı Afrika CFA Frangı (XOF)',
+    minimumWage: 'Asgari ücret ve sektör uygulamaları için resmi çalışma kurumlarının güncel tabloları teyit edilmelidir.',
+    livingCost: 'Abidjan başta olmak üzere büyük şehirlerde konut ve ulaşım maliyetleri daha yüksektir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'BCEAO ve resmi istatistik verileriyle dönemsel takip önerilir.',
+    foodCulture: 'Batı Afrika mutfağı; attiéké, ızgara etler ve baharatlı soslar öne çıkar.',
+    famousPeople: ['Didier Drogba', 'Yaya Touré', 'Kolo Touré', 'Alpha Blondy', 'Magic System', 'Alassane Ouattara', 'Laurent Gbagbo', 'Aïcha Koné', 'Serges Kassy', 'Marie-Josée Ta Lou']
+  },
+  MH: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'College of the Marshall Islands', url: 'https://www.cmi.edu/' },
+      { name: 'University of the South Pacific (Marshall Islands refs)', url: 'https://www.usp.ac.fj/' },
+      { name: 'Marshall Islands High School / education refs', url: 'https://www.rmiembassyus.org/' },
+      { name: 'Teacher training and public education refs', url: 'https://www.pssra.com/' },
+      { name: 'CMI vocational programmes', url: 'https://www.cmi.edu/' }
+    ],
+    places: ['Majuro', 'Arno Atoll', 'Laura Beach', 'Ebeye (geçiş/lojistik planı)', 'Lagün adaları'],
+    operators: [
+      { name: 'National Telecommunications Authority', url: 'https://www.ntamar.net/' },
+      { name: 'MINTA / local mobile services', url: 'https://www.ntamar.net/' },
+      { name: 'Regional satellite internet references', url: 'https://www.rmiembassyus.org/' }
+    ],
+    currency: 'ABD Doları (USD)',
+    minimumWage: 'Ücret tabanı ve çalışma koşulları için resmi kamu kurumlarının duyuruları teyit edilmelidir.',
+    livingCost: 'Ada lojistiği ve ithal ürün bağımlılığı yaşam maliyetini yükseltebilir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Resmi veriler ve ithalat fiyat hareketleri birlikte izlenmelidir.',
+    foodCulture: 'Pasifik ada mutfağı; balık, hindistancevizi ve ithal gıda kombinasyonu yaygındır.',
+    famousPeople: ['Hilda Heine', 'David Kabua', 'Amata Kabua', 'Casten Nemra', 'Litokwa Tomeing', 'Christopher Loeak', 'Amenta Matthew', 'Brenson Wase', 'Tony deBrum', 'Jack Niedenthal']
+  },
+  PK: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'LUMS', url: 'https://lums.edu.pk/' },
+      { name: 'NUST', url: 'https://nust.edu.pk/' },
+      { name: 'University of the Punjab', url: 'https://pu.edu.pk/' },
+      { name: 'COMSATS University Islamabad', url: 'https://www.comsats.edu.pk/' },
+      { name: 'Aga Khan University', url: 'https://www.aku.edu/' }
+    ],
+    places: ['Lahor', 'İslamabad Faisal Camii', 'Hunza Vadisi', 'Karakurum Otoyolu', 'Karaçi sahili'],
+    operators: [
+      { name: 'Jazz', url: 'https://jazz.com.pk/' },
+      { name: 'Zong', url: 'https://www.zong.com.pk/' },
+      { name: 'Telenor Pakistan', url: 'https://www.telenor.com.pk/' },
+      { name: 'Ufone', url: 'https://www.ufone.com/' }
+    ],
+    currency: 'Pakistan Rupisi (PKR)',
+    minimumWage: 'Asgari ücret federal ve eyalet düzeyinde dönemsel güncellenir; resmi kaynakla teyit edilmelidir.',
+    livingCost: 'Karaçi, Lahor ve İslamabad arasında kira ve yaşam maliyeti farkları belirgindir.',
+    government: 'Federal parlamenter cumhuriyet',
+    inflation: 'Pakistan Bureau of Statistics ve merkez bankası verileriyle takip edilmelidir.',
+    foodCulture: 'Biryani, karahi, kebap ve naan çeşitleri ülke mutfağında öne çıkar.',
+    famousPeople: ['Muhammed Ali Cinnah', 'Benazir Butto', 'İmran Khan', 'Malala Yousafzai', 'Nusrat Fateh Ali Khan', 'Abdus Salam', 'Wasim Akram', 'Babar Azam', 'Atif Aslam', 'Mahira Khan']
+  },
+  AF: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'Kabul University', url: 'https://www.google.com/search?q=Kabul+University+Afghanistan' },
+      { name: 'American University of Afghanistan', url: 'https://www.auaf.edu.af/' },
+      { name: 'Kabul Polytechnic University', url: 'https://www.google.com/search?q=Kabul+Polytechnic+University' },
+      { name: 'Herat University', url: 'https://www.google.com/search?q=Herat+University+Afghanistan' },
+      { name: 'Balkh University', url: 'https://www.google.com/search?q=Balkh+University+Afghanistan' }
+    ],
+    places: ['Kabil', 'Bamyan Vadisi', 'Band-e Amir Milli Parkı', 'Herat Kalesi', 'Mezar-ı Şerif'],
+    operators: [
+      { name: 'AWCC', url: 'https://www.afghan-wireless.com/' },
+      { name: 'Roshan', url: 'https://www.roshan.af/' },
+      { name: 'Etisalat Afghanistan', url: 'https://www.etisalat.af/' },
+      { name: 'Salaam', url: 'https://www.google.com/search?q=Salaam+Afghanistan+telecom' }
+    ],
+    currency: 'Afganisi (AFN)',
+    minimumWage: 'Ücret yapısı kamu/özel sektör ve bölgeye göre değişebilir; resmi kaynak teyidi gerekir.',
+    livingCost: 'Güvenlik ve lojistik koşulları şehir bazında maliyeti ciddi şekilde etkileyebilir.',
+    government: 'Fiili yönetim yapısı güncel uluslararası ve yerel kaynaklarla birlikte değerlendirilmelidir.',
+    inflation: 'Merkez bankası ve uluslararası kuruluş raporlarıyla takip önerilir.',
+    foodCulture: 'Pilav, kebap, mantu ve naan Afgan mutfağının temel örnekleri arasındadır.',
+    famousPeople: ['Ahmed Şah Mesud', 'Hamid Karzai', 'Ahmad Zahir', 'Khaled Hosseini', 'Rohullah Nikpai', 'Abdul Ahad Mohmand', 'Ariana Sayeed', 'Habiba Sarabi', 'Amrullah Saleh', 'Abdullah Abdullah']
+  },
+  IQ: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'University of Baghdad', url: 'https://en.uobaghdad.edu.iq/' },
+      { name: 'University of Basrah', url: 'https://uobasrah.edu.iq/' },
+      { name: 'University of Mosul', url: 'https://uomosul.edu.iq/' },
+      { name: 'University of Kufa', url: 'https://uokufa.edu.iq/' },
+      { name: 'Salahaddin University-Erbil', url: 'https://su.edu.krd/' }
+    ],
+    places: ['Bağdat', 'Erbil Kalesi', 'Basra', 'Necef', 'Süleymaniye'],
+    operators: [
+      { name: 'Zain Iraq', url: 'https://www.iq.zain.com/' },
+      { name: 'Asiacell', url: 'https://www.asiacell.com/' },
+      { name: 'Korek Telecom', url: 'https://www.korektel.com/' }
+    ],
+    currency: 'Irak Dinarı (IQD)',
+    minimumWage: 'Kamu ve özel sektör uygulamaları farklılaşabilir; resmi çalışma kurumları kaynaklarıyla teyit edilmelidir.',
+    livingCost: 'Bağdat, Erbil ve Basra arasında konut ve hizmet maliyetleri farklılık gösterir.',
+    government: 'Federal parlamenter cumhuriyet',
+    inflation: 'Irak Merkez Bankası ve resmi istatistik verileriyle takip önerilir.',
+    foodCulture: 'Masgouf, kebaplar, pirinç yemekleri ve Mezopotamya mutfak etkileri öne çıkar.',
+    famousPeople: ['Saddam Hüseyin', 'Muhammed Şiya es-Sudani', 'Mustafa el-Kazımi', 'Nadhim Zahawi', 'Ahmed Radhi', 'Kazem Al Saher', 'Nazik al-Malaika', 'Alaa Bashir', 'Hammurabi', 'Muhammed Mehdi el-Cevahiri']
+  },
+  IR: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'University of Tehran', url: 'https://ut.ac.ir/en' },
+      { name: 'Sharif University of Technology', url: 'https://www.sharif.edu/en/' },
+      { name: 'Amirkabir University of Technology', url: 'https://aut.ac.ir/en' },
+      { name: 'Iran University of Science and Technology', url: 'https://www.iust.ac.ir/en' },
+      { name: 'Shiraz University', url: 'https://shirazu.ac.ir/en' }
+    ],
+    places: ['Tahran', 'İsfahan', 'Persepolis', 'Yezd', 'Şiraz'],
+    operators: [
+      { name: 'MCI', url: 'https://mci.ir/' },
+      { name: 'MTN Irancell', url: 'https://irancell.ir/' },
+      { name: 'Rightel', url: 'https://www.rightel.ir/' }
+    ],
+    currency: 'İran Riyali (IRR)',
+    minimumWage: 'Ulusal asgari ücret resmi kararlarla düzenli güncellenir; güncel tutar resmi kaynaktan kontrol edilmelidir.',
+    livingCost: 'Tahran ve büyük şehirlerde kira ile özel hizmet maliyetleri daha yüksektir.',
+    government: 'İslami cumhuriyet',
+    inflation: 'İran resmi kurumları ve uluslararası raporlarla birlikte izlenmelidir.',
+    foodCulture: 'Kebap, pilav, safranlı yemekler ve çay kültürü İran mutfağında belirgindir.',
+    famousPeople: ['Rumi', 'Ömer Hayyam', 'Hafız', 'Asghar Farhadi', 'Abbas Kiarostami', 'Şirin Ebadi', 'Ali Daei', 'Googoosh', 'Muhammed Rıza Şeceryan', 'Forough Farrokhzad']
+  },
+  LK: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'University of Colombo', url: 'https://cmb.ac.lk/' },
+      { name: 'University of Peradeniya', url: 'https://www.pdn.ac.lk/' },
+      { name: 'University of Moratuwa', url: 'https://uom.lk/' },
+      { name: 'University of Sri Jayewardenepura', url: 'https://www.sjp.ac.lk/' },
+      { name: 'University of Kelaniya', url: 'https://www.kln.ac.lk/' }
+    ],
+    places: ['Kolombo', 'Kandy', 'Sigiriya', 'Ella', 'Galle Fort'],
+    operators: [
+      { name: 'Dialog', url: 'https://www.dialog.lk/' },
+      { name: 'Mobitel', url: 'https://mobitel.lk/' },
+      { name: 'Airtel Sri Lanka', url: 'https://www.airtel.lk/' },
+      { name: 'Hutch', url: 'https://www.hutch.lk/' }
+    ],
+    currency: 'Sri Lanka Rupisi (LKR)',
+    minimumWage: 'Asgari ücret ve ücret kuralları dönemsel mevzuat değişiklikleriyle güncellenebilir.',
+    livingCost: 'Kolombo ve turistik sahil bölgelerinde maliyetler ülke ortalamasına göre yükselebilir.',
+    government: 'Cumhuriyet (başkanlık/parlamenter unsurlar)',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle düzenli takip önerilir.',
+    foodCulture: 'Köri çeşitleri, pirinç, hopper ve deniz ürünleri Sri Lanka mutfağında öne çıkar.',
+    famousPeople: ['Kumar Sangakkara', 'Mahela Jayawardene', 'Muttiah Muralitharan', 'Angelo Mathews', 'Yohani', 'Anagarika Dharmapala', 'Mahinda Rajapaksa', 'Gotabaya Rajapaksa', 'Chandrika Kumaratunga', 'Jacqueline Fernandez']
+  },
+  NP: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'Tribhuvan University', url: 'https://tu.edu.np/' },
+      { name: 'Kathmandu University', url: 'https://ku.edu.np/' },
+      { name: 'Pokhara University', url: 'https://pu.edu.np/' },
+      { name: 'Purbanchal University', url: 'https://www.pu.edu.np/' },
+      { name: 'Nepal Open University', url: 'https://nou.edu.np/' }
+    ],
+    places: ['Katmandu', 'Pokhara', 'Chitwan', 'Lumbini', 'Everest trekking bölgesi'],
+    operators: [
+      { name: 'Ncell', url: 'https://www.ncell.com.np/' },
+      { name: 'Nepal Telecom', url: 'https://www.ntc.net.np/' },
+      { name: 'Smart Telecom', url: 'https://www.google.com/search?q=Smart+Telecom+Nepal' }
+    ],
+    currency: 'Nepal Rupisi (NPR)',
+    minimumWage: 'Ulusal ücret düzenlemeleri dönemsel olarak güncellenir; resmi kaynak kontrolü önerilir.',
+    livingCost: 'Katmandu ve turizm odaklı bölgelerde konaklama maliyeti daha yüksek olabilir.',
+    government: 'Federal parlamenter cumhuriyet',
+    inflation: 'Nepal Rastra Bank ve resmi istatistik kurumları verileriyle takip edilmelidir.',
+    foodCulture: 'Dal bhat, momo ve Himalaya etkili yemek kültürü yaygındır.',
+    famousPeople: ['KP Sharma Oli', 'Pushpa Kamal Dahal', 'Bidhya Devi Bhandari', 'Nirmal Purja', 'Mira Rai', 'Paras Khadka', 'Sandeep Lamichhane', 'Ani Choying Drolma', 'Manisha Koirala', 'Bhanubhakta Acharya']
+  },
+  KH: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'Royal University of Phnom Penh', url: 'http://www.rupp.edu.kh/' },
+      { name: 'Institute of Technology of Cambodia', url: 'https://itc.edu.kh/' },
+      { name: 'Royal University of Law and Economics', url: 'https://www.rule.edu.kh/' },
+      { name: 'University of Health Sciences', url: 'https://www.google.com/search?q=University+of+Health+Sciences+Cambodia' },
+      { name: 'Norton University', url: 'https://www.google.com/search?q=Norton+University+Cambodia' }
+    ],
+    places: ['Angkor Wat', 'Phnom Penh', 'Siem Reap', 'Kampot', 'Koh Rong'],
+    operators: [
+      { name: 'Smart', url: 'https://www.smart.com.kh/' },
+      { name: 'Cellcard', url: 'https://www.cellcard.com.kh/' },
+      { name: 'Metfone', url: 'https://metfone.com.kh/' }
+    ],
+    currency: 'Kamboçya Rieli (KHR)',
+    minimumWage: 'Sektörel taban ücretler düzenli güncellenebilir; resmi çalışma kurumları duyuruları takip edilmelidir.',
+    livingCost: 'Phnom Penh ve Siem Reap’te kiralar ve turistik maliyetler daha yüksek olabilir.',
+    government: 'Anayasal monarşi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle takip önerilir.',
+    foodCulture: 'Amok, noodle, pirinç ve Güneydoğu Asya baharat dengesi mutfakta öne çıkar.',
+    famousPeople: ['Hun Sen', 'Norodom Sihamoni', 'Sinn Sisamouth', 'Vann Molyvann', 'Aok Sokunkanha', 'Loung Ung', 'Rithy Panh', 'Keo Surath', 'Chan Dara', 'Norodom Sihanouk']
+  },
+  LA: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'National University of Laos', url: 'https://www.google.com/search?q=National+University+of+Laos' },
+      { name: 'Souphanouvong University', url: 'https://www.google.com/search?q=Souphanouvong+University+Laos' },
+      { name: 'Champasak University', url: 'https://www.google.com/search?q=Champasak+University+Laos' },
+      { name: 'Savannakhet University', url: 'https://www.google.com/search?q=Savannakhet+University+Laos' },
+      { name: 'University of Health Sciences (Laos)', url: 'https://www.google.com/search?q=University+of+Health+Sciences+Laos' }
+    ],
+    places: ['Vientiane', 'Luang Prabang', 'Vang Vieng', 'Pakse', '4000 Adalar'],
+    operators: [
+      { name: 'Lao Telecom', url: 'https://www.google.com/search?q=Lao+Telecom' },
+      { name: 'Unitel Laos', url: 'https://www.google.com/search?q=Unitel+Laos' },
+      { name: 'ETL', url: 'https://www.google.com/search?q=ETL+Laos+telecom' }
+    ],
+    currency: 'Laos Kipi (LAK)',
+    minimumWage: 'Ulusal ücret tabanı dönemsel olarak güncellenebilir; resmi kaynak teyidi önemlidir.',
+    livingCost: 'Başkent ve turistik kentlerde konaklama maliyetleri daha yüksektir.',
+    government: 'Tek partili sosyalist cumhuriyet',
+    inflation: 'Merkez bankası ve resmi istatistik kaynaklarıyla takip edilmelidir.',
+    foodCulture: 'Yapışkan pirinç, otlar, balık sosu ve Mekong etkili yemekler öne çıkar.',
+    famousPeople: ['Thongloun Sisoulith', 'Kaysone Phomvihane', 'Khamtai Siphandone', 'Bounnhang Vorachith', 'Anousone Phothisan', 'Alexandra Bounxouei', 'Aluna Thavonsouk', 'Sombath Somphone', 'Sounthone Pathammavong', 'Dokdara']
+  },
+  TJ: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'Tajik National University', url: 'https://www.google.com/search?q=Tajik+National+University' },
+      { name: 'Russian-Tajik Slavonic University', url: 'https://www.google.com/search?q=Russian-Tajik+Slavonic+University' },
+      { name: 'Tajik Technical University', url: 'https://www.google.com/search?q=Tajik+Technical+University' },
+      { name: 'Tajik State Medical University', url: 'https://www.google.com/search?q=Tajik+State+Medical+University' },
+      { name: 'Khujand State University', url: 'https://www.google.com/search?q=Khujand+State+University' }
+    ],
+    places: ['Duşanbe', 'İskenderkul', 'Pamir Otoyolu', 'Khujand', 'Pamir dağ rotaları'],
+    operators: [
+      { name: 'Tcell', url: 'https://www.tcell.tj/' },
+      { name: 'MegaFon Tajikistan', url: 'https://www.google.com/search?q=MegaFon+Tajikistan' },
+      { name: 'Babilon-Mobile', url: 'https://www.google.com/search?q=Babilon-Mobile+Tajikistan' }
+    ],
+    currency: 'Tacik Somonisi (TJS)',
+    minimumWage: 'Ulusal ücret tabanı ve kamu kararları dönemsel değişebilir; resmi teyit gereklidir.',
+    livingCost: 'Duşanbe’de konut ve hizmet maliyetleri diğer şehirlere göre daha yüksektir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Resmi istatistik ve merkez bankası verileriyle düzenli takip önerilir.',
+    foodCulture: 'Pilav (osh), etli yemekler ve Orta Asya mutfağı gelenekleri öne çıkar.',
+    famousPeople: ['Emomali Rahmon', 'Rustam Emomali', 'Dilshod Nazarov', 'Shabnam Surayo', 'Manizha', 'Farzona', 'Davlatmand Kholov', 'Abduroziq', 'Mukhammadkodir Toshtemirov', 'Parviz Yusufi']
+  },
+  TM: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'Turkmen State University', url: 'https://www.google.com/search?q=Turkmen+State+University' },
+      { name: 'Oguz Han Engineering and Technology University', url: 'https://www.google.com/search?q=Oguz+Han+University+Turkmenistan' },
+      { name: 'International University for Humanities and Development', url: 'https://www.google.com/search?q=International+University+for+Humanities+and+Development+Turkmenistan' },
+      { name: 'Turkmen State Medical University', url: 'https://www.google.com/search?q=Turkmen+State+Medical+University' },
+      { name: 'Turkmen State Institute of Economics and Management', url: 'https://www.google.com/search?q=Turkmen+economics+management+institute' }
+    ],
+    places: ['Aşkabat', 'Darvaza Krateri', 'Merv', 'Türkmenbaşı kıyısı', 'Kunya-Urgenç'],
+    operators: [
+      { name: 'Altyn Asyr (TM Cell)', url: 'https://www.google.com/search?q=TM+Cell+Turkmenistan' },
+      { name: 'Turkmentelecom', url: 'https://www.google.com/search?q=Turkmentelecom' },
+      { name: 'AGTS', url: 'https://www.google.com/search?q=Ashgabat+telecom+Turkmenistan' }
+    ],
+    currency: 'Türkmenistan Manatı (TMT)',
+    minimumWage: 'Ücret düzenlemeleri resmi kararlarla güncellenebilir; güncel kaynak kontrol edilmelidir.',
+    livingCost: 'Aşkabat merkezinde maliyetler daha yüksek olabilir; veri şeffaflığı sınırlı olabilir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Resmi açıklamalar ve uluslararası raporlar birlikte değerlendirilmelidir.',
+    foodCulture: 'Etli yemekler, pilav ve Orta Asya hamur işi kültürü öne çıkar.',
+    famousPeople: ['Serdar Berdimuhamedov', 'Gurbanguli Berdimuhamedov', 'Saparmurat Niyazov', 'Mahtumkulu Firaki', 'Polina Guryeva', 'Maysa Yazmuhammedova', 'Begenchmuhamed Kulyyev', 'Myrat Garryyev', 'Gulshat Mammedova', 'Döwletmyrat Orazmyradow']
+  },
+  UG: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'Makerere University', url: 'https://www.mak.ac.ug/' },
+      { name: 'Mbarara University of Science and Technology', url: 'https://www.must.ac.ug/' },
+      { name: 'Kyambogo University', url: 'https://kyu.ac.ug/' },
+      { name: 'Uganda Christian University', url: 'https://www.ucu.ac.ug/' },
+      { name: 'Islamic University in Uganda', url: 'https://www.iuiu.ac.ug/' }
+    ],
+    places: ['Kampala', 'Bwindi', 'Murchison Falls', 'Jinja', 'Queen Elizabeth National Park'],
+    operators: [
+      { name: 'MTN Uganda', url: 'https://www.mtn.co.ug/' },
+      { name: 'Airtel Uganda', url: 'https://www.airtel.co.ug/' },
+      { name: 'Lyca Mobile Uganda', url: 'https://www.lycamobile.ug/' }
+    ],
+    currency: 'Uganda Şilini (UGX)',
+    minimumWage: 'Ücret mevzuatı ve sektör uygulamaları için resmi kaynakların güncel hali kontrol edilmelidir.',
+    livingCost: 'Kampala’da konut ve özel hizmet maliyetleri bölgesel şehirlere göre yüksektir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'UBOS ve merkez bankası verileriyle dönemsel takip önerilir.',
+    foodCulture: 'Matoke, posho, et yemekleri ve Doğu Afrika etkili mutfak öne çıkar.',
+    famousPeople: ['Yoweri Museveni', 'Bobi Wine', 'Joshua Cheptegei', 'John Akii-Bua', 'Halimah Nakaayi', 'Winnie Nanyondo', 'Juliana Kanyomozi', 'Jose Chameleone', 'Eddy Kenzo', 'Amin Dada']
+  },
+  RW: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'University of Rwanda', url: 'https://www.ur.ac.rw/' },
+      { name: 'African Leadership University', url: 'https://www.alueducation.com/' },
+      { name: 'ULK', url: 'https://www.ulk.ac.rw/' },
+      { name: 'Adventist University of Central Africa', url: 'https://www.auca.ac.rw/' },
+      { name: 'CMU Africa', url: 'https://www.africa.engineering.cmu.edu/' }
+    ],
+    places: ['Kigali', 'Volcanoes National Park', 'Lake Kivu', 'Nyungwe', 'Akagera'],
+    operators: [
+      { name: 'MTN Rwanda', url: 'https://www.mtn.co.rw/' },
+      { name: 'Airtel Rwanda', url: 'https://www.airtel.co.rw/' },
+      { name: 'Irembo (kamu dijital hizmetleri)', url: 'https://www.irembo.gov.rw/' }
+    ],
+    currency: 'Ruanda Frangı (RWF)',
+    minimumWage: 'Sektörel ücret yapıları için resmi çalışma ve mevzuat kaynakları teyit edilmelidir.',
+    livingCost: 'Kigali’de konut ve hizmet maliyetleri ülke ortalamasına göre yüksektir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle takip edilmelidir.',
+    foodCulture: 'Muz, fasulye, et ve Doğu Afrika mutfak gelenekleri yaygındır.',
+    famousPeople: ['Paul Kagame', 'Diane Shima Rwigara', 'Gaël Faye', 'Salima Mukansanga', 'Meddy', 'The Ben', 'Jean-Paul Samputu', 'Paul Rusesabagina', 'Teta Diana', 'Michaella Rugwizangoga']
+  },
+  MG: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'University of Antananarivo', url: 'https://www.google.com/search?q=University+of+Antananarivo' },
+      { name: 'University of Fianarantsoa', url: 'https://www.google.com/search?q=University+of+Fianarantsoa' },
+      { name: 'University of Toamasina', url: 'https://www.google.com/search?q=University+of+Toamasina' },
+      { name: 'University of Mahajanga', url: 'https://www.google.com/search?q=University+of+Mahajanga' },
+      { name: 'CNTEMAD', url: 'https://www.google.com/search?q=CNTEMAD+Madagascar' }
+    ],
+    places: ['Antananarivo', 'Baobab Yolu', 'Nosy Be', 'Isalo', 'Andasibe'],
+    operators: [
+      { name: 'Telma', url: 'https://www.telma.mg/' },
+      { name: 'Orange Madagascar', url: 'https://www.orange.mg/' },
+      { name: 'Airtel Madagascar', url: 'https://www.airtel.mg/' }
+    ],
+    currency: 'Ariary (MGA)',
+    minimumWage: 'Asgari ücret ve sektör tabanları için resmi çalışma kaynaklarıyla teyit önerilir.',
+    livingCost: 'Başkent ve turistik adalarda konaklama maliyeti farklılaşır.',
+    government: 'Yarı başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik kaynaklarıyla izlenmelidir.',
+    foodCulture: 'Pirinç, deniz ürünleri ve Fransız etkili ada mutfağı öne çıkar.',
+    famousPeople: ['Andry Rajoelina', 'Marc Ravalomanana', 'Didier Ratsiraka', 'Hery Rajaonarimampianina', 'Dama Mahaleo', 'Poopy', 'Ahmad Ahmad', 'Noeline Razafindrainy', 'Rossy', 'Rija Ramanantoanina']
+  },
+  AO: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'Universidade Agostinho Neto', url: 'https://www.google.com/search?q=Universidade+Agostinho+Neto+Angola' },
+      { name: 'Universidade Católica de Angola', url: 'https://www.google.com/search?q=Universidade+Catolica+de+Angola' },
+      { name: 'Universidade Óscar Ribas', url: 'https://www.google.com/search?q=Universidade+Oscar+Ribas' },
+      { name: 'Universidade Metodista de Angola', url: 'https://www.google.com/search?q=Universidade+Metodista+de+Angola' },
+      { name: 'Universidade Jean Piaget de Angola', url: 'https://www.google.com/search?q=Jean+Piaget+Angola+University' }
+    ],
+    places: ['Luanda', 'Kalandula Şelaleleri', 'Benguela', 'Kissama', 'Lubango'],
+    operators: [
+      { name: 'Unitel', url: 'https://www.unitel.ao/' },
+      { name: 'Africell Angola', url: 'https://africell.ao/' },
+      { name: 'Movicel', url: 'https://www.google.com/search?q=Movicel+Angola' }
+    ],
+    currency: 'Angola Kvanzası (AOA)',
+    minimumWage: 'Sektörel taban ücretler resmi kararlarla güncellenebilir; resmi kaynak teyidi gerekir.',
+    livingCost: 'Luanda konut ve ithal ürün maliyetleri nedeniyle pahalı olabilir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle takip önerilir.',
+    foodCulture: 'Deniz ürünleri, manyok ve Portekiz etkili yemekler yaygındır.',
+    famousPeople: ['João Lourenço', 'José Eduardo dos Santos', 'Bonga', 'Anselmo Ralph', 'Leila Lopes', 'Paulo Flores', 'Rui Mingas', 'Mantorras', 'Bastos', 'Aline Frazão']
+  },
+  MZ: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'Universidade Eduardo Mondlane', url: 'https://www.google.com/search?q=Universidade+Eduardo+Mondlane' },
+      { name: 'Universidade Pedagógica de Maputo', url: 'https://www.google.com/search?q=Universidade+Pedagogica+Maputo' },
+      { name: 'Universidade Católica de Moçambique', url: 'https://www.google.com/search?q=Universidade+Catolica+de+Mocambique' },
+      { name: 'Universidade Lúrio', url: 'https://www.google.com/search?q=Universidade+Lurio' },
+      { name: 'Universidade Zambeze', url: 'https://www.google.com/search?q=Universidade+Zambeze' }
+    ],
+    places: ['Maputo', 'Bazaruto', 'Tofo', 'Gorongosa', 'Ilha de Moçambique'],
+    operators: [
+      { name: 'Vodacom Mozambique', url: 'https://www.google.com/search?q=Vodacom+Mozambique' },
+      { name: 'Movitel', url: 'https://www.google.com/search?q=Movitel+Mozambique' },
+      { name: 'Tmcel', url: 'https://www.google.com/search?q=Tmcel+Mozambique' }
+    ],
+    currency: 'Mozambik Metikali (MZN)',
+    minimumWage: 'Sektörel asgari ücretler resmi kararlarla güncellenebilir; resmi kaynak kontrolü gerekir.',
+    livingCost: 'Maputo ve turistik kıyı bölgelerinde maliyetler daha yüksek olabilir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle takip edilmelidir.',
+    foodCulture: 'Deniz ürünleri, peri-peri etkileri ve mısır/manyok temelli yemekler öne çıkar.',
+    famousPeople: ['Samora Machel', 'Joaquim Chissano', 'Graça Machel', 'Mia Couto', 'Maria de Lurdes Mutola', 'Filipe Nyusi', 'Lizha James', 'Neyma', 'Eusébio (Mozambik doğumlu)', 'José Craveirinha']
+  },
+  ZW: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'University of Zimbabwe', url: 'https://www.uz.ac.zw/' },
+      { name: 'NUST Zimbabwe', url: 'https://www.nust.ac.zw/' },
+      { name: 'Midlands State University', url: 'https://www.google.com/search?q=Midlands+State+University+Zimbabwe' },
+      { name: 'Chinhoyi University of Technology', url: 'https://www.cut.ac.zw/' },
+      { name: 'Africa University', url: 'https://www.africau.edu/' }
+    ],
+    places: ['Victoria Falls', 'Harare', 'Great Zimbabwe', 'Hwange', 'Matobo Hills'],
+    operators: [
+      { name: 'Econet Wireless Zimbabwe', url: 'https://www.econet.co.zw/' },
+      { name: 'NetOne', url: 'https://www.netone.co.zw/' },
+      { name: 'Telecel Zimbabwe', url: 'https://www.google.com/search?q=Telecel+Zimbabwe' }
+    ],
+    currency: 'Zimbabwe Doları / çoklu para kullanımı (uygulamaya göre değişebilir)',
+    minimumWage: 'Sektörel ücret yapıları ve resmi düzenlemeler sık değişebildiği için güncel teyit gerekir.',
+    livingCost: 'Kur dalgalanmaları ve şehir farkları günlük maliyet hesaplarını etkileyebilir.',
+    government: 'Başkanlık sistemi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle yakın takip önerilir.',
+    foodCulture: 'Sadza, et yemekleri ve Güney Afrika bölge mutfağı etkileri yaygındır.',
+    famousPeople: ['Robert Mugabe', 'Emmerson Mnangagwa', 'Kirsty Coventry', 'Strive Masiyiwa', 'Oliver Mtukudzi', 'Thomas Mapfumo', 'Danai Gurira', 'Morgan Tsvangirai', 'NoViolet Bulawayo', 'Tendai Biti']
+  },
+  PG: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'University of Papua New Guinea', url: 'https://www.google.com/search?q=University+of+Papua+New+Guinea' },
+      { name: 'PNG University of Technology', url: 'https://www.google.com/search?q=Papua+New+Guinea+University+of+Technology' },
+      { name: 'Divine Word University', url: 'https://www.google.com/search?q=Divine+Word+University+Papua+New+Guinea' },
+      { name: 'Pacific Adventist University', url: 'https://www.google.com/search?q=Pacific+Adventist+University+PNG' },
+      { name: 'University of Goroka', url: 'https://www.google.com/search?q=University+of+Goroka' }
+    ],
+    places: ['Port Moresby', 'Kokoda Track', 'Mount Hagen', 'Madang', 'Milne Bay dalış rotaları'],
+    operators: [
+      { name: 'Digicel PNG', url: 'https://www.digicelgroup.com/pg/en.html' },
+      { name: 'Telikom PNG', url: 'https://www.google.com/search?q=Telikom+PNG' },
+      { name: 'bmobile', url: 'https://www.google.com/search?q=bmobile+PNG' }
+    ],
+    currency: 'Kina (PGK)',
+    minimumWage: 'Resmi çalışma ve ücret düzenlemeleri için güncel kamu kaynakları teyit edilmelidir.',
+    livingCost: 'Port Moresby güvenlik ve ithalat maliyetleri nedeniyle pahalı olabilir.',
+    government: 'Parlamenter demokrasi',
+    inflation: 'Merkez bankası ve resmi istatistik verileriyle takip edilmelidir.',
+    foodCulture: 'Kök bitkiler, deniz ürünleri ve ada mutfak gelenekleri öne çıkar.',
+    famousPeople: ['Michael Somare', 'James Marape', 'Peter O Neill', 'Justin Olam', 'Toea Wisil', 'John Momis', 'Peter Ipatas', 'Sir Julius Chan', 'Theo Zurenuoc', 'Allan Bird']
+  },
+  HT: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'Université d État d Haïti', url: 'https://www.google.com/search?q=Universite+dEtat+dHaiti' },
+      { name: 'Université Quisqueya', url: 'https://www.google.com/search?q=Universite+Quisqueya+Haiti' },
+      { name: 'Université Notre Dame d Haïti', url: 'https://www.google.com/search?q=Universite+Notre+Dame+dHaiti' },
+      { name: 'Université Lumière', url: 'https://www.google.com/search?q=Universite+Lumiere+Haiti' },
+      { name: 'Université Caraïbe', url: 'https://www.google.com/search?q=Universite+Caraibe+Haiti' }
+    ],
+    places: ['Port-au-Prince', 'Cap-Haïtien', 'Citadelle Laferrière', 'Jacmel', 'Labadee'],
+    operators: [
+      { name: 'Digicel Haiti', url: 'https://www.digicelgroup.com/ht/en.html' },
+      { name: 'Natcom', url: 'https://natcom.com.ht/' },
+      { name: 'Haiti ISP araması', url: 'https://www.google.com/search?q=Haiti+internet+providers' }
+    ],
+    currency: 'Haiti Gourdesi (HTG)',
+    minimumWage: 'Sektörel asgari ücretler ve resmi kararlar dönemsel değişebilir; güncel teyit gerekir.',
+    livingCost: 'Güvenlik ve lojistik koşulları şehir bazında maliyet hesaplarını etkileyebilir.',
+    government: 'Cumhuriyet; güncel siyasi/kurumsal durum resmi kaynaklarla birlikte izlenmelidir.',
+    inflation: 'Merkez bankası ve uluslararası veri kaynaklarıyla takip önerilir.',
+    foodCulture: 'Kreol mutfağı; pirinç-fasulye, deniz ürünleri ve baharatlı yemekler öne çıkar.',
+    famousPeople: ['Toussaint Louverture', 'Jean Jacques Dessalines', 'Wyclef Jean', 'Michaelle Jean', 'Edwidge Danticat', 'Dany Laferriere', 'Rutshelle Guillaume', 'Jovenel Moise', 'Jean Michel Basquiat (Haiti kökeni)', 'Naomi Osaka (Haiti kökeni)']
+  },
+  PS: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'Birzeit University', url: 'https://www.birzeit.edu/' },
+      { name: 'An-Najah National University', url: 'https://www.najah.edu/' },
+      { name: 'Islamic University of Gaza', url: 'https://www.iugaza.edu.ps/' },
+      { name: 'Al-Quds University', url: 'https://www.alquds.edu/' },
+      { name: 'Hebron University', url: 'https://www.hebron.edu/' }
+    ],
+    places: ['Bethlehem', 'Ramallah', 'Nablus', 'Jericho', 'Kudüs çevresi (erişim koşullu)'],
+    operators: [
+      { name: 'Jawwal', url: 'https://www.jawwal.ps/' },
+      { name: 'Ooredoo Palestine', url: 'https://www.ooredoo.ps/' },
+      { name: 'Paltel', url: 'https://www.paltel.ps/' }
+    ],
+    currency: 'Çoklu kullanım (ILS, JOD, USD vb.)',
+    minimumWage: 'Çalışma koşulları ve ücret düzenlemeleri için güncel resmi kaynak ve mevzuat kontrolü önemlidir.',
+    livingCost: 'Şehir ve erişim koşullarına göre yaşam maliyeti belirgin şekilde değişebilir.',
+    government: 'Yönetim yapısı bölgesel ve siyasi koşullara göre farklı uygulamalar içerebilir.',
+    inflation: 'Resmi istatistik ve uluslararası kaynaklarla birlikte değerlendirilmelidir.',
+    foodCulture: 'Levant mutfağı; humus, falafel, zeytinyağlılar ve fırın ürünleri öne çıkar.',
+    famousPeople: ['Yasir Arafat', 'Mahmud Derviş', 'Hanan Aşravi', 'Leila Khaled', 'Mohammed Assaf', 'Rashid Khalidi', 'Suheir Hammad', 'Bella Hadid (Filistin kökeni)', 'Muna El-Kurd', 'Ahed Tamimi']
+  },
+  TL: {
+    updatedAt: '2026-02-24',
+    schools: [
+      { name: 'Universidade Nacional Timor Lorosae', url: 'https://www.google.com/search?q=Universidade+Nacional+Timor+Lorosae' },
+      { name: 'Dili Institute of Technology', url: 'https://www.google.com/search?q=Dili+Institute+of+Technology' },
+      { name: 'Timor-Leste universities directory', url: 'https://www.google.com/search?q=Timor-Leste+universities' },
+      { name: 'UNTL education resources', url: 'https://www.google.com/search?q=UNTL+Timor-Leste' },
+      { name: 'Timor-Leste higher education', url: 'https://www.google.com/search?q=Timor-Leste+higher+education' }
+    ],
+    places: ['Dili', 'Atauro Adası', 'Jaco Island', 'Baucau', 'Maubisse'],
+    operators: [
+      { name: 'Telemor', url: 'https://www.google.com/search?q=Telemor+Timor-Leste' },
+      { name: 'Timor Telecom', url: 'https://www.google.com/search?q=Timor+Telecom' },
+      { name: 'Timor-Leste mobile operators', url: 'https://www.google.com/search?q=Timor-Leste+mobile+operators' }
+    ],
+    currency: 'ABD Doları (USD)',
+    minimumWage: 'Asgari ücret ve çalışma kuralları için resmi iş/çalışma kurumları kaynakları teyit edilmelidir.',
+    livingCost: 'Dili’de ithal ürün ve konaklama maliyetleri daha yüksek olabilir.',
+    government: 'Yarı başkanlık sistemi',
+    inflation: 'Resmi veriler ve uluslararası kaynaklarla düzenli takip önerilir.',
+    foodCulture: 'Portekiz ve Güneydoğu Asya etkili ada mutfağı; pirinç ve deniz ürünleri öne çıkar.',
+    famousPeople: ['Jose Ramos Horta', 'Xanana Gusmao', 'Mari Alkatiri', 'Taur Matan Ruak', 'Francisco Guterres', 'Kirsty Sword Gusmao', 'Ego Lemos', 'Aniceto Guterres Lopes', 'Berta Nunes', 'Maria de Lourdes Martins Cruz']
   }
 };
 
